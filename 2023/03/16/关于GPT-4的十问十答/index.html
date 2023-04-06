@@ -37,7 +37,7 @@
 <meta property="og:image" content="http://example.com/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p21.png">
 <meta property="og:image" content="http://example.com/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p22.png">
 <meta property="article:published_time" content="2023-03-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-06T11:01:15.835Z">
+<meta property="article:modified_time" content="2023-04-06T11:48:06.061Z">
 <meta property="article:author" content="Ryanran">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p1.png">
@@ -87,10 +87,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
       </div>
     </div>
   </div>
@@ -121,7 +121,7 @@
       
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
 <p>&amp;emsp; &amp;emsp;GPT-4作为GPT系列的最新模型，其整体<strong>实现逻辑</strong>、<strong>技术结构</strong>与ChatGPT类似，可以将其看作是拥有<strong>更长上文</strong>、能<strong>更好理解复杂指令</strong>、回答<strong>更可靠</strong>、更<strong>风格化</strong>、更<strong>有创意</strong>的图文版升级ChatGPT，故本文未按照从头开始叙述的逻辑，在之前《ChatGPT技术解构与思考》整体脉络之上，结合OpenAI的Technical Report，选取GPT-4的<strong>关键点</strong>作阐述，整理出GPT4核心的十个问题进行剖析。</p>
-<p>&amp;emsp;&amp;emsp; 本文首发在腾讯云开发者公众号 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/faCMgTd7eV5kC08XqOCW-Q">https://mp.weixin.qq.com/s/faCMgTd7eV5kC08XqOCW-Q</a> 与知乎号 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/614499449">https://zhuanlan.zhihu.com/p/614499449</a> 中，本Blog中对此文实时更新。</p>
+<p>&amp;emsp;&amp;emsp; 本文首发在腾讯云开发者公众号 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/faCMgTd7eV5kC08XqOCW-Q">https://mp.weixin.qq.com/s/faCMgTd7eV5kC08XqOCW-Q</a> 、知乎号 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/614499449">https://zhuanlan.zhihu.com/p/614499449</a> 与腾讯科技 <a target="_blank" rel="noopener" href="https://new.qq.com/rain/a/20230316A08C1Y00">https://new.qq.com/rain/a/20230316A08C1Y00</a> 中，本Blog此文进行实时更新。</p>
 <h2 id="Q1：GPT-4是什么？"><a href="#Q1：GPT-4是什么？" class="headerlink" title="Q1：GPT-4是什么？"></a>Q1：GPT-4是什么？</h2><hr>
 <p>&amp;emsp; &amp;emsp;GPT-4（Generative Pre-trained Transformer 4）是OpenAI发布的最新GPT系列模型，它是一个<strong>大规模的多模态模型</strong>，其可以接受图像和文本输入，产生文本输出，输出任务依旧是一个<strong>自回归的单词预测任务</strong>，这与外界之前的预期<strong>略微不同</strong>，预期中GPT-4多模态会增加语音、图像、视频、文本多模态输入，输出可能也不局限于文字。</p>
 <p>&amp;emsp; &amp;emsp;GPT系列模型的整体情况如下图：</p>
@@ -265,7 +265,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/" data-id="clg504ltb0000e0pabjb3f4dx" data-title="关于GPT-4的十问十答" class="article-share-link">Teilen</a>
+      <a data-url="http://example.com/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/" data-id="clg504ltb0000e0pabjb3f4dx" data-title="关于GPT-4的十问十答" class="article-share-link">Share</a>
       
       
       
@@ -277,7 +277,7 @@
   
   
     <a href="/2023/01/01/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">大型语言模型(LLM)的使用和思考</div>
     </a>
   
@@ -301,7 +301,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li></ul>
     </div>
@@ -311,7 +311,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
