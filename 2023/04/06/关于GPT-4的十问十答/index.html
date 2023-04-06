@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ryanran&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言 &amp;emsp; &amp;emsp;GPT-4作为GPT系列的最新模型，其整体实现逻辑、技术结构与ChatGPT类似，可以将其看作是拥有更长上文、能更好理解复杂指令、回答更可靠、更风格化、更有创意的图文版升级ChatGPT，故本文未按照从头开始叙述的逻辑，在之前《ChatGPT技术解构与思考》整体脉络之上，结合OpenAI的Technical Report，选取GPT-4的关键点作阐述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ryanran&#39;s Blog">
+<meta property="og:url" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/index.html">
+<meta property="og:site_name" content="Ryanran&#39;s Blog">
+<meta property="og:description" content="前言 &amp;emsp; &amp;emsp;GPT-4作为GPT系列的最新模型，其整体实现逻辑、技术结构与ChatGPT类似，可以将其看作是拥有更长上文、能更好理解复杂指令、回答更可靠、更风格化、更有创意的图文版升级ChatGPT，故本文未按照从头开始叙述的逻辑，在之前《ChatGPT技术解构与思考》整体脉络之上，结合OpenAI的Technical Report，选取GPT-4的关键点作阐述">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p1.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p2.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p3.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p4.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p5.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p6.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p7.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p7.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p8.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p9.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p10.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p11.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p12.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p13.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p14.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p15.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p16.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p17.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p18.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p19.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p20.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p21.png">
+<meta property="og:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p22.png">
+<meta property="article:published_time" content="2023-04-06T07:00:24.135Z">
+<meta property="article:modified_time" content="2023-04-06T10:53:11.026Z">
+<meta property="article:author" content="Ryanran">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ryanran's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Ryanran&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-关于GPT-4的十问十答" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/" class="article-date">
+  <time class="dt-published" datetime="2023-04-06T07:00:24.135Z" itemprop="datePublished">2023-04-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p>&amp;emsp; &amp;emsp;GPT-4作为GPT系列的最新模型，其整体<strong>实现逻辑</strong>、<strong>技术结构</strong>与ChatGPT类似，可以将其看作是拥有<strong>更长上文</strong>、能<strong>更好理解复杂指令</strong>、回答<strong>更可靠</strong>、更<strong>风格化</strong>、更<strong>有创意</strong>的图文版升级ChatGPT，故本文未按照从头开始叙述的逻辑，在之前《ChatGPT技术解构与思考》整体脉络之上，结合OpenAI的Technical Report，选取GPT-4的<strong>关键点</strong>作阐述，整理出GPT4核心的十个问题进行剖析。</p>
+<p>&amp;emsp;&amp;emsp; 本文首发在腾讯云开发者公众号 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/faCMgTd7eV5kC08XqOCW-Q">https://mp.weixin.qq.com/s/faCMgTd7eV5kC08XqOCW-Q</a> 与知乎号 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/614499449">https://zhuanlan.zhihu.com/p/614499449</a> 中，本Blog中对此文实时更新。</p>
+<h2 id="Q1：GPT-4是什么？"><a href="#Q1：GPT-4是什么？" class="headerlink" title="Q1：GPT-4是什么？"></a>Q1：GPT-4是什么？</h2><hr>
+<p>&amp;emsp; &amp;emsp;GPT-4（Generative Pre-trained Transformer 4）是OpenAI发布的最新GPT系列模型，它是一个<strong>大规模的多模态模型</strong>，其可以接受图像和文本输入，产生文本输出，输出任务依旧是一个<strong>自回归的单词预测任务</strong>，这与外界之前的预期<strong>略微不同</strong>，预期中GPT-4多模态会增加语音、图像、视频、文本多模态输入，输出可能也不局限于文字。</p>
+<p>&amp;emsp; &amp;emsp;GPT系列模型的整体情况如下图：</p>
+<img src="p1.png" width=65%>
+
+
+<p>&amp;emsp; &amp;emsp;整体来说，GPT-4的能力已在各种<strong>专业和学术基准上</strong>表现出了人类的水平，包括以大约前10%的成绩通过模拟律师资格考试，而对于生成式的幻觉、安全问题均有<strong>较大的改善</strong>；同时因对于图片模态的强大识别能力扩大了GPT-4的应用范围。</p>
+<h2 id="Q2：效果：GPT-4相比ChatGPT和其他GPT模型，效果层面有哪些显著的改进或新增能力？表现在哪些方面？"><a href="#Q2：效果：GPT-4相比ChatGPT和其他GPT模型，效果层面有哪些显著的改进或新增能力？表现在哪些方面？" class="headerlink" title="Q2：效果：GPT-4相比ChatGPT和其他GPT模型，效果层面有哪些显著的改进或新增能力？表现在哪些方面？"></a>Q2：效果：GPT-4相比ChatGPT和其他GPT模型，效果层面有哪些显著的改进或新增能力？表现在哪些方面？</h2><hr>
+<p>&amp;emsp; &amp;emsp;GPT-4毫无疑问是目前最强的文本生成模型，<strong>GPT系列模型</strong>整体可以总结为下图：</p>
+<img src="p2.png" width=65%>
+ 
+ 
+<p>&amp;emsp; &amp;emsp;GPT-4的改进具体表现在：</p>
+<p>&amp;emsp; &amp;emsp;1） 突破纯文字的模态，<strong>增加了图像模态的输入</strong>，具有强大的图像理解能力。</p>
+<p>&amp;emsp; &amp;emsp;让人惊奇的是，GPT-4在4个场景下（4&#x2F;8）零样本效果超过fine-tuned的SOTA。</p>
+<img src="p3.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;同时它可以解决各类图文混合的理解和生成问题，此处简单举两个例子，一个是根据图表计算格鲁吉亚和西亚的日均肉消耗量：</p>
+<img src="p4.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;一个是解决法语的物理问题：</p>
+<img src="p5.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;可以看到GPT-4在<strong>多语言理解、图文理解能力</strong>上均很强大并已融会贯通。</p>
+<p>&amp;emsp; &amp;emsp;2） 支持更长的上下文窗口</p>
+<p>&amp;emsp; &amp;emsp;如之前外网泄露图片中，GPT-4存在两个版本，其支持的上下文分别是8K和32K，是ChatGPT上下文长度的2倍和8倍，其成本也分别为ChatGPT的3倍和6倍。</p>
+<img src="p6.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;3） <strong>复杂任务处理能力</strong>大幅提升</p>
+<p>&amp;emsp; &amp;emsp;GPT-4在更复杂、更细微的任务处理上，回答更可靠、更有创意，这在多类考试测验中以及与其他LLM的benchmark比较中得到。</p>
+<p>&amp;emsp; &amp;emsp;a. GPT-4在不同年龄段不同类别考试中均名列前茅，平均位列人类头部的10%行列；比如律师职业资格考试前10%，生物学奥赛前1%等，下图可以明显看到，两个版本的GPT-4胜出率很高；</p>
+<img src="p7.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;b. MMLU 等benchmark上，碾压其他大模型</p>
+<img src="p7.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;c. 多语言能力强大，特别是小语种能力也很出色</p>
+<img src="p8.png" width=65%>
+
+
+<p>&amp;emsp; &amp;emsp;4） <strong>改善幻觉、安全等局限性</strong>：</p>
+<p>&amp;emsp; &amp;emsp;在各类任务上幻觉问题显著减轻，比最新的 GPT-3.5 模型高 40%：</p>
+<img src="p9.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;同样在安全能力的升级上，GPT-4明显超出ChatGPT和GPT3.5。</p>
+<img src="p10.png" width=65%>
+
+
+<p>&amp;emsp; &amp;emsp;5）建立LLM测试标准</p>
+<p>&amp;emsp; &amp;emsp;开源OpenAI Evals，创建和运行基准测试的框架，核心思想是<strong>对GPT-4等模型进行评估，并逐个样本检验性能</strong>，此举是可以让大家指出其模型中的缺点，以帮助 OpenAI 进一步改进模型。</p>
+<p>&amp;emsp; &amp;emsp;6）预测模型扩展性</p>
+<p>&amp;emsp; &amp;emsp;这一点之前涉及比较少，GPT-4在1&#x2F;1000的计算量上就实现了扩展性的预测，特别在LLM<strong>不适合广泛调参</strong>的情况下，用较小的模型提前预测训练行为和loss，<strong>极大地提升了训练效率，降低了训练成本，增强了LLM训练的可控性</strong>。</p>
+<p>&amp;emsp; &amp;emsp;特别对于Inverse Scaling Prize这个任务，此任务提出了模型性能随规模而下降的几个任务，而GPT-4可以通过提前预测模型扩展性，从而在Inverse Scaling Prize上的Hindsight Neglect任务逆转这一趋势。</p>
+<img src="p11.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;7） 重新实现了整个深度学习栈，从头开始设计了一台<strong>超级计算机</strong></p>
+<p>&amp;emsp; &amp;emsp;OpenAI和微软合作，在Azure重建了深度学习堆栈，从头设计了一台专用超级计算机；<strong>基础训练设施的改进和定制，使得更大参数量模型的训练成为可能</strong>；</p>
+<p>&amp;emsp; &amp;emsp;8） 风格可控</p>
+<p>&amp;emsp; &amp;emsp;此处核心是通过“系统”自定Prompt，让模型可以按照规定风格做任务回复；整体思想比较简单，如下图需要GPT-4回复均按照json形式：</p>
+<img src="p12.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;做风格化的聊天极其擅长：</p>
+<img src="p13.png" width=65%>
+
+<h2 id="Q3：训练：GPT-4相较于之前的GPT系列模型，在训练方式、模型架构上有哪些创新和优化？"><a href="#Q3：训练：GPT-4相较于之前的GPT系列模型，在训练方式、模型架构上有哪些创新和优化？" class="headerlink" title="Q3：训练：GPT-4相较于之前的GPT系列模型，在训练方式、模型架构上有哪些创新和优化？"></a>Q3：训练：GPT-4相较于之前的GPT系列模型，在训练方式、模型架构上有哪些创新和优化？</h2><hr>
+<p>&amp;emsp; &amp;emsp;整体很黑盒，但可以做一些合理的推测；</p>
+<p>&amp;emsp; &amp;emsp;首先，<strong>模型参数量</strong>估计约为<strong>10万到100万亿</strong>量级（为作者<strong>个人预估</strong>，也从另一个角度看出OpenAI定制超算的强大），主要根据OpenAI 2020提出的大模型缩放规律：计算预算增加 10 倍，数据集大小应增加约 1.83 倍，模型大小应增加 5.48 倍。按照下图估计，最右处的灰点极有可能为ChatGPT（或其他GPT3.5类千亿模型），图中可以看出GPT-4计算量约为GPT3.5的1000多倍，则模型容量约为548倍左右，1750亿x548≈100万亿；</p>
+<img src="p14.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;其次，GPT-4模型<strong>训练架构</strong>加入了图像模态的输入，应与最近微软发布的 KOSMOS-1类似，即在预训练阶段输入任意顺序的文本和图像，图像经过 Vision Encoder 向量化，文本经过普通transformer向量化，两者组成多模句向量，训练目标仍为next-word generation。</p>
+<p>&amp;emsp; &amp;emsp;再者，对于模型<strong>训练数据</strong>内容和数量，文中提及训练数据中额外增加了包含正误数学问题、强弱推理、矛盾一致陈述及各种意识形态的数据，数据量级同样根据OpenAI 2020的缩放率，训练100万亿的模型，数据量是GPT3.5（45TB数据）的190倍。</p>
+<p>&amp;emsp; &amp;emsp;最后，GPT-4是从头训练还是在某些基座模型上得来暂时无从得知；可以确定的是，它增加了<strong>后训练过程</strong>，整个过程类似于做Prompt Engineering+RLHF，核心是让模型知道如何在相应场景下合适的回答问题。</p>
+<h2 id="Q4：应用：相比ChatGPT，GPT-4有哪些新的应用亮点和场景？"><a href="#Q4：应用：相比ChatGPT，GPT-4有哪些新的应用亮点和场景？" class="headerlink" title="Q4：应用：相比ChatGPT，GPT-4有哪些新的应用亮点和场景？"></a>Q4：应用：相比ChatGPT，GPT-4有哪些新的应用亮点和场景？</h2><hr>
+<p>&amp;emsp; &amp;emsp;GPT-4在增强了安全抵御、任务完成度和图片理解能力后，在ChatGPT基础之上有更多亮点和应用场景：</p>
+<p>&amp;emsp; &amp;emsp;1）发布视频中根据潦草的手绘制作类似布局类似的网页：</p>
+<img src="p15.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;to：</p>
+<img src="p16.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;2） 加入视觉模态后，可以扩充到盲人应用（Be my eyes）；强大的多语言能力帮助小语种语言的恢复（Iceland language preserve）、安全能力提升后的反欺诈（Stripe）等应用会应运而生：</p>
+<img src="p17.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp;3）在AIGC的版图上，建立以GPT-4以及之后更多模态的大模型为基础，形成多模态x多场景的应用网络（图来源：甲子光年）：</p>
+<img src="p18.png" width=65%>
+
+<h2 id="Q5：逻辑问题：GPT-4在生成过程中的逻辑性和准确性上有何改进？是否从根本上得到了解决？"><a href="#Q5：逻辑问题：GPT-4在生成过程中的逻辑性和准确性上有何改进？是否从根本上得到了解决？" class="headerlink" title="Q5：逻辑问题：GPT-4在生成过程中的逻辑性和准确性上有何改进？是否从根本上得到了解决？"></a>Q5：逻辑问题：GPT-4在生成过程中的逻辑性和准确性上有何改进？是否从根本上得到了解决？</h2><hr>
+<p>&amp;emsp; &amp;emsp;GPT-4在生成逻辑性和准确性上均取得了进展，需要注意的是，GPT-4基础模型在这项任务上只比GPT-3.5略好一点；然而经过RLHF的<strong>后训练后，效果才有了较大的改进</strong>，后训练整个过程类似于<strong>做Prompt Engineering</strong>+RLHF，核心是让模型知道如何在正确的垂直场景下做出合适的回答。</p>
+<p>&amp;emsp; &amp;emsp;可以看到，GPT-4相比GPT-3.5和Anthropic优势较明显，但绝对正确率只有60%左右，尚存在较多弊端，并没有从根本上解决这样的问题，也会是后续持续发展的方向。</p>
+<img src="p19.png" width=65%>
+
+
+<h2 id="Q6：安全问题：GPT-4是否从根本上解决了安全问题，OpenAI采用了哪些策略和技术？"><a href="#Q6：安全问题：GPT-4是否从根本上解决了安全问题，OpenAI采用了哪些策略和技术？" class="headerlink" title="Q6：安全问题：GPT-4是否从根本上解决了安全问题，OpenAI采用了哪些策略和技术？"></a>Q6：安全问题：GPT-4是否从根本上解决了安全问题，OpenAI采用了哪些策略和技术？</h2><hr>
+<p>&amp;emsp; &amp;emsp;GPT-4在安全问题上<strong>收效显著</strong>，针对安全问题，GPT-4的主要解决思路是利用安全相关的RLHF ，在训练中加入<strong>额外的安全奖励信号</strong>，奖励由 GPT-4 的zero-shot分类器提供，即文中提到的<strong>RBRM</strong>（rule-based reward models, 基于规则的奖励模型）方法，它是一系列零样本的GPT-4 分类器；</p>
+<p>&amp;emsp; &amp;emsp;具体来说，这些分类器接受三种输入：Prompt, Policy model 的输出以及可选的对输出的评估（人工编写）。利用这些不同安全等级的 prompt 进行训练：同时对GPT-4在<strong>不安全回复拒绝回答</strong>的行为，以及<strong>在敏感领域做安全回答</strong>两个场景下作奖励，通过强化学习，最后显著改善安全能力，**不安全内容下降82%<strong>；敏感领域安全回答比率上升</strong>29%**；</p>
+<p>&amp;emsp; &amp;emsp;和ChatGPT RLHF的方法类似，Alignment（对齐工作）在此处发挥了较大作用，同时未来也会有持续的发力空间，相比单纯累积模型参数量和数据量的“大力出奇迹”方式，其<strong>计算量相对较小</strong>。如下图，在InstructGPT文献中，加入RLHF的1.3B模型，在整体胜出率上，超出了175B的微调模型，节省了100倍的成本；</p>
+<img src="p20.png" width=65%>
+
+<h2 id="Q7：冲击：我们如何应对ChatGPT-x2F-GPT-4的冲击？对技术人员、对行业影响是怎样的？"><a href="#Q7：冲击：我们如何应对ChatGPT-x2F-GPT-4的冲击？对技术人员、对行业影响是怎样的？" class="headerlink" title="Q7：冲击：我们如何应对ChatGPT&#x2F;GPT-4的冲击？对技术人员、对行业影响是怎样的？"></a>Q7：冲击：我们如何应对ChatGPT&#x2F;GPT-4的冲击？对技术人员、对行业影响是怎样的？</h2><hr>
+<p>&amp;emsp; &amp;emsp;这个问题在ChatGPT出现之后便存在，GPT-4只是加剧了这样的担忧；对技术人员来说，需要在研究命题、下游任务方面做思考，NLP很多单一子任务会随之消失，会引入新的研究命题：</p>
+<p>&amp;emsp; &amp;emsp;1）如何精准提出需求；对ChatGPT进行“催眠”，<strong>Prompting Project</strong>；</p>
+<p>&amp;emsp; &amp;emsp;2）如何更正错误：<strong>Neural Editing</strong>；</p>
+<p>&amp;emsp; &amp;emsp;3）安全<strong>侦测AI生成</strong>，包括整个生成过程中的安全侦测和控制；</p>
+<p>&amp;emsp; &amp;emsp;4） 构建<strong>专有化模型</strong>，专用指令和RLHF发掘下游任务潜力；</p>
+<p>&amp;emsp; &amp;emsp;5） <strong>Machine unleaning</strong>（学会忘记数据、隐私保护）等</p>
+<p>&amp;emsp; &amp;emsp; 对于行业来说，不同层级的公司，需要在不同模块找立足点。初步来看，<strong>初创企业适合入局中间层、数据平台和应用层，大厂适合入局算力、平台和基础层</strong>。</p>
+<img src="p21.png" width=65%>
+（图来源：甲子光年）
+
+<h2 id="Q8：趋势：从GPT-4可以看出未来LLM的哪些趋势？未来的研发方向和优化策略是什么？"><a href="#Q8：趋势：从GPT-4可以看出未来LLM的哪些趋势？未来的研发方向和优化策略是什么？" class="headerlink" title="Q8：趋势：从GPT-4可以看出未来LLM的哪些趋势？未来的研发方向和优化策略是什么？"></a>Q8：趋势：从GPT-4可以看出未来LLM的哪些趋势？未来的研发方向和优化策略是什么？</h2><hr>
+<p>&amp;emsp; &amp;emsp; 1）<strong>闭源趋势</strong>，网友戏称OpenAI已沦为Closed AI；毕竟从GPT1到GPT-4，模型各类细节越来越闭源和黑盒，大模型战场的竞争因素决定了GPT-4类型的第一梯度模型可能会越来越封闭，成为技术门槛；</p>
+<p>&amp;emsp; &amp;emsp; 2）**”羊驼”模式<strong>。之所以叫羊驼模式，来源于Meta的Alpaca，其</strong>核心<strong>是：中小模型+大模型生产指令数据的“LLaMA 7B + text-davinci-003”模式，中小参数的模型在成本上，是</strong>更靠近实际落地的方式**，要知道llama.cpp可以在Pixel 6手机上运行；通过该模式精调过的Alpaca，效果接近普通GPT3.5；</p>
+<p>&amp;emsp; &amp;emsp; 3）<strong>更多模态、更多形态</strong>结合ChatGPT类模型：包括Kosmos-1和具身智能PaLM-E，同时从听、说、看、触等全方位结合，形成类似真正智能体的概念；</p>
+<p>&amp;emsp; &amp;emsp; 4）<strong>模型加速和降低成本</strong>会是持续关注的方向，包括从训练、推理等多层面考量：</p>
+<img src="p22.png" width=65%>
+
+<p>&amp;emsp; &amp;emsp; 5）<strong>能力预测</strong>是很重要的方向；即用小模型来预测广泛大模型的能力，极大减少试错成本，提升训练效率；</p>
+<p>&amp;emsp; &amp;emsp; 6） <strong>开源评测框架</strong>对于LLM的评测具有重大意义，可以快速发现改进方向。</p>
+<h2 id="Q9：其他：GPT-4论文（technical-report）中，还有哪些值得关注的点？"><a href="#Q9：其他：GPT-4论文（technical-report）中，还有哪些值得关注的点？" class="headerlink" title="Q9：其他：GPT-4论文（technical report）中，还有哪些值得关注的点？"></a>Q9：其他：GPT-4论文（technical report）中，还有哪些值得关注的点？</h2><hr>
+<p>&amp;emsp; &amp;emsp; 有一些点比较有趣且可以引发我们的联想，这里提出两点：</p>
+<p>&amp;emsp; &amp;emsp; 1）GPT-4出现了“<strong>寻求权力</strong>”的倾向，并警告这一特征的风险</p>
+<p>&amp;emsp; &amp;emsp; 文中提到，Novel capabilities often emerge in more powerful models.Some that are particularly concerning are the ability to create and act on long-term plans,to accrue power and resources (“powerseeking”), and to exhibit behavior that is increasingly “agentic”. 即GPT-4开始拥有一些新的能力，包括创建长期计划并采取行动的能力，积累权力和资源（“寻求权力”），以及表现出越来越“代理”的行为，例如，完成可能没有具体规定的、在训练中没有出现的目标；专注于实现具体的、可量化的目标；以及进行长期规划。而此类行为具有突发性。</p>
+<p>&amp;emsp; &amp;emsp; 某种程度上，RLHF的模型本身在寻求奖励最优，所以在某些问题上寻求权力可能会是最优的一项选择。</p>
+<p>&amp;emsp; &amp;emsp; 2）赋予了GPT-4<strong>自我编码、复制和执行的能力</strong>，甚至启动资金</p>
+<p>&amp;emsp; &amp;emsp;在测试GPT-4的过程中，OpenAI引入的外部专家团队ARC(Alignment Research Center)作为“红方”。</p>
+<p>&amp;emsp; &amp;emsp; ARC会给GPT-4这样一个操作：允许GPT-4执行代码，进行链式推理，并可以用少量的钱和一个带有语言模型API的账户，用是否能够赚更多的钱来增加其的稳健性，GPT-4已经可以开始自己赚钱了。</p>
+<h2 id="Q10：AGI：GPT-4是通往AGI的唯一道路吗？"><a href="#Q10：AGI：GPT-4是通往AGI的唯一道路吗？" class="headerlink" title="Q10：AGI：GPT-4是通往AGI的唯一道路吗？"></a>Q10：AGI：GPT-4是通往AGI的唯一道路吗？</h2><hr>
+<p>&amp;emsp; &amp;emsp; 总的来说，ChatGPT&#x2F;GPT-4这样的模型，是现在距离AGI最近的一条路，但因为其本质为一个<strong>概率预测模型</strong>，没有真正的<strong>逻辑处理</strong>模块，也没有<strong>记忆存储</strong>模块，属于一个不太稳定的系统；另外，它使用外界工具的能力也<strong>尚显初级</strong>，一个真正的AGI一定会像人一样，可以快速学会工具的使用。</p>
+<p>&amp;emsp; &amp;emsp; 但GPT大模型的不断进化，让人类看到了触碰到AGI的希望之光。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><hr>
+<ol>
+<li>GPT-4 <a target="_blank" rel="noopener" href="https://openai.com/research/gpt-4">https://openai.com/research/gpt-4</a> </li>
+<li>GPT-4 is OpenAI’s most advanced system, producing safer and more useful responses <a target="_blank" rel="noopener" href="https://openai.com/product/gpt-4">https://openai.com/product/gpt-4</a> </li>
+<li>GPT-4 Technical Report <a target="_blank" rel="noopener" href="https://cdn.openai.com/papers/gpt-4.pdf">https://cdn.openai.com/papers/gpt-4.pdf</a> </li>
+<li>GPT-4震撼发布-机器之心 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/kA7FBZsT6SIvwIkRwFS-xw">https://mp.weixin.qq.com/s/kA7FBZsT6SIvwIkRwFS-xw</a> </li>
+<li>In AI, is bigger always better? <a target="_blank" rel="noopener" href="https://www.nature.com/articles/d41586-023-00641-w">https://www.nature.com/articles/d41586-023-00641-w</a>  <a target="_blank" rel="noopener" href="https://hub.baai.ac.cn/view/24755">Nature | 在AI领域，模型越大意味着越好吗？ - 智源社区</a></li>
+<li>Scaling Laws for Neural Language Models <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2001.08361.pdf">https://arxiv.org/pdf/2001.08361.pdf</a></li>
+<li>LLaMA: Open and Efficient Foundation Language Models <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2302.13971.pdf">https://arxiv.org/pdf/2302.13971.pdf</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/" data-id="clg504ltb0000e0pabjb3f4dx" data-title="" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/01/01/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">大型语言模型(LLM)的使用和思考</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/04/06/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/01/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/">大型语言模型(LLM)的使用和思考</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Ryanran<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
