@@ -99,8 +99,6 @@
 <h2 id="Q1：GPT-4是什么？"><a href="#Q1：GPT-4是什么？" class="headerlink" title="Q1：GPT-4是什么？"></a>Q1：GPT-4是什么？</h2><hr>
 <p>&amp;emsp; &amp;emsp;GPT-4（Generative Pre-trained Transformer 4）是OpenAI发布的最新GPT系列模型，它是一个<strong>大规模的多模态模型</strong>，其可以接受图像和文本输入，产生文本输出，输出任务依旧是一个<strong>自回归的单词预测任务</strong>，这与外界之前的预期<strong>略微不同</strong>，预期中GPT-4多模态会增加语音、图像、视频、文本多模态输入，输出可能也不局限于文字。</p>
 <p>&amp;emsp; &amp;emsp;GPT系列模型的整体情况如下图：</p>
-
-
 <img src="p1.png" width=65%>
 
 
@@ -528,7 +526,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p>&amp;emsp;&amp;emsp;   2）从LLM应用角度来说，LLM-as-a-Service 会越来越普遍，OpenAI 提供的 LLMaaS 服务已经具备较高的速度，并开始逐步探索行之有效的盈利模式，这也是<strong>下游产品的机遇</strong>。截止2021年7月，全球有300多个app在使用GPT3技术，结合gpt3demo网站的数据，其收录了158个基于GPT-3的应用；LLM使得业界能力下限提升，行业门槛下降，业务优势会聚焦在垂直领域的<strong>数据积累资源</strong>。但LLMaaS的盈利模式并不成熟，尚待检验，合理的模式应该需要涉及用户分层，而非全量用户的铺展，这些均增添了较多不确定性，此为应用层面的挑战。</p>
 <p>&amp;emsp;&amp;emsp;  3）从推理成本来说，配合LLM的模型压缩、前向加速等手段均可以降低推理成本，虽然下游产品推理的服务成本尚高，但其实作为百亿模型，完成大量高智能任务具备初步可行性，此为机遇；但在降本增效的大环境下，真正将LLM投入生产的挑战性极大，对于LLM短期在生产环境下最实际的用途主要聚焦在线下，主要围绕数据扩增、减少标注成本和数据生产。</p>
 <p>&amp;emsp;&amp;emsp;  4） 从训练投入成本来说，作为最限制LLM发展的因素，它也在不断进步，除去本身模硬件升级、模型蒸馏、加速训练技术之外，LLM的稀疏化也会持续发展，SparseGPT应该是其中有代表性的工作之一，此为机遇；当然这样的进步相比高额的投入并不够，所以在第三节中提到的对于LLM的投入，是和相关组织的技术战略相关的。在LM基建层面，目标成为何Level的公司，会影响相关的投入，但LLM绝对是具备<strong>高战略价值的投入</strong>。</p>
-<p>&amp;emsp;&amp;emsp;  5） 从国内产研角度来说，这一点其实是比较让人忧虑的；因为LLM过于高昂的成本和苛刻的使用条件，这两年国内对于LLM的研究<strong>成果较少</strong>（累积参数的大模型有，但实际有影响的成果不多），与国外差距在增大。表1可以看到，GPT3后已经更新了5<del>6代，而国内甚至还没有真正意义上可以匹敌GPT3的基建模型，甚至60亿</del>130亿的 InstructGPT能力已经超过国内大部分的所谓大模型（当然OpenAI领先太多，其也超出Google的一般大模型，除了PaLM）。</p>
+<p>&amp;emsp;&amp;emsp;  5） 从国内产研角度来说，这一点其实是比较让人忧虑的；因为LLM过于高昂的成本和苛刻的使用条件，这两年国内对于LLM的研究<strong>成果较少</strong>（累积参数的大模型有，但实际有影响的成果不多），与国外差距在增大。表1可以看到，GPT3后已经更新了5至6代，而国内甚至还没有真正意义上可以匹敌GPT3的基建模型，甚至60亿到130亿的 InstructGPT能力已经超过国内大部分的所谓大模型（当然OpenAI领先太多，其也超出Google的一般大模型，除了PaLM）。</p>
 <p>&amp;emsp;&amp;emsp;  当LLM逐渐成为垄断能力，当OpenAI、Google、DeepMind逐渐闭源时，基建模型又会成为“卡脖子”的能力，ChatGPT只是这一阶段的开始。<br>所以笔者认为对于LLM的态度，仅从个人来说，战略上务必重视它，积极应对挑战，不用过分悲观，寻求并抓住LLM带来的机遇；基于以上方法利用好可用的LLM，可控成本下优化自身业务，同时紧跟业界研究方向，“借好”LLM带来的新东风。</p>
 <p>&amp;emsp;&amp;emsp;  注：这部分关于LLM的影响和开放讨论网上信息繁多，感兴趣的同学可以阅读文献7和文献8，均有比较多的讨论，其中文献8是昨天看到的，这篇文章信息比较多，逻辑线稍微乱一些，但整体输出了很多有效观点，有兴趣详细了解LLM的同学也可以参考。</p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
@@ -693,7 +691,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <td align="left">InstructGPT</td>
 <td align="left">1.3B、6B、175B</td>
 <td align="left">微调数据1w+，Reward Model 4w+，PPO无标注数据4w+</td>
-<td align="left">GPT3.5 Finetune+RLHF指令微调</td>
+<td align="left">GPT3.5 Finetune+RLHF指令微调<br></td>
 <td align="left">遵循人类指令，零&#x2F;少样本生成能力强</td>
 <td align="left">Training language models to follow instructions with human feedback</td>
 </tr>
