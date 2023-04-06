@@ -204,7 +204,8 @@
 &emsp;&emsp;  2）LM-BFF（better few-shot fine-tuning of language models）
 LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择和构造，以表2为例，在NLI任务中不同的Prompt对于下游任务的准确率影响较大。
 
-<p>![[p2.png]]<br><br></p>
+<img src="p2.png" width=65%>
+<br>
 <center>图2  不同Prompt形式的效果</center>
 
 <p>&amp;emsp;&amp;emsp;  LM-BFF在不同任务的小样本学习效果超出等量数据下的微调，但整体结果不够稳定，方差较大，对人工模板的依赖也较大。</p>
@@ -214,18 +215,19 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 <p>&amp;emsp;&amp;emsp;   Parameter-efficient Tuning核心的关键是如何选择有效微调的参数？选择哪部分参数微调？这部分参数占比多少？</p>
 <p>&amp;emsp;&amp;emsp;  1）Adapter Finetune</p>
 <p>&amp;emsp;&amp;emsp;  此方法在Transformers中添加 Adapter Layers，微调过程中只调整此部分参数。Adapter为图3中，在FFN和Norm layer层之间添加的”Adapter”部分，其构成是两层FFN，只需微调3.6% Adapter的参数，在下游任务效果接近全量微调。</p>
-<p>![[p3.png]]</p>
+<img src="p3.png" width=65%>
 <center>图3 Adapter结构示意图</center>
 
 <p>&amp;emsp;&amp;emsp;   2） Prefix-tuning</p>
 <p>&amp;emsp;&amp;emsp;  Prefix-tuning是第一部分Prompt-based微调的发展和延伸，核心思想是选取与子任务强相关的Prompt参数连续化微调，同时<strong>固定其他部分参数</strong>；该方法优点是无需人工设计模板，可以参数化自动学习模板统一优化；缺点也很明显，相比文字模板解释性较低。</p>
-<p>![[Pasted image 20230406170922.png]]</p>
+<img src="p4.png" width=65%>
+
 <center>图4  Prefix-tuning与Fine-tune区别</center>
 <br>
 &emsp;&emsp;   Prefix-tuning的离散模板添加在**每层hidden state**前，与其他同为离散化模板方法的P-tuning不同，后者只需维持输入前缀的离散化，无需隐层状态中维持。Prefix-tuning所需调整参数比率为0.1%，同时在table2text、翻译、摘要3个生成任务上，效果超出其他小样本调整方式，甚至效果基本接近整体微调。
 <br>
 <br>
-<center>![image#608px #402px](https://km.woa.com/asset/fb3279e3caaf4092a988d7e730a1c3d8?height=560&width=847)</center>
+<img src="p5.png" width=65%>
 <br>
 <center>图5  Table-to-text任务Prefix对照实验结果</center>
 <br>
@@ -234,26 +236,25 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 <p>&amp;emsp;&amp;emsp;   3)  Prompt tuning </p>
 <p>&amp;emsp;&amp;emsp;  Prompt tuning 可以看做Prefix-tuning的特殊形式，Google提出的Prompt tuning是做了全面系统的多实验参数的精调，来梳理清晰Prompt tuning的影响因素。此处的结论很有意思：</p>
 <p>&amp;emsp;&amp;emsp;  ● Prompt长度：当模型参数&lt;10亿时，整体倾向是：随着长度变长，模型效果持续上升，在长度为20时即达到峰值；但当模型规模超过10亿时，长度影响差距缩小，特别长度为1时效果也尚可。</p>
-<center>![image#540px #469px](https://km.woa.com/asset/2797a590fb194f1894c631da40eae960?height=531&width=611)</center>
+<img src="p6.png" width=65%>
 <br>
 <center>图6  Prompt长度在SuperGLUE的结果分布</center>
 <br>
 &emsp;&emsp;  ● Prompt初始化方法：当模型参数<10亿时，初始化时，使用分类标签的embeddings与随机选取词表中词的embeddings作初始化，效果相比完全随机初始化好很多，且后者极不稳定；但当模型参数大于10亿后，选取何种方法初始化**不再重要**。
 <br>
-<br>
-<center>![image#547px #487px](https://km.woa.com/asset/fb150cbd47d144b88f815ef59cf1f7cc?height=528&width=593)</center>
+<br><img src="p7.png" width=65%>
 <br>
 <center>图7  Prompt初始化方法在SuperGLUE的结果分布</center>
 
 <p>&amp;emsp;&amp;emsp;   ● Prompt预训练方法：LM Adapation效果稳定，随着模型参数上升稳步增长，另外两种方式极其不稳定；但神奇的是，当模型同样达到10亿量级后，模型效果均<strong>趋向良好</strong>。</p>
-<center>![image#562px #470px](https://km.woa.com/asset/83597519770541d888d2a45851a20ed8?height=524&width=627)</center>
+<img src="p8.png" width=65%>
 <br>
 <center>图8  预训练方法在SuperGLUE的结果分布</center>
 <br>
 &emsp;&emsp;  ● 训练步数：在普通量级参数量下，步数越多效果越好，但当模型量级达到10亿后，模型零样本/小样本能力凸显，无需过多步数训练。
 <br>
 <br>
-<center>![image#557px #476px](https://km.woa.com/asset/a9f530ba41464aa3a7aa776603019497?height=603&width=705)</center>
+<img src="p9.png" width=65%>
 <br>
 <center>图9  训练步数在SuperGLUE的结果分布</center>
 <br>
@@ -261,20 +262,18 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 相关工作还有Prompt tuning的升级工作，包括模板融合等。此部分我们没有做过多的参数实验，只在相同模型（1亿内量级）下做过一些Prompt的修改，但影响整体不大。
 
 <h3 id="4-5-上下文学习（In-context-Learning）"><a href="#4-5-上下文学习（In-context-Learning）" class="headerlink" title="4.5 上下文学习（In-context Learning）"></a>4.5 上下文学习（In-context Learning）</h3><p>&amp;emsp;&amp;emsp;  上下文学习主要在GPT3发布后，开始引发业界关注并逐渐流行；它无需在大模型上进行梯度更新，无需任何形式参数的微调，只需少量下游任务的任务描述和输入输出示例（甚至完全零样本学习），即可在下游任务上取得不错的效果；当选取最大的1750亿参数的模型时，部分任务上甚至超过出SOTA，如在LAMBADA（开放式完形填空任务任务）上提升了18%；图10很好的说明了In-context Learning与传统微调的区别。</p>
-<center>![image#841px #730px](https://km.woa.com/asset/edc2e26297914d23bf78872b116bb554?height=1184&width=1363)</center>
+<img src="p10.png" width=65%>
 <br>
 <center>图10  In-context learning和微调区别</center>
 
 <p>&amp;emsp;&amp;emsp;  1）基础In-context learning</p>
-<p>&amp;ensp; &amp;ensp; In-context learning主要由以下四个部分组成：Distribution of inputs、Label space、Format、Input-label mapping，图11清晰的阐述可该组成结构。<br><br></p>
-<center>![image#879px #330px](https://km.woa.com/asset/62291e94091e4e09a66de7e22270e7bd?height=550&width=1462)</center>
-<br>
+<p>&amp;ensp; &amp;ensp; In-context learning主要由以下四个部分组成：Distribution of inputs、Label space、Format、Input-label mapping，图11清晰的阐述可该组成结构。<br><br><br><img src="p11.png" width=65%><br><br></p>
 <center>图11  In-context learning结构</center>
 
 <p>&amp;emsp;&amp;emsp;  显然In-context learning的优化就从以上四个方面着手设计和探索。</p>
 <p>&amp;emsp;&amp;emsp;   ● Distribution of inputs即为原始文本输入</p>
 <p>&amp;emsp;&amp;emsp;  对于输入样本的<strong>选择和顺序</strong>均会影响In-context learning的效果。前者同小样本学习的样本选择类似，需要选择有代表性、分布均匀的样本，拿分类问题举例，尽可能提供包含不同类别不同的分布；后者是指不同样本的顺序会影响效果，在参考文献2中有阐述，在SST-2（单句情感分类任务）判断任务中，不同排列顺序的输入会导致较大浮动范围的指标。 </p>
-<center>![image#611px #407px](https://km.woa.com/asset/04ddc10ba802431d9691882ff0b69089?height=553&width=831)</center>
+<img src="p12.png" width=65%>
 <br>
 <center>图12  SST-2不同样本顺序结果浮动</center>
 <br>
@@ -292,27 +291,27 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p>&amp;emsp;&amp;emsp;  ● <strong>词频bias</strong>；当存在两类标签A和B，但B为一个低频词时，此时模型大概率倾向于预测<strong>词频高</strong>的A标签；</p>
 <p>&amp;emsp;&amp;emsp;   ● <strong>就近bias</strong>；即模型会易受最新见到的标签影响，如样本标签顺序为PNNPP，预测<strong>就近的</strong>P的概率会较大。</p>
 <p>&amp;emsp;&amp;emsp;   以上客观存在的bias，需要在In-context learning中做校准（Calibration），主体方法是得到bias的概率分布后，如P(Pos)&#x3D;0.65，P(Neg)&#x3D;0.35，使用校准矩阵W校准，W为概率倒数形成的矩阵，其他bias的矫正思想也类似。</p>
-<center>![image#417px #103px](https://km.woa.com/asset/62c3ee3327ea4d8389108b721727a1a4?height=126&width=508)![image#183px #133px](https://km.woa.com/asset/b3b7f53cd029445e8f8bb60da2b6f72d?height=187&width=256)</center>
+<img src="p13.png" width=65%>
 <br>
 <center>图13  校准概率函数与校准矩阵</center>
 <br>
 &emsp;&emsp;  In-context learning从出现到兴起，其有效性的由来完全黑盒。也有工作开始尝试进行解释，此篇文献尝试从贝叶斯推理的角度进行解释：An Explanation of In-context Learning as Implicit Bayesian Inference ，有兴趣的同学可以深入研究。
 
 <h3 id="4-6-推理"><a href="#4-6-推理" class="headerlink" title="4.6 推理"></a>4.6 推理</h3><p>&amp;emsp;&amp;emsp;  在上一节中，我们提到了在Demonstration 构造中，有一类是面向<strong>困难的</strong>数理逻辑任务的CoT（Chain of Thought）Prompting，它主要面向较困难的知识推理、数理推理任务，因为对于此类任务，单纯提升模型收效甚微，需要研究通过其他手段来挖掘LLM在推理任务的能力。<br>CoT提供给模型一系列中间的自然语言推理步骤，类似于人类演算的过程，进而得到最终的输出，使得模型不仅要知其然，且要知其所以然；图14是CoT的输入形式。</p>
-<center>![image#984px #255px](https://km.woa.com/asset/41fb7529197e494e94dc42e9cfbe92a3?height=486&width=1878)</center>
+<img src="p14.png" width=65%>
 <br>
 <center>图14  CoT构造形式</center>
 
 <p>&amp;emsp;&amp;emsp;  1）Emergent Abilities</p>
 <p>&amp;emsp;&amp;emsp;   对于更困难问题的有效解决，开始让LLM变得<strong>“智能化”</strong>；同时，在CoT的研究过程中，研究者们发现了一项神奇的能力 —— Emergent Abilities（涌现能力）。Emergent Abilities是超出scaling law的，当模型达到千亿时，模型效果突然“跃升”，在图15中可以明显看到。</p>
-<center>![image#807px #295px](https://km.woa.com/asset/cf853eb43a36490fada2414cbf8d7d64?height=1234&width=3381)</center>
+<img src="p15.png" width=65%>
 <br>
 <center>图15  模型效果“跃升”</center>
 <br>
 &emsp;&emsp;  而Emergent Abilities只存在于超大规模模型中，且不是所有的大参数模型均存在，甚至连1370亿参数量的LaMDA模型也没有这样的能力，如图16所示；在我们的实验和外部文献中，1750亿的Bloom暂时也未发现此项能力。
 <br>
 <br>
-<center>![demo.png#803px #478px](https://km.woa.com/asset/f928e40afd5b46f2abe536a56cbb8b99?height=1512&width=2545)</center>
+<img src="p16.png" width=65%>
 <br>
 <center>图16  不同大模型效果评价</center>
 
@@ -323,7 +322,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p>&amp;emsp;&amp;emsp;   ● CoT微调：进行CoT数据微调后，LLM倾向于拥有Emergent Abilities。</p>
 <p>&amp;emsp;&amp;emsp;   2）Reasoning with prompting研究命题</p>
 <p>&amp;emsp;&amp;emsp;  回到CoT Prompt本身的讨论，我们可以从表3中得出业界对于此方向的研究命题，包括Prompt 工程设计、推理过程的优化、外源引擎（主要指代码引擎）以及知识增强（内外源知识）。</p>
-<center>![image#1018px #325px](https://km.woa.com/asset/3f04b638eca74dcf83770cfb1d5e7ec6?height=506&width=1582)</center>
+<img src="p16-2.png" width=65%>
 <br>
 <center>表2  Reasoning with prompting的不同研究话题</center>
 
