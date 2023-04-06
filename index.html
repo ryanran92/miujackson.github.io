@@ -196,7 +196,8 @@
 <p>&amp;emsp;&amp;emsp;  Prompt-based 以PET和LM-BFF为代表；</p>
 <p>&amp;emsp;&amp;emsp;   1）PET（Pattern-Exploiting Training）</p>
 <p>&amp;emsp;&amp;emsp;  PET方法示意图见图1，即将标签模板化，预测[MASK]位置label的概率。</p>
-<p>![[p1.png]]<br><br></p>
+<img src="_imgs/p1.png">
+<br>
 <center>图1 PET Prompt示意图</center>
 <br>
 &emsp;&emsp;  2）LM-BFF（better few-shot fine-tuning of language models）
@@ -217,8 +218,7 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 
 <p>&amp;emsp;&amp;emsp;   2） Prefix-tuning</p>
 <p>&amp;emsp;&amp;emsp;  Prefix-tuning是第一部分Prompt-based微调的发展和延伸，核心思想是选取与子任务强相关的Prompt参数连续化微调，同时<strong>固定其他部分参数</strong>；该方法优点是无需人工设计模板，可以参数化自动学习模板统一优化；缺点也很明显，相比文字模板解释性较低。</p>
-<center>![image#691px #502px](https://km.woa.com/asset/56e8653c543a471bac38710b73b0f49c?height=740&width=1018)</center>
-<br>
+<p>![[Pasted image 20230406170922.png]]</p>
 <center>图4  Prefix-tuning与Fine-tune区别</center>
 <br>
 &emsp;&emsp;   Prefix-tuning的离散模板添加在**每层hidden state**前，与其他同为离散化模板方法的P-tuning不同，后者只需维持输入前缀的离散化，无需隐层状态中维持。Prefix-tuning所需调整参数比率为0.1%，同时在table2text、翻译、摘要3个生成任务上，效果超出其他小样本调整方式，甚至效果基本接近整体微调。
