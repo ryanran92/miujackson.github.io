@@ -63,7 +63,7 @@
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p48.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p49.png">
 <meta property="article:published_time" content="2022-12-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-07T04:21:07.791Z">
+<meta property="article:modified_time" content="2023-04-07T07:26:58.777Z">
 <meta property="article:author" content="Ryanran">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p1.png">
@@ -166,7 +166,7 @@
 <p>&emsp;&emsp;在上周公布博文和试用接口后，ChatGPT很快以令人惊叹的对话能力“引爆”网络，本文主要从技术角度，通过<strong>解构ChatGPT</strong>背后涉及的技术工作，来阐述其如此强大的原因；同时深入思考其对我们目前的<strong>实际工作和方法论的改变</strong>，包括可复用和可借鉴之处。</p>
 <h3 id="1-2-ChatGPT的技术背景"><a href="#1-2-ChatGPT的技术背景" class="headerlink" title="1.2 ChatGPT的技术背景"></a>1.2 ChatGPT的技术背景</h3><p>&emsp;&emsp;ChatGPT目前未释出论文文献，仅释出了介绍博文和试用demo，但从博文中提供的技术点和示意图，可以看出与年初公布的InstructGPT 核心思想一致，其关键能力来自三个方面：强大的<strong>基座大模型能力</strong>（InstructGPT），<strong>高质量的真实数据</strong>（干净且丰富），<strong>稳定的强化学习</strong>（PPO算法）。<br>以上是ChatGPT成功的三个要素，具体将在文中第2部分详细展开。</p>
 <h3 id="1-3-ChatGPT的主要特点"><a href="#1-3-ChatGPT的主要特点" class="headerlink" title="1.3 ChatGPT的主要特点"></a>1.3 ChatGPT的主要特点</h3><p>&emsp;&emsp;<strong>ChatGPT的优点令人惊叹：</strong></p>
-<p>&emsp;&emsp;1）** 强大的语言理解和生成系统**；对话能力、文本生成能力、对不同语言表述的理解均很出色，以对话为载体可以回答多种多样的日常问题（同时对于多轮对话历史的记忆能力和篇幅增强）：</p>
+<p>&emsp;&emsp;1）<strong>强大的语言理解和生成系统</strong>；对话能力、文本生成能力、对不同语言表述的理解均很出色，以对话为载体可以回答多种多样的日常问题（同时对于多轮对话历史的记忆能力和篇幅增强）：</p>
 <img src="/2022/12/08/ChatGPT技术解构与思考/p1.png" width=65%>
 <img src="/2022/12/08/ChatGPT技术解构与思考/p2.png" width=65%>
 <img src="/2022/12/08/ChatGPT技术解构与思考/p3.png" width=65%>
@@ -231,8 +231,7 @@
 <img src="/2022/12/08/ChatGPT技术解构与思考/p16.png" width=65%>
 
 <hr>
-<h1 id="2-ChatGPT的工作原理"><a href="#2-ChatGPT的工作原理" class="headerlink" title="2. ChatGPT的工作原理"></a>2. ChatGPT的工作原理</h1><p>###2.1 ChatGPT的训练过程</p>
-<p>&emsp;&emsp;ChatGPT训练过程很清晰，主要分为三个步骤，示意如图所示：</p>
+<h1 id="2-ChatGPT的工作原理"><a href="#2-ChatGPT的工作原理" class="headerlink" title="2. ChatGPT的工作原理"></a>2. ChatGPT的工作原理</h1><h3 id="2-1-ChatGPT的训练过程"><a href="#2-1-ChatGPT的训练过程" class="headerlink" title="2.1 ChatGPT的训练过程"></a>2.1 ChatGPT的训练过程</h3><p>&emsp;&emsp;ChatGPT训练过程很清晰，主要分为三个步骤，示意如图所示：</p>
 <img src="/2022/12/08/ChatGPT技术解构与思考/p17.png" width=65%>
 
 <p><strong>Step1：</strong></p>
@@ -245,8 +244,7 @@
 <p>&emsp;&emsp;使用PPO强化学习策略来微调第一阶段的模型。<strong>核心思想</strong>是随机抽取新的Prompt，用第二阶段的Reward Model给产生的回答打分，这个分数即回答的<strong>整体reward</strong>；进而将此reward回传，由此产生的策略梯度可以更新PPO模型参数；整个过程迭代数次直到模型收敛。</p>
 <p>&emsp;&emsp;强化学习算法可以简单理解为通过调整模型参数，使模型得到最大的<strong>奖励</strong>（reward），最大奖励意味着此时的回复最符合人工的选择取向。<br>而对于PPO，我们知道它是2017年OpenAI提出的一种新型的<strong>强化学习策略优化</strong>的算法即可。它提出了新的目标函数，可以在多个训练步骤实现小批量的更新，其实现简单、易于理解、性能稳定、能同时处理离散/连续动作空间问题、利于大规模训练。</p>
 <p>&emsp;&emsp;以上三个步骤即ChatGPT的训练过程，合称为文献中提到的** RLHF**(Reinforcement Learning from Human Feedback)技术。</p>
-<p>###2.2 ChatGPT为何成功？</p>
-<p>&emsp;&emsp;为何三段式的训练方法就可以让ChatGPT如此强大？其实，以上的训练过程蕴含了上文我们提到的关键点，而这些关键点正是ChatGPT成功的原因：</p>
+<h3 id="2-2-ChatGPT为何成功？"><a href="#2-2-ChatGPT为何成功？" class="headerlink" title="2.2 ChatGPT为何成功？"></a>2.2 ChatGPT为何成功？</h3><p>&emsp;&emsp;为何三段式的训练方法就可以让ChatGPT如此强大？其实，以上的训练过程蕴含了上文我们提到的关键点，而这些关键点正是ChatGPT成功的原因：</p>
 <ul>
 <li>强大的<strong>指令学习</strong>能力（InstructGPT）；</li>
 <li><strong>大规模参数</strong>语言模型（GPT3.5）；</li>
@@ -312,7 +310,91 @@
 <p>&emsp;&emsp;第一条路显然过于“夸张”，于是OpenAI开始探索第二条路：<strong>更好的训练方式，设计更贴近人类需求的真实任务</strong>，而非纯单词预测；这就是GPT 3.5之后的整体逻辑，而RLHF的方法得到了验证，原作者也提到，<strong>预算分配给人类反馈数据可能比计算更有意义</strong>，我们从InstructGPT中下图也可以看到，经过PPO的1.3B的模型，效果已超出微调的175B的模型，而模型参数减少了100倍；这意味着<strong>在正确类型的数据上进行训练</strong>，比简单地将模型规模扩大（比如扩大100倍）的价值要大得多。</p>
 <img src="/2022/12/08/ChatGPT技术解构与思考/p28.png" width=65%>
 
-<p>&emsp;&emsp;此处借用以上文献的表格供大家参考：<br>| 能力| OpenAI模型|训练方法|OpenAI API| OpenAI论文| 近似的开源模型|<br>| :— | :—| :—| :—|:—|:—|<br>| <strong>GPT3系列</strong>|<br>| 语言生成<br>+ 世界知识 <br>+ 上下文学习|GPT-3初始版本<br><strong>大部分的能力已经存在于模型中，尽管表面上看起来很弱。</strong>|语言建模|Davinci|<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.14165">GPT3论文</a> |<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2205.01068">Meta OPT</a> |<br>|+ 遵循人类的指令<br><strong>+ 泛化到没有见过的任务</strong>|Instruct-GPT初始版本|指令微调|Davinci-Instruct-Beta|<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.02155">Instruct-GPT论文</a> |<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.08207">T0论文</a> <br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.11416">Google FLAN论文</a> <br> |<br>|+ 代码理解<br>+ 代码生成|Codex初始版本|在代码上进行训练|Code-Cushman-001|<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.03374">Codex论文</a> |<a target="_blank" rel="noopener" href="https://github.com/salesforce/CodeGen">Salesforce CodeGen</a> |<br>| <strong>GPT3.5系列</strong>|<br>|++ 代码理解<br>++ 代码生成<br>++ <strong>复杂推理 / 思维链</strong><br>+ 长距离的依赖  (很可能)|现在的Codex<br><strong>GPT3.5系列中最强大的模型</strong>|在代码+文本上进行训练<br>在指令上进行微调|Code-Davinci-002 <br>(目前免费的版本 = 2022年12月)|<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.03374">Codex论文</a> | |<br>|++ 遵循人类指令<br>- 上下文学习<br>- 推理能力<br>++ 零样本生成 |有监督的Instruct-GPT <br><strong>通过牺牲上下文学习换取零样本生成的能力</strong>|监督学习版的指令微调**|Text-Davinci-002|<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.02155">InsructGPT论文</a> 有监督部分|<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.08207">T0论文</a> <br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.11416">Google FLAN论文</a> <br>|<br>|+ 遵循人类价值观<br>+ 包含更多细节的生成<br>+ 上下文学习<br>+ 零样本生成|经过RLHF训练的Instruct-GPT<br><strong>和002模型相比，和人类更加对齐，并且更少的性能损失|强化学习版的指令微调</strong>|Text-Davinci-003|<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.02155">InsructGPT论文</a>  从人类反馈中学习|<a target="_blank" rel="noopener" href="https://www.deepmind.com/blog/building-safer-dialogue-agents">Deepmind Sparrow</a> <br><a target="_blank" rel="noopener" href="https://github.com/allenai/RL4LMs">AI2 RL4LMs</a> |<br>|++ 遵循人类价值观<br>++ 包含更多细节的生成<br>++ <strong>拒绝知识范围外的问题</strong> <br>++ 建模对话历史的能力<br>– 上下文学习|ChatGPT<br>** 通过牺牲上下文学习的能力换取建模对话历史的能力**|使用对话数据进行强化学习指令微调**|||<a target="_blank" rel="noopener" href="https://www.deepmind.com/blog/building-safer-dialogue-agents">Deepmind Sparrow</a> <br><a target="_blank" rel="noopener" href="https://github.com/allenai/RL4LMs">AI2 RL4LMs</a> |</p>
+<p>&emsp;&emsp;此处借用以上文献的表格供大家参考：</p>
+<table>
+<thead>
+<tr>
+<th align="left">能力</th>
+<th align="left">OpenAI模型</th>
+<th align="left">训练方法</th>
+<th align="left">OpenAI API</th>
+<th align="left">OpenAI论文</th>
+<th align="left">近似的开源模型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>GPT3系列</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">语言生成<br>+ 世界知识 <br>+ 上下文学习</td>
+<td align="left">GPT-3初始版本<br><strong>大部分的能力已经存在于模型中，尽管表面上看起来很弱。</strong></td>
+<td align="left">语言建模</td>
+<td align="left">Davinci</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.14165">GPT3论文</a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2205.01068">Meta OPT</a></td>
+</tr>
+<tr>
+<td align="left">+ 遵循人类的指令<br><strong>+ 泛化到没有见过的任务</strong></td>
+<td align="left">Instruct-GPT初始版本</td>
+<td align="left">指令微调</td>
+<td align="left">Davinci-Instruct-Beta</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.02155">Instruct-GPT论文</a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.08207">T0论文</a> <br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.11416">Google FLAN论文</a> <br></td>
+</tr>
+<tr>
+<td align="left">+ 代码理解<br>+ 代码生成</td>
+<td align="left">Codex初始版本</td>
+<td align="left">在代码上进行训练</td>
+<td align="left">Code-Cushman-001</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.03374">Codex论文</a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/salesforce/CodeGen">Salesforce CodeGen</a></td>
+</tr>
+<tr>
+<td align="left"><strong>GPT3.5系列</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">++ 代码理解<br>++ 代码生成<br>++ <strong>复杂推理 / 思维链</strong><br>+ 长距离的依赖  (很可能)</td>
+<td align="left">现在的Codex<br><strong>GPT3.5系列中最强大的模型</strong></td>
+<td align="left">在代码+文本上进行训练<br>在指令上进行微调</td>
+<td align="left">Code-Davinci-002 <br>(目前免费的版本 = 2022年12月)</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.03374">Codex论文</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">++ 遵循人类指令<br>- 上下文学习<br>- 推理能力<br>++ 零样本生成</td>
+<td align="left">有监督的Instruct-GPT <br><strong>通过牺牲上下文学习换取零样本生成的能力</strong></td>
+<td align="left">监督学习版的指令微调**</td>
+<td align="left">Text-Davinci-002</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.02155">InsructGPT论文</a> 有监督部分</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.08207">T0论文</a> <br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.11416">Google FLAN论文</a> <br></td>
+</tr>
+<tr>
+<td align="left">+ 遵循人类价值观<br>+ 包含更多细节的生成<br>+ 上下文学习<br>+ 零样本生成</td>
+<td align="left">经过RLHF训练的Instruct-GPT<br>**和002模型相比，和人类更加对齐，并且更少的性能损失</td>
+<td align="left">强化学习版的指令微调**</td>
+<td align="left">Text-Davinci-003</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.02155">InsructGPT论文</a>  从人类反馈中学习</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.deepmind.com/blog/building-safer-dialogue-agents">Deepmind Sparrow</a> <br><a target="_blank" rel="noopener" href="https://github.com/allenai/RL4LMs">AI2 RL4LMs</a></td>
+</tr>
+<tr>
+<td align="left">++ 遵循人类价值观<br>++ 包含更多细节的生成<br>++ <strong>拒绝知识范围外的问题</strong> <br>++ 建模对话历史的能力<br>– 上下文学习</td>
+<td align="left">ChatGPT<br>** 通过牺牲上下文学习的能力换取建模对话历史的能力**</td>
+<td align="left">使用对话数据进行强化学习指令微调**</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.deepmind.com/blog/building-safer-dialogue-agents">Deepmind Sparrow</a> <br><a target="_blank" rel="noopener" href="https://github.com/allenai/RL4LMs">AI2 RL4LMs</a></td>
+</tr>
+</tbody></table>
 <p><strong>（2023-02-11更新）</strong></p>
 <p>&emsp;&emsp;以上我们可以更清晰的总结为下图（参考文献14提供，此文献可以帮助对于LM了解较少的同学，从0了解ChatGPT的形成）：</p>
 <img src="/2022/12/08/ChatGPT技术解构与思考/p29.png" width=65%>
