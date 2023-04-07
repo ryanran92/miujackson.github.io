@@ -777,43 +777,61 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <h3 id="1-2-ChatGPT的技术背景"><a href="#1-2-ChatGPT的技术背景" class="headerlink" title="1.2 ChatGPT的技术背景"></a>1.2 ChatGPT的技术背景</h3><p>&amp;emsp;&amp;emsp;ChatGPT目前未释出论文文献，仅释出了介绍博文和试用demo，但从博文中提供的技术点和示意图，可以看出与年初公布的InstructGPT 核心思想一致，其关键能力来自三个方面：强大的<strong>基座大模型能力</strong>（InstructGPT），<strong>高质量的真实数据</strong>（干净且丰富），<strong>稳定的强化学习</strong>（PPO算法）。<br>以上是ChatGPT成功的三个要素，具体将在文中第2部分详细展开。</p>
 <h3 id="1-3-ChatGPT的主要特点"><a href="#1-3-ChatGPT的主要特点" class="headerlink" title="1.3 ChatGPT的主要特点"></a>1.3 ChatGPT的主要特点</h3><p>&amp;emsp;&amp;emsp;<strong>ChatGPT的优点令人惊叹：</strong></p>
 <p>&amp;emsp;&amp;emsp;1）** 强大的语言理解和生成系统**；对话能力、文本生成能力、对不同语言表述的理解均很出色，以对话为载体可以回答多种多样的日常问题（同时对于多轮对话历史的记忆能力和篇幅增强）：</p>
-<p><img src="https://km.woa.com/asset/fd50941882d442fa896ba68ca831b7e5?height=1184&width=1916" alt="image#585px #362px"><br><img src="https://km.woa.com/asset/c47acbd07a7e4f59b2abd40f56e98c05?height=962&width=1876" alt="image#586px #300px"><br><img src="https://km.woa.com/asset/d6645f5a1be2427286ea65d34445dca2?height=656&width=1976" alt="image#584px #194px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p1.png" width=65%>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p2.png" width=65%>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p3.png" width=65%>
+
+
 <p>&amp;emsp;&amp;emsp;2）<strong>全面的回答</strong>和渊博的知识；与GPT3等大模型相比，ChatGPT回答更加全面，可以多角度全方位进行回答和阐述，相较以往的大模型，知识被“挖掘”的更充分；</p>
 <ul>
 <li>直接给出一篇多角度、全方位的提纲：</li>
 </ul>
-<p><img src="https://km.woa.com/asset/3c906a4b13354aee96e5208947454fd1?height=1400&width=1412" alt="image#576px #571px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p4.png" width=65%>
+
+
 <ul>
-<li>对于一个问题，多角度展开：<br><img src="https://km.woa.com/asset/e809b1a9dba34ee3b7ba1c1ef77cd351?height=864&width=1626" alt="image#573px #304px"></li>
+<li>对于一个问题，多角度展开：<img src="/2022/12/08/ChatGPT技术解构与思考/p5.png" width=65%></li>
 </ul>
 <p>&amp;emsp;&amp;emsp;3）<strong>降低人类学习成本</strong>和节省时间成本；可以满足人类大部分日常需求，比如快速为人类改写确定目标的文字、大篇幅续写和生成小说、快速定位代码的bug等；</p>
 <ul>
-<li><p>目标改写：<br><img src="https://km.woa.com/asset/6cc165ada9744cbaaa7afb15010bfbd5?height=1158&width=1784" alt="image#575px #373px"></p>
+<li><p>目标改写：</p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p6.png" width=65%>
 </li>
 <li><p>续写小说（当然续写对于普通LM也不是难事，“一本正经的胡说八道”）：</p>
 </li>
 </ul>
-<p><img src="https://km.woa.com/asset/541f1148176f4159b6ba86cbc7e82c82?height=1070&width=1466" alt="image#594px #434px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p7.png" width=65%>
+
 <ul>
 <li>代码debug:</li>
 </ul>
-<p><img src="https://km.woa.com/asset/6b4e6f0aefa343c8aec39d5ed23067a6?height=1416&width=1528" alt="image#589px #546px"><br><img src="https://km.woa.com/asset/e6898eb6a5d24542add2be7ccf006271?height=1008&width=1356" alt="image#592px #440px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p8.png" width=65%>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p9.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;4） 具有<strong>安全机制</strong>和去除偏见能力；这类问题在以前的大模型中时常出现，ChatGPT在这两点上增加了过滤处理机制，针对不适当的提问和请求，它可以做出拒绝和“圆滑”的回复。</p>
 <ul>
 <li>对于违法行为的提问：</li>
 </ul>
-<p><img src="https://km.woa.com/asset/9f00795463904c39afd2bc583d5ca8cf?height=364&width=1576" alt="image#593px #137px"><br><img src="https://km.woa.com/asset/73665fd0ba3a45399947083d8087050e?height=762&width=1636" alt="image#601px #280px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p10.png" width=65%>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p11.png" width=65%>
+
+
 <ul>
 <li>对于未知事物的“拒绝”：</li>
 </ul>
-<p><img src="https://km.woa.com/asset/2eea402cf6454bbf909c50d69928b390?height=368&width=1590" alt="image#597px #138px"><br><img src="https://km.woa.com/asset/202127f865644a758a647e15842e3484?height=440&width=1454" alt="image#600px #182px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p12.png" width=65%>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p13.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;当然ChatGPT并非十全十美，其<strong>缺点也比较明显</strong>：</p>
-<p>&amp;emsp;&amp;emsp;1）简单的逻辑问题错误依旧明显存在，发挥不够稳定（但总体比GPT3好很多），特别在有对话历史时，容易被用户误导而动摇；<br><img src="https://km.woa.com/asset/5af6b7aafc33455eaedcf4d225ad0690?height=1114&width=1588" alt="image#591px #415px"></p>
+<p>&amp;emsp;&amp;emsp;1）简单的逻辑问题错误依旧明显存在，发挥不够稳定（但总体比GPT3好很多），特别在有对话历史时，容易被用户误导而动摇；</p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p14.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;2）ChatGPT有时会给出看似合理、但并不正确或甚至荒谬的答案。部分答案需要自行甄别才能判断正误，特别当本身用户处于未知状态来咨询模型时，更加无法判断真伪；(强化学习训练期间不会区分事实和错误)</p>
 <ul>
 <li>对于不知道《观沧海》诗歌的人，很容易被误导。</li>
 </ul>
-<p><img src="https://km.woa.com/asset/5916884bd0824f3c902b95c6d6151241?height=1392&width=1438" alt="image#589px #570px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p15.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;ChatGPT使得生产者可以用较低成本增加错误信息，而这一固有缺点已经造成了一些实际影响。编程问答网站 StackOverflow 宣布暂时禁止用户发布来自 ChatGPT 生成的内容，网站 mods 表示：看似合理但实际上错误的回复数量太多，已经超过了网站的承受能力；</p>
 <p>&amp;emsp;&amp;emsp;3）<strong>抵抗不安全的prompt能力较差</strong>，ChatGPT对于提问方式比较敏感，一些不安全或有偏见的问题，用户通过改变提问方式即可绕过审核，回答继而会表现出偏见；</p>
 <p>&amp;emsp;&amp;emsp;4）<strong>过分猜测用户意图</strong>，主要体现在当用户提问意图不明确时，ChatGPT会猜测用户意图，理想情况应为要求用户澄清；此时当用户意图不明确时，很大概率给出不合适的回复；</p>
@@ -821,11 +839,13 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <ul>
 <li>简单的问一个算式结果，ChatGPT回答较啰嗦：</li>
 </ul>
-<p><img src="https://km.woa.com/asset/2dc3b9157d8f487791cdce57c60570ce?height=396&width=1582" alt="image#593px #148px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p16.png" width=65%>
+
 <hr>
 <h1 id="2-ChatGPT的工作原理"><a href="#2-ChatGPT的工作原理" class="headerlink" title="2. ChatGPT的工作原理"></a>2. ChatGPT的工作原理</h1><p>###2.1 ChatGPT的训练过程</p>
 <p>&amp;emsp;&amp;emsp;ChatGPT训练过程很清晰，主要分为三个步骤，示意如图所示：</p>
-<p><img src="https://km.woa.com/asset/2d2dc1beea204203bbfaff90a5553c5d?height=559&width=997" alt="image#659px #370px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p17.png" width=65%>
+
 <p><strong>Step1：</strong></p>
 <p>&amp;emsp;&amp;emsp;使用有监督学习方式，基于<strong>GPT3.5</strong>微调训练一个初始模型；训练数据约为2w~3w量级（<strong>感谢goethe同学指正</strong>，此处仅为<strong>推测量级</strong>，是我们根据兄弟模型InstructGPT的训练数据量级估算的，后者详情可参阅<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2203.02155.pdf">https://arxiv.org/pdf/2203.02155.pdf</a> P33 Table6，真实数据以ChatGPT公布结果为准），由标注师分别扮演用户和聊天机器人，产生人工精标的多轮对话数据；值得注意的是，在人类扮演聊天机器人时，会得到机器生成的一些建议来<strong>帮助人类撰写</strong>自己的回复，以此提高撰写标注效率。</p>
 <p>&amp;emsp;&amp;emsp;以上精标的训练数据虽然数据量不大，但<strong>质量和多样性非常高</strong>，且来自真实世界数据，这是很关键的一点。经过第一步，微调过的GPT3.5初步具备了<strong>理解</strong>人类Prompt所包含<strong>意图</strong>的能力，可以根据不同意图给出<strong>高质量的回答</strong>。</p>
@@ -852,29 +872,38 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p>&amp;emsp;&amp;emsp;1）寻找<strong>高质量标注者</strong>：寻找在识别和回应敏感提示的能力筛选测试中，表现良好的labeler；</p>
 <p>&amp;emsp;&amp;emsp;2）使用集外标注者<strong>保证泛化性</strong>：即用未经历以上1）步骤的更广大群体的标注者对训练数据进行验证，保证训练数据与更广泛群体的偏好一致。</p>
 <p>&amp;emsp;&amp;emsp;在完成以上工作后，我们可以来看看InstuctGPT与GPT3的区别，通过下图可以明显看出：</p>
-<p><img src="https://km.woa.com/asset/c27fc8083d6a4dde9a02c94bb01630c7?height=1104&width=1638" alt="image#606px #408px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p18.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;GPT3的<strong>回答简短</strong>，回复过于通用毫无亮点；而InstructGPT“侃侃而谈”，解释自由主义为何愚蠢，显然模型学到了对于此类问题人们更想要的<strong>长篇大论</strong>的回答。</p>
 <p>&amp;emsp;&amp;emsp;GPT3只是个语言模型，它被用来预测下一个单词，丝毫没有考虑用户想要的答案；当使用代表用户喜好的三类人工标注为微调数据后，1.3B参数的InstructGPT在多场景下的效果超越175B的GPT3：</p>
-<p><img src="https://km.woa.com/asset/424245b76ed9421b9e279431f3a5e254?height=756&width=1412" alt="image#618px #331px"><br><img src="https://km.woa.com/asset/73ff3f92502d4e2db3a19d4d88c80522?height=898&width=1384" alt="image#618px #401px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p19.png" width=65%>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p20.png" width=65%>
+
+
 <p>&amp;emsp;&amp;emsp;InstuctGPT的工作具有开创性，它在“解锁”（unlock）和挖掘GPT3学到的海量数据中的知识和能力，但这些仅通过快速的In-context的方式较难获得；可以说，InstuctGPT找到了一种面向主观任务来挖掘GPT3强大语言能力的方式。<br>OpenAI博文中有这样一段原话：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">This technique uses human preferences as a reward signal to fine-tune our models, which is important as the safety and alignment problems we are aiming to solve are complex and subjective, and aren’t fully captured by simple automatic&amp;nbsp;metrics.</span><br></pre></td></tr></table></figure>
 
 <p>&amp;emsp;&amp;emsp;当中提到很关键的一点， 当我们要解决的安全和对齐问题是<strong>复杂和主观</strong>，而它的好坏无法完全被自动指标衡量的时候，此时需要用<strong>人类的偏好</strong>来作为奖励信号来微调我们的模型。</p>
 <h4 id="2-2-2-InstuctGPT的前序工作-GPT与强化学习的结合"><a href="#2-2-2-InstuctGPT的前序工作-GPT与强化学习的结合" class="headerlink" title="2.2.2 InstuctGPT的前序工作:GPT与强化学习的结合"></a>2.2.2 InstuctGPT的前序工作:GPT与强化学习的结合</h4><p>&amp;emsp;&amp;emsp;再往前回溯，其实在2019年GPT2出世后，OpenAI就有尝试结合GPT-2和强化学习。在NeurIPS 2020的Learning to Summarize with Human Feedback工作中，OpenAI在摘要生成中，利用了从人类反馈中的强化学习来训练。可以从这篇工作的整体流程图中，看出三步走的<strong>核心思想</strong>： 收集反馈数据 -&gt; 训练奖励模型 -&gt; PPO强化学习。</p>
-<p><img src="https://km.woa.com/asset/20decababd8a4dcfa0b8a090cd8c4ef8?height=1318&width=2150" alt="image#651px #399px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p21.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;RLHF<strong>第一阶段</strong>，针对多个候选摘要，人工排序（这里就体现出OpenAI的钞能力，按标注时间计费，标注过快的会被开除）；<strong>第二阶段</strong>，训练排序模型（依旧使用GPT模型)；<strong>第三阶段</strong>，利用PPO算法学习Policy（在摘要任务上微调过的GPT）。</p>
 <p>&amp;emsp;&amp;emsp;文中模型可以产生比10倍更大模型容量更好的摘要效果。但文中也同样指出，模型的成功部分归功于增大了奖励模型的规模，而这需要很大量级的计算资源，训练6.7B的强化学习模型需要320 GPU-days的成本。</p>
 <p>&amp;emsp;&amp;emsp;另一篇2020年初的工作，是OpenAI的Fine-Tuning GPT-2 from Human Preferences工作，同样首先利用预训练模型，训练reward模型；进而使用PPO策略进行强化学习，整体步骤初见ChatGPT的雏形。</p>
-<p><img src="https://km.woa.com/asset/ad06216aac9a480883a4be3d55ee6636?height=674&width=1266" alt="enter image description here#602px #320px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p22.png" width=65%>
+
+
 <p>&amp;emsp;&amp;emsp;而RLHF（reinforcement learning from human feedback ）的思想，是在更早的2017年6月的OpenAI Deep Reinforcement Learning from Human Preferences工作提出，核心思想是利用人类的反馈，判断最接近视频行为目标的片段，通过训练来找到最能解释人类判断的奖励函数，然后使用RL来学习如何实现这个目标。</p>
-<p><img src="https://km.woa.com/asset/67f8c03008e64c958d34d6db74ad0dc5?height=554&width=1256" alt="image#609px #269px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p23.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;可以说，ChatGPT是站在InstructGPT以及以上理论的肩膀上完成的一项出色的工作，它们将LLM（large language model）&#x2F;PTM(pretrain language model)与RL（reinforcement learning)出色结合，证明这条方向可行，同时也是未来还将持续发展的NLP甚至通用智能体的方向。</p>
 <h4 id="2-2-3-PPO"><a href="#2-2-3-PPO" class="headerlink" title="2.2.3 PPO"></a>2.2.3 PPO</h4><p>&amp;emsp;&amp;emsp;PPO(Proximal Policy Optimization) 一种新型的Policy Gradient算法（Policy Gradient是一种强化学习算法，通过优化智能体的行为策略来解决在环境中<strong>实现目标</strong>的问题）。我们只需了解普通的Policy Gradient算法对步长十分敏感，但是又<strong>难以选择合适的步长</strong>，在训练过程中新旧策略的的变化差异如果过大则不利于学习。</p>
 <p>&amp;emsp;&amp;emsp;而PPO提出了新的目标函数可以在多个训练步骤实现小批量的更新，解决了Policy Gradient算法中步长难以确定的问题。由于其实现简单、性能稳定、能同时处理离散&#x2F;连续动作空间问题、利于大规模训练等优势，近年来收到广泛的关注，同时也成为OpenAI默认强化学习算法。</p>
 <h4 id="2-2-4-WebGPT和CICERO"><a href="#2-2-4-WebGPT和CICERO" class="headerlink" title="2.2.4 WebGPT和CICERO"></a>2.2.4 WebGPT和CICERO</h4><p>&amp;emsp;&amp;emsp;其实近两年，利用LLM+RL以及对强化学习和NLP训练的研究，各大巨头在这个领域做了非常多扎实的工作，而这些成果和ChatGPT一样都有可圈可点之处。这里以OpenAI的WebGPT和Meta的Cicero为例。</p>
 <p>&amp;emsp;&amp;emsp;WebGPT是2021年底OpenAI的工作，其核心思想是使用GPT3模型强大的生成能力，<strong>学习人类使用搜索引擎</strong>的一系列行为，通过训练奖励模型来预测人类的偏好，使WebGPT可以自己搜索网页来回答开放域的问题，而产生的答案尽可能满足人类的喜好。</p>
 <p>&amp;emsp;&amp;emsp;Cicero是Meta AI上个月发布的可以以人类水平玩文字策略游戏的AI系统， 其同样可以与人类互动，可以使用战略推理和自然语言与人类在游戏玩法中进行互动和竞争。Cicero的核心是由一个<strong>对话引擎</strong>和一个<strong>战略推理引擎</strong>共同驱动的，而战略推理引擎集中使用了RL，对话引擎与GPT3类似。</p>
-<p><img src="https://km.woa.com/asset/ebd248aaf1e542699355abc29f2b2831?height=1072&width=1452" alt="image#619px #457px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p24.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;正如Meta原blog中所说：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The technology behind CICERO could one day lead to more intelligent assistants in the physical and virtual worlds.</span><br></pre></td></tr></table></figure>
 
@@ -883,13 +912,17 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <h4 id="2-2-5-ChatGPT进化历程"><a href="#2-2-5-ChatGPT进化历程" class="headerlink" title="2.2.5  ChatGPT进化历程"></a>2.2.5  ChatGPT进化历程</h4><p>&amp;emsp;&amp;emsp;最近阅读Yao Fu的两篇关于LLM进化历程，以及LLM Emergent Ability （突现能力）相关的blog，启发良多，此处推荐这两篇有价值的blog：<br><a target="_blank" rel="noopener" href="https://yaofu.notion.site/How-does-GPT-Obtain-its-Ability-Tracing-Emergent-Abilities-of-Language-Models-to-their-Sources-b9a57ac0fcf74f30a1ab9e3e36fa1dc1">https://yaofu.notion.site/How-does-GPT-Obtain-its-Ability-Tracing-Emergent-Abilities-of-Language-Models-to-their-Sources-b9a57ac0fcf74f30a1ab9e3e36fa1dc1</a><br><a target="_blank" rel="noopener" href="https://yaofu.notion.site/A-Closer-Look-at-Large-Language-Models-Emergent-Abilities-493876b55df5479d80686f68a1abd72f">https://yaofu.notion.site/A-Closer-Look-at-Large-Language-Models-Emergent-Abilities-493876b55df5479d80686f68a1abd72f</a></p>
 <p><strong>（2023-03-15更新）</strong></p>
 <p>&amp;emsp;&amp;emsp;GPT1~GPT3主要靠增加模型参数量和数据量，通过<strong>无监督方式</strong>来得到基建语言模型。GPT3.5之后开始聚焦<strong>数据质量、场景和训练方式</strong>，通过有监督方式进行指令学习；最新出炉的GPT4，是在ChatGPT基础上，扩充了训练数据源，包含了正误数学问题、强弱推理、矛盾一致陈述及各种意识形态的数据，整体和ChatGPT区别不大，主体依旧是RLHF；不过<strong>值得注意的一点</strong>是，在<strong>事实性和安全性</strong>问题解决中，后训练过程是提效的关键，单纯GPT-4模型提升不明显，而经过后训练过程即特定信号的RLHF之后，GPT-4在生成模型固有的局限性上改善显著，其他具体细节没有更多公布。</p>
-<p><img src="https://km.woa.com/asset/f83fbf0f3b61498ab764c52ca007e861?height=1578&width=1669" alt="enter image description here"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p25.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;GPT4和ChatGPT相比主要的优势是：<br><br>&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;● 能力升级：回答更可靠、更有创意并可以处理更细微的指令，这在多类考试测验中以及与各LLM任务比较中得到；<br><br>&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;● 风格自有控制：“系统”自发Prompt，让模型可以按照规定风格个任务回复；<br><br>&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;● 局限性改善：幻觉问题显著减轻，比最新的 GPT-3.5 模型高 40%；RLHF 训练中加入额外的安全奖励信号（奖励由 GPT-4 的zero-shot分类器提供），不安全内容下降82%；<br><br>&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;● 训练行为预测：<strong>此点值得重视</strong>，因为LLM参数量过多，广泛调参不可行，可以用较小模型提前预测训练行为和loss，可以<strong>极大提升训练效率，降低训练成本</strong>；<br><br>&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;● 建立LLM测试标准：开源OpenAI Evals，创建和运行基准测试的框架，对GPT-4等模型进行评估，以此进一步帮助模型改进；<br><br>&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;● <strong>专用超算</strong>：OpenAI和微软合作，在Azure重建了深度学习堆栈，从头设计了一台专用超级计算机。<br><br>&amp;emsp;&amp;emsp;整体合为下面一张ppt：</p>
-<p><img src="https://km.woa.com/asset/af744be026b84e3ca4e29f4a26241374?height=986&width=1840" alt="enter image description here"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p26.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;回到GPT3.5出现之前，此处其实有两条路可以往下走：一是继续加大模型规模；另一条路是更聚焦的训练方式；第一条路<strong>数据</strong>相比算力，反而成为了瓶颈，根据OpenAI 2020的结论，计算预算增加 10 倍，数据集大小应增加约 1.83 倍，模型大小应增加 5.48 倍；Deepmind 2022年Chinchilla的作者发现，数据和模型大小应该按<strong>相等比例</strong>缩放。如按照GPT-3使用来自 Common Crawl 的45 TB数据估算，要训练一个100万亿参数的模型需要 180 PB 数据（下限），而Common Crawl 的整体大小约为12 PB：</p>
-<p><img src="https://km.woa.com/asset/c2a2cf547c7a413aacc244a3890bad3c?height=339&width=479" alt="enter image description here"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p27.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;第一条路显然过于“夸张”，于是OpenAI开始探索第二条路：<strong>更好的训练方式，设计更贴近人类需求的真实任务</strong>，而非纯单词预测；这就是GPT 3.5之后的整体逻辑，而RLHF的方法得到了验证，原作者也提到，<strong>预算分配给人类反馈数据可能比计算更有意义</strong>，我们从InstructGPT中下图也可以看到，经过PPO的1.3B的模型，效果已超出微调的175B的模型，而模型参数减少了100倍；这意味着<strong>在正确类型的数据上进行训练</strong>，比简单地将模型规模扩大（比如扩大100倍）的价值要大得多。</p>
-<p><img src="https://km.woa.com/asset/40254dc0802144a4a1ea3d2557e3393a?height=725&width=1295" alt="enter image description here"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p28.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;此处借用以上文献的表格供大家参考：</p>
 <table>
 <thead>
@@ -976,18 +1009,24 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 </tr>
 </tbody></table>
 <p><strong>（2023-02-11更新）</strong></p>
-<p>&amp;emsp;&amp;emsp;以上我们可以更清晰的总结为下图（参考文献14提供，此文献可以帮助对于LM了解较少的同学，从0了解ChatGPT的形成）：<br><img src="https://km.woa.com/asset/9fc889b062144f51bb293675ce732f2b?height=1100&width=1832" alt="enter image description here#626px #376px"></p>
+<p>&amp;emsp;&amp;emsp;以上我们可以更清晰的总结为下图（参考文献14提供，此文献可以帮助对于LM了解较少的同学，从0了解ChatGPT的形成）：</p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p29.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;可以看出ChatGPT强大的涌现能力（模型举一反三、领域外迁移、强泛化能力等），来源于：<br><br>&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;● 代码微调：Code-davinci-002模型在代码上有过微调；一种合理的解释是，<strong>「“代码”是一种建立在具备高度抽象性和逻辑性的思维模式下的“语言”」</strong>，海量代码使模型逐渐掌握代码背后的<strong>抽象能力</strong>与<strong>逻辑能力</strong>，函数之间的调用关系本质上是将复杂<strong>问题拆解</strong>为多个小问题来组合解决，引入代码数据来训练模型能够有效提升模型的<strong>思维链能力</strong>，该技术也被认为是打破scaling law的关键，进而涌现出ChatGPT上感受到的“智能”；<br><br>&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;● 指令学习：InstructGPT（GPT-3 text-davinci-002）中的supervised instruction tuning；此条通过对比实验得到，因为text-davinci-001没有推理能力，而经过指令学习的 text-davinci-002有较好的推理能力，Google的PaLM也是如此；指令学习构造了更符合<strong>自然语言形式</strong>的训练数据，在提升语义建模能力的同时，也提升了模型在多种<strong>未知下游任务（OOD，out of distribution）</strong>的泛化能力；<br><br>&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;● CoT微调（GPT-3 text-davinci-002）进行CoT数据微调后，LLM倾向于拥有Emergent Abilities；ChatGPT没有公开进行过此类的微调，但推测数据中可能有CoT的数据；至少在PaLM关于CoT数据的结论出现后，OpenAI有理由做出参考。<br></p>
-<p><img src="https://km.woa.com/asset/0bfce30c0a2b4d109da37a8345dc2976?height=1234&width=3381" alt="enter image description here#625px #228px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p30.png" width=65%>
+
 <p><strong>（2023-03-14更新）</strong></p>
 <p>&amp;emsp;&amp;emsp;事实上，涌现能力<strong>存在于各个学科</strong>，蚂蚁社群、神经网络、免疫系统、互联网乃至世界经济，但凡一个过程的整体行为远比构成它的部分复杂，均可称为“涌现”现象，用最常见的水固化例子来解释，临界温度时，水液相系统的行为发生急剧变化，水将进入固相（冰，支配系统行为的规律发生了质的变化，LLM也经历了此类质变，此处作为<strong>尺度的是函数</strong>。</p>
-<p><img src="https://km.woa.com/asset/54457b5a1adc479aa24aeacb0aea6b1c?height=423&width=582" alt="enter image description here#538px #391px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p31.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;文献23同时提出另一个观点，此类涌现能力，与我们<strong>观测不够全面</strong>也有关。比如当评估指标不连续，且不提供“接近度”的概念时，涌现能力显现很明显；（非0即1，如击中 vs 不击中）；但如果<strong>增加衡量连续性</strong>（如对比不击中1cm内 vs 不击中1m），会发现随着模型增加，能力的增加是随着参数规律上涨的，非“涌现”：</p>
-<p><img src="https://km.woa.com/asset/67e408a32da54d4d8f5acd68aec68386?height=332&width=1011" alt="enter image description here"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p32.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;所以，ChatGPT及相关LLM的涌现能力的出现原因和特性，需要<strong>更精细的观测和研究</strong>。</p>
 <p><strong>（2023-03-04更新）</strong></p>
 <p>&amp;emsp;&amp;emsp;另外一种很有启发性的观点来自于参考文献17及邱锡鹏教授的讲座中，其通过模型<strong>对自身能力的认知</strong>来阐述ChatGPT相比GPT3模型的能力发展。具体可抽象为下图：</p>
-<p><img src="https://km.woa.com/asset/812b8b04e49c4d5fb8041fafcf00c686?height=501&width=1080" alt="enter image description here#633px #294px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p33.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;模型能力分为四个部分：<strong>know knowns</strong>（知道自身掌握的知识，比如我知道自身对文本生成知识比较了解）、<strong>know unknowns</strong>（知道自己没掌握的知识，比如我知道自身对图像生成知识欠缺了解）、<strong>unknow knowns</strong>（不知道自己已经掌握了的知识，比如我触类旁通的掌握了模型压缩知识，但没有实际使用未发觉）、<strong>unknow unknowns</strong>（自身根本不知道有这些知识，掌握更无从谈起；比如我根本不知道三体这个问题的存在，更无从谈对其的了解和认知，此部分一般是<strong>个人认知的最大瓶颈</strong>）</p>
 <p>&amp;emsp;&amp;emsp;以上三项来源，显然<strong>CoT</strong>通过思维链能力，发掘了模型自身潜在掌握的知识，即unknow knowns，此部分知晓后扩充至know knowns；而指令学习让模型对自身掌握&#x2F;未掌握的认知更加明确，即扩大了know knowns和know unknowns的范围；而关于伦理道德等的部分，通过人工反馈学习，主动增加至know unknowns部分；最后此消彼长，<strong>核心在降低unknow unknowns的比重</strong>；可以说，模型和人类一样，<strong>unknow unknowns比例越低，智能化程度越高，对自身的认知也越清晰</strong>。</p>
 <p><strong>（0304更新止）</strong></p>
@@ -997,16 +1036,16 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <h4 id="2-2-6-从ChatGPT的成功看大型语言模型的构建思路"><a href="#2-2-6-从ChatGPT的成功看大型语言模型的构建思路" class="headerlink" title="2.2.6 从ChatGPT的成功看大型语言模型的构建思路"></a>2.2.6 从ChatGPT的成功看大型语言模型的构建思路</h4><p>&amp;emsp;&amp;emsp;最近笔者一直在思考，为何ChatGPT经过了代码微调、指令学习以及CoT微调之后，就会有强大的涌现能力（模型举一反三、领域外迁移、强泛化能力等），除了模型本身的千亿量级之外，我们是否能摸清其中的逻辑和基本思路，如果我们要构建自己的ChatGPT，需要<strong>遵从怎样的构建思路</strong>。</p>
 <p>&amp;emsp;&amp;emsp;今天阅读参考文献16时，Yao Fu给出了比较高维和系统化的总结：<strong>即大规模语言模型（LLM）的构建，分为四步，分别是「预训练」、「指令微调」、「对齐」、「专门化」。</strong>具体来说（以下为参考文中内容进行的汇总）：</p>
 <p>&amp;emsp;&amp;emsp;1）** 预训练：得到强基础模型**；<br><br>&amp;emsp;&amp;emsp;「预训练可以得到语言生成、世界知识、In-context Learning、代码理解&#x2F;生成、复杂推理&#x2F;思维链等能力」:</p>
-<center>![enter image description here#614px #305px](https://km.woa.com/asset/e2193253ff8447209aeaca069cd7eea3?height=508&width=1023)</center>
+<center><img src="/2022/12/08/ChatGPT技术解构与思考/p34.png" width=65%></center>
 
 <p>&amp;emsp;&amp;emsp;从Yao Fu文中上图可以看出，我们日常使用的开源的Bloom、OPT只属于第一层级，（好奇此处Code-davinci-002为何也属于此层级，因为它已经历过指令学习）；这一层级，是我们之前通常意义上提到的大模型；</p>
 <p>&amp;emsp;&amp;emsp;2）** 指令微调：释放模型能力<strong>；<br><br>&amp;emsp;&amp;emsp;「指令微调旨在加强预训练模型的</strong>已有能力<strong>，或者开发出预训练模型</strong>不具备的能力<strong>，指令微调的思路为让模型在各项维度上的</strong>能力全面扩张<strong>。」 文中有个非常有趣的观点，即将不同指令视作线代中的</strong>一组基<strong>，指令微调学到了将这些基进行组合的能力，从而极大的扩张了它的集外泛化能力。这个观点</strong>部分解释**了指令微调带来的质变，首次看到这样的解释，具有启发意味。</p>
-<center>![enter image description here#610px #270px](https://km.woa.com/asset/2bb95a11ccca45c5af2cfa21bfa7c13d?height=413&width=971)</center>
+<center><img src="/2022/12/08/ChatGPT技术解构与思考/p35.png" width=65%></center>
 
 <p>&amp;emsp;&amp;emsp;此部分我们平时涉及开始变少，其中text-davinci-002&#x2F;003仅有过调用；此层级也倾向属于模型基建层，self-instruct是一项值得注意的工作：<a target="_blank" rel="noopener" href="https://github.com/yizhongw/self-instruct">https://github.com/yizhongw/self-instruct</a> ，这部分的核心是<strong>需要构造高质量的指令数据</strong>：种类足够多，每个类别下例子足够多，而<strong>中文指令数据现在稀缺</strong>。</p>
 <p>&amp;emsp;&amp;emsp;3）** 对齐：与人类价值观匹配**<br></p>
 <p>&amp;emsp;&amp;emsp;文中的观点是：“对齐旨在塑造模型的「<strong>价值观</strong>」，使其符合人类的期望，进而塑造模型的「<strong>人格</strong>」。”</p>
-<center>![enter image description here#608px #294px](https://km.woa.com/asset/88be28411b204d239ca1c22a775f6cc1?height=626&width=1296)</center>
+<center><img src="/2022/12/08/ChatGPT技术解构与思考/p36.png" width=65%></center>
 
 <p>&amp;emsp;&amp;emsp;到这一步，便是<strong>ChatGPT，以及Calude</strong>之类以<strong>大模型+RLHF</strong>为核心的对话模型，这里需要注意的是，对齐操作<strong>不一定</strong>非要使用强化学习，使用大批量的人工反馈数据的有监督学习，也可以达到类似的效果（至于强化学习能超出多少，此点存疑？）</p>
 <p>&amp;emsp;&amp;emsp;4）<strong>模型专门化：从通用到专用</strong><br></p>
@@ -1015,7 +1054,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p>&amp;emsp;&amp;emsp;另外，附录1中增加LLM相关中英文术语和概念（同参考以上文献，但润色相关说法），它们是LLM最近研究相关的核心词，同时这些概念预计也会在未来我们的技术报告中多次涉及，供大家参考。</p>
 <hr>
 <h1 id="3-ChatGPT应用和思考"><a href="#3-ChatGPT应用和思考" class="headerlink" title="3. ChatGPT应用和思考"></a>3. ChatGPT应用和思考</h1><h3 id="3-1-应用"><a href="#3-1-应用" class="headerlink" title="3.1 应用"></a>3.1 应用</h3><p>&amp;emsp;&amp;emsp;ChatGPT的基础<strong>通用性决定了其应用的广泛性</strong>。这里可以借用AIGC的整体思路，作为“智能入口”的ChatGPT，可以作为<strong>整个AIGC的核心和Foundation model</strong>，接入海量下游任务：（下图来源：量子位、腾讯研究院，甲子智库梳理，2023年）</p>
-<center>![enter image description here#777px #425px](https://km.woa.com/asset/60cf472ce7bc48a0864500122d555a10?height=781&width=1428)</center>
+<center><img src="/2022/12/08/ChatGPT技术解构与思考/p37.png" width=65%></center>
 
 
 <p>&amp;emsp;&amp;emsp;1）ChatGPT对于<strong>文字模态的AIGC</strong>应用具有重要意义，可以依附于对话形态的产品和载体大有空间，包括但不限于内容创作、客服机器人、虚拟人、机器翻译、游戏、社交、教育、家庭陪护等领域，或许都将是 ChatGPT 能快速落地的方向。</p>
@@ -1025,10 +1064,10 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p>&amp;emsp;&amp;emsp;对于网络有答案的query，抽取就完全能满足，百度最近就有这样的功能；而对于网络上没有明确答案的内容，即使检索了相关材料（ChatGPT应该还没有这样的功能），生成结果的可信度也是一个问题。</p>
 <p>&amp;emsp;&amp;emsp;4）ChatGPT<strong>本身的升级</strong>：与WebGPT的结合，对信息进行实时更新，并且对于事实真假进行判断；很明显可以看到，现在的ChatGPT<strong>没有实时更新和事实判断</strong>能力，而如果结合WebGPT的自动搜索能力，让ChatGPT学会自己去海量知识库中探索和学习，将会极大提升使用方向，我们预测这可能会是GPT-4的一项能力。</p>
 <p>&amp;emsp;&amp;emsp;在ChatGPT持续升级的3个月内，伴随着New Bing的出现，我们可以看到更高版本的ChatGPT（&#x2F;GPT-4）已经具有了实时更新和自动搜索的能力，同时给出了参考链接。<strong>ChatGPT本身的升级和进化，使其持续焕发蓬勃的生命力。</strong></p>
-<center>![enter image description here#573px #440px](https://km.woa.com/asset/a8d92d913dc64acc880afead731bb858?height=750&width=976)</center>
+<center><img src="/2022/12/08/ChatGPT技术解构与思考/p38.png" width=65%></center>
 
 <p>&amp;emsp;&amp;emsp;ChatGPT API的发布极大提升了各类实际应用的发布速度，未来一到两年，会有源源不断、具有想象力的工具和应用出现。此处借用明日分享的一页ppt，具体也可参考文献26等。</p>
-<center>![enter image description here](https://km.woa.com/asset/d7a3e98b210d4304bf4389294bd4d1cb?height=1388&width=2847)</center>
+<center><img src="/2022/12/08/ChatGPT技术解构与思考/p39.png" width=65%></center>
 
 
 
@@ -1042,7 +1081,8 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p>&amp;emsp;&amp;emsp;所以，<strong>一方面</strong>我们要理性看待ChatGPT的成果，但<strong>另一方面</strong>ChatGPT的出现，会将我们的认识和国外先进思想拉到一条线上，我们应该思考如何利用这些令人激动的最新成果，而其中关键是如何找到<strong>适合我们入口的方式</strong>；</p>
 <p><strong>（2023-03-04更新）</strong></p>
 <p>&amp;emsp;&amp;emsp;4）ChatGPT的核心风险是<strong>安全和监管</strong>问题；ChatGPT自身的缺陷在1.3中有提及，在逻辑性、事实性上具有生成模型的通病；但最核心的风险是安全问题，具体来说，有以下风险：</p>
-<p><img src="https://km.woa.com/asset/975734e8da5a4c5595256e6a1e79a32f?height=718&width=1536" alt="enter image description here#693px #324px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p40.png" width=65%>
+
 <ul>
 <li><p><strong>数据泄漏</strong>，主要涉及</p>
 <table>
@@ -1077,11 +1117,13 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <li><p><strong>内容安全</strong>，主要涉及虚假信息、错误知识、有害内容生成：</p>
 </li>
 </ul>
-<p><img src="https://km.woa.com/asset/2dc675f5bb954e769b02d27a55623f9c?height=738&width=1860" alt="enter image description here#644px #255px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p41.png" width=65%>
+
 <ul>
 <li><strong>攻击武器</strong>，涉及到有害脚本等攻击脚本的自动生成，其潜在风险是<strong>降低准入门槛、扩大恶意黑客</strong>的群体规模：</li>
 </ul>
-<p><img src="https://km.woa.com/asset/04b41859a9f640a7a13a7512fd7fee84?height=682&width=1840" alt="enter image description here#653px #242px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p42.png" width=65%>
+ 
 <ul>
 <li><strong>知识产权</strong>，包括自动写作、音乐创作等AIGC内容的产权归属模糊，尚需法律法规界定。</li>
 </ul>
@@ -1091,15 +1133,18 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p><strong>（2023-02-11更新：增加第一点：预训练层面的使用）</strong></p>
 <p>&amp;emsp;&amp;emsp;1） <strong>预训练</strong>层面：即<strong>从头预训练（training from scratch），得到自己的ChatGPT</strong>；这是最直接、具有门槛且适合大公司的基础设施建设工作，具有较强的<strong>战略性</strong>；同时随着硬件<strong>利用率上升</strong>和硬件<strong>升级</strong>，训练大模型成本逐年下降，以GPT3的训练成本来说，在两年半时间里，与GPT-3性能相当的模型的训练和推理成本下降了约80%。对于大公司来讲，训练成本已非卡脖子因素，<strong>瓶颈反而在于高质量数据</strong>：「与增加高质量训练数据集的大小相比，增加模型参数的数量能获得的边际收益越来越小。」</p>
 <p>&amp;emsp;&amp;emsp;关于新增此点，笔者之前觉得国内对于从头预训练千亿模型呈不看好之势，但在此文形成的两个月内，国内风向突然发生变化。</p>
-<p><img src="https://km.woa.com/asset/ab8135135e7c495ab73876c0ee4aa0cd?height=1001&width=1310" alt="enter image description here#625px #478px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p43.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;从1月底开始ChatGPT持续翻火，ChatGPT本身的能力持续被世人所认知：<strong>一方面</strong>，伴随微软和谷歌等巨头在搜索市场的激烈竞争将其推向风口，前者迅速将ChatGPT融入Bing搜索，后者推出了暂时不尽如人意的Bard；<strong>另一方面</strong>，在国内伴随营销号的宣传下其迅速呈出圈之势，各大公司突然涌向此风口，开始要做自己的ChatGPT，抑或宣称已存在自己的ChatGPT，这样的营销&#x2F;宣传行为无可厚非，至少让国内也开始意识到自身在大模型上的差距，同时进行反思以及向世界看齐。</p>
 <p>&amp;emsp;&amp;emsp;在笔者看来，复制ChatGPT对于国内很多头部企业来说<strong>并非最大的难事</strong>，虽然有较多挑战，但最终可能会成功；但我们真正缺的是看待前沿技术的<strong>视野、前瞻性、战略眼光和发展的魄力</strong>，技术需要在做出判断后，有一定的冒险精神去做正确的事情，过于保守的逐利虽然稳妥，但没有持续的创新即意味着在原有事物中持续的“卷”和内耗。在GPT3出现后的2年半内，我们一直都有开始跟进的契机，而绝非随着ChatGPT的出现后才突然觉醒；但为时不晚，至少我们已经启程。</p>
 <p>2）** 直接使用**层面：此层面为复用API中效果极佳的部分，根据最新产品同学的调研结果中，可以看出设定较佳的Prompt前提下，可以快速实现高满意度的写作的多层级需求，这也是很让人激动的部分。</p>
 <p>&amp;emsp;&amp;emsp;直接使用的<strong>优势</strong>是可以快速实现多粒度多层级上文·功能需求，尤其是很多需求难以定义清晰、数据难以获得的情况下，复用并包装这样的功能一本万利；</p>
 <p>&amp;emsp;&amp;emsp;缺点也很明显，最主要是以上提到的安全问题；另一方面，直接调用成本是较高，根据GPT3.5(Davinci)的成本推测:</p>
-<p><img src="https://km.woa.com/asset/d8f6f422614e45baaaf28c5e68ed06cf?height=1042&width=2784" alt="image#620px #232px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p44.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;1k tokens≈700 words为0.02美元，则换算后，一篇2k字的文章，直接调用需要0.4人民币，若保守按照日活1w用户，人均10篇文章计算，则每日调用成本为：10000x10x0.4&#x3D;40000元，成本过于高昂，但实现时间最少；<br>另外，根据Musk Twitter上与OpenAI工作人员的对话，也可以看到每次聊天过程需要几美分的成本，所以ChatGPT直接调用成本较高。</p>
-<p><img src="https://km.woa.com/asset/aa8120bc206d4f6ea483eeb197625bdd?height=838&width=1234" alt="image#617px #419px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p45.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;当然随着最新OpenAI接口的释出，成本比之前的预测低1&#x2F;10，但要做出真正适配自身、稳定、高并发的ChatGPT，成本是<strong>高于单纯API调用成本</strong>的。</p>
 <p>&amp;emsp;&amp;emsp;3）间接使用层面：此层面核心思想是利用OpenAI接口，按照不同需求生成高质量小样本数据，克服现有数据难获得的瓶颈；进而利用现有Bloom（GPT3模型）进行<strong>数据扩增</strong>，这是目前比较切实，实现时间较少，是在时间成本和效果上折中的方式。</p>
 <p>&amp;emsp;&amp;emsp;4）思想借鉴：</p>
@@ -1112,17 +1157,21 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p>&amp;emsp;&amp;emsp;将写作整体打造为ChatBot的形式，此核心思想见另一篇关于对话系统报告中相关性部分，涉及到交互层面的变革；但ChatGPT的出现和核心技术，让形式升级成为可能，而且预计随着深度学习和多智能体系统的发展，未来会有多种多样多功能的X-GPT&#x2F;X-Bot出现。</p>
 <p>&amp;emsp;&amp;emsp;交互升级的核心是提供“<strong>个性化的服务</strong>”，用户可以得到根据自身需求定制的结果，而这些结果是用户通过交互和不同的指令修正反馈给模型，人人的需求都能被个性化地满足。</p>
 <h3 id="3-4-未来"><a href="#3-4-未来" class="headerlink" title="3.4 未来"></a>3.4 未来</h3><p>&amp;emsp;&amp;emsp;1) ChatGPT是深层次的<strong>信息革命</strong>，其核心是提升了<strong>信息获取效率</strong>，单以搜索引擎举例，人类过去需要搜索-点击-搜寻-整理，最后得到搜索结论；而随着可信度和实时性的优化，ChatGPT会直接通过交互和修正快速呈现结论，效率的提升本质是<strong>生产力的提升</strong>；基于信息效率的提升，人类会更专注于所谓“更高层次、思想编辑”的工作，未来两年内，人类的“信息搬砖”工作可能越来越少（数据来源：甲子光年智库，2023年）；</p>
-<p><img src="https://km.woa.com/asset/19e509dcc4bf4c5b8d20fd188f1e65d5?height=625&width=1467" alt="enter image description here"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p46.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;2) ChatGPT本身还有很多优化点，包括<strong>继续扩大模型参数</strong>：更长的输入框；更大的模型，更多的数据；增加<strong>多模态的信息</strong>，达到多模态智能的统一；包括Visual ChatGPT、Kosmos-1、PaLM-E的出现印证了这一点，实现真正多模态的统一的GPT4很快就会来（图为Kosmos-1）：<br>另一方面<strong>模型的专业化</strong>，垂直类指令的学习；还有包括学会“工具”的使用，即调用外部能力，Meta AI的Toolformer已经开始涉及；</p>
-<p><img src="https://km.woa.com/asset/60d340d1fbd84b8296f39679369c7038?height=1374&width=1522" alt="enter image description here"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p47.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;3) ChatGPT在带来范式改变，让很多NLP子任务“消失”的同时，也会带来新的研究问题：一条路线是如何精准对大模型提出需求，对ChatGPT进行“催眠”的<strong>Prompt Enginering</strong>，网络上有很多Prompt调教指南：<a target="_blank" rel="noopener" href="https://github.com/PlexPt/awesome-chatgpt-prompts-zh%EF%BC%9B">https://github.com/PlexPt/awesome-chatgpt-prompts-zh；</a> 或Prompt的学习和自动生成；AI生成<strong>内容的检测</strong>延续之前的方向持续发展，虽然已有包括GPT-zero、WaterMark等方法已提出，但目前效果一般；另外就是<strong>Machine Unlearning</strong> ，目标是使得大模型可以有效地保护用户隐私数据，遗忘需要它遗忘的知识；</p>
 <p>&amp;emsp;&amp;emsp;4) <strong>超越人类？</strong>此条观点主要来自于文献20，符尧认为ChatGPT类模型在<strong>并行感知</strong>：极短时间内多篇信息输入；<strong>记忆遗传</strong>：模型演化记忆；<strong>加速时间</strong>：模型进化速度可能超出人类；以及<strong>无限生命</strong>：模型权重不会丢失等层级可能会超越人类。</p>
 <p>&amp;emsp;&amp;emsp;这一点虽然具有某些理想主义的色彩：“数字永生”，但ChatGPT除了强大的意图理解和生成能力之外，其<strong>进化速度和持续学习</strong>等能力，确实与之前的模型有本质区别；若其进化速度果真超出scaling law，所谓的AGI可能会越来越近；当然笔者认为，归根结底ChatGPT依旧是一个概率模型，没有逻辑处理模块、没有真实记忆模块，能否实现AGI尚需时间检验。</p>
 <h3 id="3-5-写在最后"><a href="#3-5-写在最后" class="headerlink" title="3.5 写在最后"></a>3.5 写在最后</h3><p>&amp;emsp;&amp;emsp;做中国自己的ChatGPT是国内讨论火热的话题之一，各大厂已经纷纷押注。如文献18提到，ChatGPT &#x3D; 50% 数据 + 30% 场景 + 10% 算力 + 10% 团队，国内的优势是<strong>工程化人才的成本、数量和应用规模巨大</strong>，得到国内的ChatGPT难度尚可，但笔者认为，“罗马非一日建成”，单纯复现得到ChatGPT非关键，<strong>核心</strong>是对于战略性的技术、对于卡脖子的基础设施，我们需要具有<strong>发展的眼光，持续关注、持续投入、长远发展</strong>，才能真正具有核心竞争力。</p>
 <p>&amp;emsp;&amp;emsp;大模型从算力、数据到模型建立，非一朝一夕之功，需要<strong>集中力量办大事</strong>，企业的责任是一方面，也需要国家的整体战略，从下图可以看出中国的大模型（除了图中的OpenAI相关）基础并不差，战略更加重视之后会有更长足的发展（图来源：HTI，甲子光年智库梳理，2023年）。</p>
-<p><img src="https://km.woa.com/asset/d88f7653f50148ff9a981be9b1b7a52a?height=762&width=1724" alt="enter image description here"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p48.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;最后援引川总的一段话作结：</p>
-<p><img src="https://km.woa.com/asset/6668eea806da4cd78ce786ba1982200e?height=917&width=935" alt="enter image description here#500px #490px"></p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p49.png" width=65%>
+
 <p>&amp;emsp;&amp;emsp;希望在“技术的洪流”中我们皆为站在浪尖的弄潮儿，也愿每个技术人都能够实现自己的技术理想。</p>
 <hr>
 <p>&amp;emsp;&amp;emsp;欢迎大家踊跃讨论ChatGPT相关的技术和思想，有问题随时指正，感谢~</p>
