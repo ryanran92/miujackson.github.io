@@ -769,11 +769,11 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p>2022-12-22<br><br>- 新增2.2.5 ChatGPT的<strong>进化历程</strong><br><br>- 新增附录1-中英文<strong>术语对照表</strong></p>
 <p>2022-12-08<br><br>- 修正2.1章节中对于ChatGPT推测的<strong>训练数据量级</strong><br><br>- <strong>发表</strong>文章</p>
 <hr>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&amp;ensp ; &amp;ensp ;本文首发在腾讯云开发者公众号 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/QA8ZOtCDP1X2EKzpZCY0RA">https://mp.weixin.qq.com/s/QA8ZOtCDP1X2EKzpZCY0RA</a> 、知乎号 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/591122595">https://zhuanlan.zhihu.com/p/591122595</a> 号中，发表为最初版本，此文进行实时更新，持续增加新的认知；该文获得司内年度知识奖。</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp; &amp;emsp ;本文首发在腾讯云开发者公众号 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/QA8ZOtCDP1X2EKzpZCY0RA">https://mp.weixin.qq.com/s/QA8ZOtCDP1X2EKzpZCY0RA</a> 、知乎号 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/591122595">https://zhuanlan.zhihu.com/p/591122595</a> 号中，发表为最初版本，此文进行实时更新，持续增加新的认知；该文获得司内年度知识奖。</p>
 <hr>
 <h1 id="1-ChatGPT简介"><a href="#1-ChatGPT简介" class="headerlink" title="1.ChatGPT简介"></a>1.ChatGPT简介</h1><p>###1.1 ChatGPT是什么</p>
-<p>&amp;ensp ; &amp;ensp ;ChatGPT本质是一个<strong>对话模型</strong>，它可以回答日常问题、进行多轮闲聊，也可以承认错误回复、挑战不正确的前提，甚至会拒绝不适当的请求，在<strong>去除偏见和安全性</strong>上不同于以往的语言模型。ChatGPT从闲聊、回答日常问题，到文本改写、诗歌小说生成、视频脚本生成，以及编写和调试代码均展示了其令人惊叹的能力。</p>
-<p>&amp;emsp ;&amp;emsp ;在上周公布博文和试用接口后，ChatGPT很快以令人惊叹的对话能力“引爆”网络，本文主要从技术角度，通过<strong>解构ChatGPT</strong>背后涉及的技术工作，来阐述其如此强大的原因；同时深入思考其对我们目前的<strong>实际工作和方法论的改变</strong>，包括可复用和可借鉴之处。</p>
+<p>&emsp; &emsp;ChatGPT本质是一个<strong>对话模型</strong>，它可以回答日常问题、进行多轮闲聊，也可以承认错误回复、挑战不正确的前提，甚至会拒绝不适当的请求，在<strong>去除偏见和安全性</strong>上不同于以往的语言模型。ChatGPT从闲聊、回答日常问题，到文本改写、诗歌小说生成、视频脚本生成，以及编写和调试代码均展示了其令人惊叹的能力。</p>
+<p>&emsp;&emsp;在上周公布博文和试用接口后，ChatGPT很快以令人惊叹的对话能力“引爆”网络，本文主要从技术角度，通过<strong>解构ChatGPT</strong>背后涉及的技术工作，来阐述其如此强大的原因；同时深入思考其对我们目前的<strong>实际工作和方法论的改变</strong>，包括可复用和可借鉴之处。</p>
 <h3 id="1-2-ChatGPT的技术背景"><a href="#1-2-ChatGPT的技术背景" class="headerlink" title="1.2 ChatGPT的技术背景"></a>1.2 ChatGPT的技术背景</h3><p>&emsp;&emsp;ChatGPT目前未释出论文文献，仅释出了介绍博文和试用demo，但从博文中提供的技术点和示意图，可以看出与年初公布的InstructGPT 核心思想一致，其关键能力来自三个方面：强大的<strong>基座大模型能力</strong>（InstructGPT），<strong>高质量的真实数据</strong>（干净且丰富），<strong>稳定的强化学习</strong>（PPO算法）。<br>以上是ChatGPT成功的三个要素，具体将在文中第2部分详细展开。</p>
 <h3 id="1-3-ChatGPT的主要特点"><a href="#1-3-ChatGPT的主要特点" class="headerlink" title="1.3 ChatGPT的主要特点"></a>1.3 ChatGPT的主要特点</h3><p>&emsp;&emsp;<strong>ChatGPT的优点令人惊叹：</strong></p>
 <p>&emsp;&emsp;1）** 强大的语言理解和生成系统**；对话能力、文本生成能力、对不同语言表述的理解均很出色，以对话为载体可以回答多种多样的日常问题（同时对于多轮对话历史的记忆能力和篇幅增强）：</p>
