@@ -6,12 +6,12 @@
   
   <title>大型语言模型(LLM)的使用和思考 | Ryanran&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="1.  导论&amp;emsp;  &amp;emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Models，下文均简称LLM)的威力，尤其是千亿模型已经远超BERT时代的认知，甚至看到了AGI（Artificial General Intelligence，通用人工智能）的可能性。但随之而来的机遇和挑战并存。除了遥遥领先的OpenAI，业界大部">
+  <meta name="description" content="1.  导论&amp;emsp;  &amp;emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Models，下文均简称LLM)的威力，尤其是千亿模型已经远超BERT时代的认知，甚至看到了AGI（Artificial General Intelligence，通用人工智能）的可能性。但随之而来的机遇和挑战并存。除了遥遥领先的OpenAI，业界大部分公司或多或少被">
 <meta property="og:type" content="article">
 <meta property="og:title" content="大型语言模型(LLM)的使用和思考">
 <meta property="og:url" content="https://ryanran92.github.io/2023/01/01/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/index.html">
 <meta property="og:site_name" content="Ryanran&#39;s Blog">
-<meta property="og:description" content="1.  导论&amp;emsp;  &amp;emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Models，下文均简称LLM)的威力，尤其是千亿模型已经远超BERT时代的认知，甚至看到了AGI（Artificial General Intelligence，通用人工智能）的可能性。但随之而来的机遇和挑战并存。除了遥遥领先的OpenAI，业界大部">
+<meta property="og:description" content="1.  导论&amp;emsp;  &amp;emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Models，下文均简称LLM)的威力，尤其是千亿模型已经远超BERT时代的认知，甚至看到了AGI（Artificial General Intelligence，通用人工智能）的可能性。但随之而来的机遇和挑战并存。除了遥遥领先的OpenAI，业界大部分公司或多或少被">
 <meta property="og:locale">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/01/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p1.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/01/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p2.png">
@@ -119,13 +119,13 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="1-导论"><a href="#1-导论" class="headerlink" title="1.  导论"></a>1.  导论</h1><p>&amp;emsp;  &amp;emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Models，下文均简称LLM)的威力，尤其是千亿模型已经远超BERT时代的认知，甚至看到了AGI（Artificial General Intelligence，通用人工智能）的可能性。但随之而来的机遇和挑战并存。除了遥遥领先的OpenAI，业界大部分公司或多或少被拉到了追赶ChatGPT的同一起跑线上。 </p>
-<p>&amp;emsp;&amp;emsp;  本文延续上篇文章（<a target="_blank" rel="noopener" href="https://km.woa.com/articles/show/567184">ChatGPT技术解构与思考</a>）末尾对于ChatGPT如何使用的话题，基于最近阅读的一些材料和学习，结合从组内做过的实验中得到的认知，拓展到更广范围的LLM，集中阐述如何使用、适配和挖掘LLM的能力，并给出相关思考供大家讨论。</p>
-<h1 id="2-综述"><a href="#2-综述" class="headerlink" title="2.     综述"></a>2.     综述</h1><p>&amp;emsp;&amp;emsp;  通过<strong>海量数据</strong>训练得到的<strong>超大参数</strong>模型蕴含了<strong>海量知识</strong>，以GPT3（175B）开端，再到LaMDA（137B）、Gopher（280B）、FLAN-T5（540B）等，业界对于LLM的探索和应用，以及如何挖掘其学到的知识，引导它们适配不同子任务达到最先进结果（state-of-the-art result，sota），一直是近两年一项极具价值及热门的工作。</p>
-<p>&amp;emsp;&amp;emsp;  对于LLM的探索，从起初探索<strong>贴近预训练任务</strong>的方式构造下游任务，包括各类Prompt Engineering方式，减少微调数据量；再到用非梯度更新的方式，使大模型<strong>无需微调</strong>情况下，拥有小样本、零样本解决问题的能力，包括上下文学习（In-context learning）、上下文学习的矫正（Calibration）等；利用LLM解决更难的数理推理问题，通过一系列逻辑链(CoT，chain of thought )，深入挖掘大模型的知识和推理能力；进一步，更加看重行动驱动（Action-driven）、意图驱动与大模型的结合，使大模型从意图出发对齐人类需求；以上探索，力求在数量繁多的自然语言任务中达到初步的“质变”效果，尝试通向真正的AGI。</p>
-<p>&amp;emsp;&amp;emsp;  在讨论如何使用LLM之前，首先需要明确我们<strong>为何要发展</strong>这样的技术，我们的机会在哪？进而才能讨论我们如何<strong>发展和适应</strong>这些技术？最后我们需要思考LLM这项技术会给我们带来什么，<strong>机遇和挑战</strong>是什么？</p>
-<h1 id="3-我们为何要发展这样的技术？我们还有机会么？"><a href="#3-我们为何要发展这样的技术？我们还有机会么？" class="headerlink" title="3.     我们为何要发展这样的技术？我们还有机会么？"></a>3.     我们为何要发展这样的技术？我们还有机会么？</h1><p>&amp;emsp;&amp;emsp;  基于大模型本身蕴含的海量知识，大型语言模型有机会使得<strong>以文本为主</strong>的业务得到“质变“的提升；再次以最近过于火热的ChatGPT为例，其基于GPT3.5模型，其超强的对话能力、意图理解以及对齐能力，对类似的ChatBot和文本生成等任务具有<strong>颠覆性</strong>；而这样的“Emergent abilities”，无论作为流量入口，或者模型升级有效赋能到各项业务，使业务在<strong>智能化</strong>和<strong>“懂”用户</strong>层面上得到“跃升”，是非常有前景和激动人心的。</p>
-<p>&amp;emsp;&amp;emsp;  那么如果我们要做自己的ChatGPT&#x2F;LLM，还有多远的距离？如果用时间来衡量大约是两年的时间，计算的起点是GPT3的出现，基于的假设是我们现有可用的最强模型Bloom&#x2F;OPT-IML已达到GPT3能力（数据集指标可以对齐，但整体感受层面尚有差距）；同时，这两年多时间包含着数位高级研究者智力、数百台机器数千张GPU的长期探索。通过参考文献1中提到下面表1看的更清楚，GPT3到现有的ChatGPT，大致有5~6次里程碑的演化。</p>
+        <h1 id="1-导论"><a href="#1-导论" class="headerlink" title="1.  导论"></a>1.  导论</h1><p>&emsp;  &emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Models，下文均简称LLM)的威力，尤其是千亿模型已经远超BERT时代的认知，甚至看到了AGI（Artificial General Intelligence，通用人工智能）的可能性。但随之而来的机遇和挑战并存。除了遥遥领先的OpenAI，业界大部分公司或多或少被拉到了追赶ChatGPT的同一起跑线上。 </p>
+<p>&emsp;&emsp;  本文延续上篇文章（<a target="_blank" rel="noopener" href="https://km.woa.com/articles/show/567184">ChatGPT技术解构与思考</a>）末尾对于ChatGPT如何使用的话题，基于最近阅读的一些材料和学习，结合从组内做过的实验中得到的认知，拓展到更广范围的LLM，集中阐述如何使用、适配和挖掘LLM的能力，并给出相关思考供大家讨论。</p>
+<h1 id="2-综述"><a href="#2-综述" class="headerlink" title="2.     综述"></a>2.     综述</h1><p>&emsp;&emsp;  通过<strong>海量数据</strong>训练得到的<strong>超大参数</strong>模型蕴含了<strong>海量知识</strong>，以GPT3（175B）开端，再到LaMDA（137B）、Gopher（280B）、FLAN-T5（540B）等，业界对于LLM的探索和应用，以及如何挖掘其学到的知识，引导它们适配不同子任务达到最先进结果（state-of-the-art result，sota），一直是近两年一项极具价值及热门的工作。</p>
+<p>&emsp;&emsp;  对于LLM的探索，从起初探索<strong>贴近预训练任务</strong>的方式构造下游任务，包括各类Prompt Engineering方式，减少微调数据量；再到用非梯度更新的方式，使大模型<strong>无需微调</strong>情况下，拥有小样本、零样本解决问题的能力，包括上下文学习（In-context learning）、上下文学习的矫正（Calibration）等；利用LLM解决更难的数理推理问题，通过一系列逻辑链(CoT，chain of thought )，深入挖掘大模型的知识和推理能力；进一步，更加看重行动驱动（Action-driven）、意图驱动与大模型的结合，使大模型从意图出发对齐人类需求；以上探索，力求在数量繁多的自然语言任务中达到初步的“质变”效果，尝试通向真正的AGI。</p>
+<p>&emsp;&emsp;  在讨论如何使用LLM之前，首先需要明确我们<strong>为何要发展</strong>这样的技术，我们的机会在哪？进而才能讨论我们如何<strong>发展和适应</strong>这些技术？最后我们需要思考LLM这项技术会给我们带来什么，<strong>机遇和挑战</strong>是什么？</p>
+<h1 id="3-我们为何要发展这样的技术？我们还有机会么？"><a href="#3-我们为何要发展这样的技术？我们还有机会么？" class="headerlink" title="3.     我们为何要发展这样的技术？我们还有机会么？"></a>3.     我们为何要发展这样的技术？我们还有机会么？</h1><p>&emsp;&emsp;  基于大模型本身蕴含的海量知识，大型语言模型有机会使得<strong>以文本为主</strong>的业务得到“质变“的提升；再次以最近过于火热的ChatGPT为例，其基于GPT3.5模型，其超强的对话能力、意图理解以及对齐能力，对类似的ChatBot和文本生成等任务具有<strong>颠覆性</strong>；而这样的“Emergent abilities”，无论作为流量入口，或者模型升级有效赋能到各项业务，使业务在<strong>智能化</strong>和<strong>“懂”用户</strong>层面上得到“跃升”，是非常有前景和激动人心的。</p>
+<p>&emsp;&emsp;  那么如果我们要做自己的ChatGPT/LLM，还有多远的距离？如果用时间来衡量大约是两年的时间，计算的起点是GPT3的出现，基于的假设是我们现有可用的最强模型Bloom/OPT-IML已达到GPT3能力（数据集指标可以对齐，但整体感受层面尚有差距）；同时，这两年多时间包含着数位高级研究者智力、数百台机器数千张GPU的长期探索。通过参考文献1中提到下面表1看的更清楚，GPT3到现有的ChatGPT，大致有5~6次里程碑的演化。</p>
 <table>
 <thead>
 <tr>
@@ -178,10 +178,10 @@
 <td align="left"></td>
 </tr>
 <tr>
-<td align="left">++ 代码理解<br>++ 代码生成<br>++ <strong>复杂推理 &#x2F; 思维链</strong><br>+ 长距离的依赖  (很可能)</td>
+<td align="left">++ 代码理解<br>++ 代码生成<br>++ <strong>复杂推理 / 思维链</strong><br>+ 长距离的依赖  (很可能)</td>
 <td align="left">现在的Codex<br><strong>GPT3.5系列中最强大的模型</strong></td>
 <td align="left">在代码+文本上进行训练<br>在指令上进行微调</td>
-<td align="left">Code-Davinci-002 <br>(目前免费的版本 &#x3D; 2022年12月)</td>
+<td align="left">Code-Davinci-002 <br>(目前免费的版本 = 2022年12月)</td>
 <td align="left"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.03374">Codex论文</a></td>
 <td align="left"></td>
 </tr>
@@ -221,17 +221,17 @@
 <center>表1  ChatGPT技术演进</center>
 
 
-<p>&amp;emsp;&amp;emsp;  那么我们还有机会么？答案<strong>当然是有</strong>，并可以在不同组织层面以不同身位入场。LLM的引入会使行业内公司划分出不同层级（此处很同意谢剑的观点，主要化用其结论，详细内容参见参考文献7)</p>
-<p>&amp;emsp;&amp;emsp;  1） Level1：LLM基础设施公司；类比为一个拥有比较强通用能力的人；Level1的公司会比较少，可能只有1-2家（比如 OpenAI、Google）</p>
-<p>&amp;emsp;&amp;emsp;  2） Level2：基于LLM<strong>结合场景</strong>进行<strong>商业化应用</strong>的公司(以应用为主，没有全体微调) ；类比通用能力的人去一些场景打工挣钱；Level2的公司侧重于基于LLM做出较多应用，包括从头创新做应用、已有的业务场景中升级功能。</p>
-<p>&amp;emsp;&amp;emsp;   3） Level3：基于LLM+领域场景数据，微调形成具备更强领域能力和一定门槛的产品，通过商业化和数据积累，持续形成<strong>业务数据-模型闭环</strong>；类比一个领域专家。Level3的公司有很强的专业性和数据积累，比如类似专项面向写作的Jasper.AI等。</p>
-<p>&amp;emsp;&amp;emsp;  我们在LLM层级以如何的身位入场，是个值得大家思考和讨论的问题。而对于不同Level对于个人研究者的发展层级，也可以从以上3个层级对应角色和工作，具体也可参照以上链接。</p>
-<h1 id="4-我们如何适应LLM技术：使用方式"><a href="#4-我们如何适应LLM技术：使用方式" class="headerlink" title="4.   我们如何适应LLM技术：使用方式"></a>4.   我们如何适应LLM技术：使用方式</h1><h3 id="4-1-预训练"><a href="#4-1-预训练" class="headerlink" title="4.1 预训练"></a>4.1 预训练</h3><p>&amp;emsp;&amp;emsp;  发展LLM技术最直接的方式一定是从头预训练（pretrain from scratch），它可以按照不同需求量身定制做预训练，这样的方式对于训练千亿级别的模型，核心问题是老生常谈的成本问题。2年半前的GPT-3预计训练成本接近 500 万美元，此条路径适合专业的、大组织形式内的整体战略和输出，对于小规模研究组&#x2F;项目组并不合适。</p>
-<h3 id="4-2-微调"><a href="#4-2-微调" class="headerlink" title="4.2 微调"></a>4.2 微调</h3><p>&amp;emsp;&amp;emsp;  基于已有的LLM，适配到下游任务最直接的方式是微调，也是ChatGPT第一阶段训练方式。对于较大组织，在LLM基础上做二阶段预训练&#x2F;微调是一条可行之道；但对于业务方向来说，直接微调千亿模型的消耗成本也过高，需要探索<strong>提升训练效率、减少训练参数量</strong>。而基于以上诉求，业界逐渐产生了多种局部微调&#x2F;无需微调使用LLM的方法。</p>
-<h3 id="4-3-基于Prompt的微调（Prompt-based-Finetune）"><a href="#4-3-基于Prompt的微调（Prompt-based-Finetune）" class="headerlink" title="4.3 基于Prompt的微调（Prompt-based Finetune）"></a>4.3 基于Prompt的微调（Prompt-based Finetune）</h3><p>&amp;emsp;&amp;emsp;   第一类是Prompt-based方法，它是较早应用于普通预训练模型的方法，在文本理解(NLU)层级使用较多，其核心思想是增强预训练任务和下游<strong>任务的一致性</strong>，保证这样的一致性，可以让预训练模型在样本较少的情境下效果超越微调；同时当模型效果接近全数据微调时，所需标注数据量也大大减少，尤其对一些较简单的分类任务效果明显。</p>
-<p>&amp;emsp;&amp;emsp;  Prompt-based 以PET和LM-BFF为代表；</p>
-<p>&amp;emsp;&amp;emsp;   1）PET（Pattern-Exploiting Training）</p>
-<p>&amp;emsp;&amp;emsp;  PET方法示意图见图1，即将标签模板化，预测[MASK]位置label的概率。</p>
+<p>&emsp;&emsp;  那么我们还有机会么？答案<strong>当然是有</strong>，并可以在不同组织层面以不同身位入场。LLM的引入会使行业内公司划分出不同层级（此处很同意谢剑的观点，主要化用其结论，详细内容参见参考文献7)</p>
+<p>&emsp;&emsp;  1） Level1：LLM基础设施公司；类比为一个拥有比较强通用能力的人；Level1的公司会比较少，可能只有1-2家（比如 OpenAI、Google）</p>
+<p>&emsp;&emsp;  2） Level2：基于LLM<strong>结合场景</strong>进行<strong>商业化应用</strong>的公司(以应用为主，没有全体微调) ；类比通用能力的人去一些场景打工挣钱；Level2的公司侧重于基于LLM做出较多应用，包括从头创新做应用、已有的业务场景中升级功能。</p>
+<p>&emsp;&emsp;   3） Level3：基于LLM+领域场景数据，微调形成具备更强领域能力和一定门槛的产品，通过商业化和数据积累，持续形成<strong>业务数据-模型闭环</strong>；类比一个领域专家。Level3的公司有很强的专业性和数据积累，比如类似专项面向写作的Jasper.AI等。</p>
+<p>&emsp;&emsp;  我们在LLM层级以如何的身位入场，是个值得大家思考和讨论的问题。而对于不同Level对于个人研究者的发展层级，也可以从以上3个层级对应角色和工作，具体也可参照以上链接。</p>
+<h1 id="4-我们如何适应LLM技术：使用方式"><a href="#4-我们如何适应LLM技术：使用方式" class="headerlink" title="4.   我们如何适应LLM技术：使用方式"></a>4.   我们如何适应LLM技术：使用方式</h1><h3 id="4-1-预训练"><a href="#4-1-预训练" class="headerlink" title="4.1 预训练"></a>4.1 预训练</h3><p>&emsp;&emsp;  发展LLM技术最直接的方式一定是从头预训练（pretrain from scratch），它可以按照不同需求量身定制做预训练，这样的方式对于训练千亿级别的模型，核心问题是老生常谈的成本问题。2年半前的GPT-3预计训练成本接近 500 万美元，此条路径适合专业的、大组织形式内的整体战略和输出，对于小规模研究组/项目组并不合适。</p>
+<h3 id="4-2-微调"><a href="#4-2-微调" class="headerlink" title="4.2 微调"></a>4.2 微调</h3><p>&emsp;&emsp;  基于已有的LLM，适配到下游任务最直接的方式是微调，也是ChatGPT第一阶段训练方式。对于较大组织，在LLM基础上做二阶段预训练/微调是一条可行之道；但对于业务方向来说，直接微调千亿模型的消耗成本也过高，需要探索<strong>提升训练效率、减少训练参数量</strong>。而基于以上诉求，业界逐渐产生了多种局部微调/无需微调使用LLM的方法。</p>
+<h3 id="4-3-基于Prompt的微调（Prompt-based-Finetune）"><a href="#4-3-基于Prompt的微调（Prompt-based-Finetune）" class="headerlink" title="4.3 基于Prompt的微调（Prompt-based Finetune）"></a>4.3 基于Prompt的微调（Prompt-based Finetune）</h3><p>&emsp;&emsp;   第一类是Prompt-based方法，它是较早应用于普通预训练模型的方法，在文本理解(NLU)层级使用较多，其核心思想是增强预训练任务和下游<strong>任务的一致性</strong>，保证这样的一致性，可以让预训练模型在样本较少的情境下效果超越微调；同时当模型效果接近全数据微调时，所需标注数据量也大大减少，尤其对一些较简单的分类任务效果明显。</p>
+<p>&emsp;&emsp;  Prompt-based 以PET和LM-BFF为代表；</p>
+<p>&emsp;&emsp;   1）PET（Pattern-Exploiting Training）</p>
+<p>&emsp;&emsp;  PET方法示意图见图1，即将标签模板化，预测[MASK]位置label的概率。</p>
 <img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p1.png" width=65%>
 
 
@@ -245,18 +245,18 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 <br>
 <center>图2  不同Prompt形式的效果</center>
 
-<p>&amp;emsp;&amp;emsp;  LM-BFF在不同任务的小样本学习效果超出等量数据下的微调，但整体结果不够稳定，方差较大，对人工模板的依赖也较大。</p>
-<p>&amp;emsp;&amp;emsp;  之后很多的工作聚焦于如何设计得到更好的Prompt，降低这样的不稳定性，包括对于标签、模板和Prompt整体的搜寻、设计；同时业界也通过更多办法包括挖掘（Mining）、重写(Paraphrasing)、生成(Generation)等方式，来提升Prompt的多样性和稳定性，提升基于Prompt微调的效果；还有其余工作不局限在离散的自然语言的模板，比如P-tuning方法。</p>
-<p>&amp;emsp;&amp;emsp;  我们利用Prompt-based方法主要聚焦在分类问题上，分类问题情境一般较简单，使用PET标注量只需原先的1&#x2F;10（500 vs 5000）。</p>
-<h3 id="4-4-参数有效的Prompt调整-Parameter-efficient-Prompt-Tuning"><a href="#4-4-参数有效的Prompt调整-Parameter-efficient-Prompt-Tuning" class="headerlink" title="4.4 参数有效的Prompt调整(Parameter-efficient Prompt Tuning)"></a>4.4 参数有效的Prompt调整(Parameter-efficient Prompt Tuning)</h3><p>&amp;emsp;&amp;emsp;  所谓Parameter-efficient（参数有效），即无需针对每个任务微调一个<strong>全参数</strong>的模型，只需调整LLM的部分参数，下游任务即可达到较好效果，该方法极大降低训练&#x2F;存储成本。</p>
-<p>&amp;emsp;&amp;emsp;   Parameter-efficient Tuning核心的关键是如何选择有效微调的参数？选择哪部分参数微调？这部分参数占比多少？</p>
-<p>&amp;emsp;&amp;emsp;  1）Adapter Finetune</p>
-<p>&amp;emsp;&amp;emsp;  此方法在Transformers中添加 Adapter Layers，微调过程中只调整此部分参数。Adapter为图3中，在FFN和Norm layer层之间添加的”Adapter”部分，其构成是两层FFN，只需微调3.6% Adapter的参数，在下游任务效果接近全量微调。</p>
+<p>&emsp;&emsp;  LM-BFF在不同任务的小样本学习效果超出等量数据下的微调，但整体结果不够稳定，方差较大，对人工模板的依赖也较大。</p>
+<p>&emsp;&emsp;  之后很多的工作聚焦于如何设计得到更好的Prompt，降低这样的不稳定性，包括对于标签、模板和Prompt整体的搜寻、设计；同时业界也通过更多办法包括挖掘（Mining）、重写(Paraphrasing)、生成(Generation)等方式，来提升Prompt的多样性和稳定性，提升基于Prompt微调的效果；还有其余工作不局限在离散的自然语言的模板，比如P-tuning方法。</p>
+<p>&emsp;&emsp;  我们利用Prompt-based方法主要聚焦在分类问题上，分类问题情境一般较简单，使用PET标注量只需原先的1/10（500 vs 5000）。</p>
+<h3 id="4-4-参数有效的Prompt调整-Parameter-efficient-Prompt-Tuning"><a href="#4-4-参数有效的Prompt调整-Parameter-efficient-Prompt-Tuning" class="headerlink" title="4.4 参数有效的Prompt调整(Parameter-efficient Prompt Tuning)"></a>4.4 参数有效的Prompt调整(Parameter-efficient Prompt Tuning)</h3><p>&emsp;&emsp;  所谓Parameter-efficient（参数有效），即无需针对每个任务微调一个<strong>全参数</strong>的模型，只需调整LLM的部分参数，下游任务即可达到较好效果，该方法极大降低训练/存储成本。</p>
+<p>&emsp;&emsp;   Parameter-efficient Tuning核心的关键是如何选择有效微调的参数？选择哪部分参数微调？这部分参数占比多少？</p>
+<p>&emsp;&emsp;  1）Adapter Finetune</p>
+<p>&emsp;&emsp;  此方法在Transformers中添加 Adapter Layers，微调过程中只调整此部分参数。Adapter为图3中，在FFN和Norm layer层之间添加的”Adapter”部分，其构成是两层FFN，只需微调3.6% Adapter的参数，在下游任务效果接近全量微调。</p>
 <img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p3.png" width=65%>
 <center>图3 Adapter结构示意图</center>
 
-<p>&amp;emsp;&amp;emsp;   2） Prefix-tuning</p>
-<p>&amp;emsp;&amp;emsp;  Prefix-tuning是第一部分Prompt-based微调的发展和延伸，核心思想是选取与子任务强相关的Prompt参数连续化微调，同时<strong>固定其他部分参数</strong>；该方法优点是无需人工设计模板，可以参数化自动学习模板统一优化；缺点也很明显，相比文字模板解释性较低。</p>
+<p>&emsp;&emsp;   2） Prefix-tuning</p>
+<p>&emsp;&emsp;  Prefix-tuning是第一部分Prompt-based微调的发展和延伸，核心思想是选取与子任务强相关的Prompt参数连续化微调，同时<strong>固定其他部分参数</strong>；该方法优点是无需人工设计模板，可以参数化自动学习模板统一优化；缺点也很明显，相比文字模板解释性较低。</p>
 <img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p4.png" width=65%>
 
 <center>图4  Prefix-tuning与Fine-tune区别</center>
@@ -270,9 +270,9 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 <br>
 &emsp;&emsp;  我们利用Prefix-Tuning，主要在小样本的结构化生成任务中有过尝试，但生成效果一般，没有得到论文中的结果，且相比微调的稳定性稍差；可能是因为迁移到中文的影响，抑或没有选取到合适的参数；但其选取部分hidden-state的微调思想很有借鉴意义，也说明在相对垂直的一些任务上，无需很大参数量，局部微调就可达成目标，LLM的参数在这些任务上是**过分冗余**的。
 
-<p>&amp;emsp;&amp;emsp;   3)  Prompt tuning </p>
-<p>&amp;emsp;&amp;emsp;  Prompt tuning 可以看做Prefix-tuning的特殊形式，Google提出的Prompt tuning是做了全面系统的多实验参数的精调，来梳理清晰Prompt tuning的影响因素。此处的结论很有意思：</p>
-<p>&amp;emsp;&amp;emsp;  ● Prompt长度：当模型参数&lt;10亿时，整体倾向是：随着长度变长，模型效果持续上升，在长度为20时即达到峰值；但当模型规模超过10亿时，长度影响差距缩小，特别长度为1时效果也尚可。</p>
+<p>&emsp;&emsp;   3)  Prompt tuning </p>
+<p>&emsp;&emsp;  Prompt tuning 可以看做Prefix-tuning的特殊形式，Google提出的Prompt tuning是做了全面系统的多实验参数的精调，来梳理清晰Prompt tuning的影响因素。此处的结论很有意思：</p>
+<p>&emsp;&emsp;  ● Prompt长度：当模型参数&lt;10亿时，整体倾向是：随着长度变长，模型效果持续上升，在长度为20时即达到峰值；但当模型规模超过10亿时，长度影响差距缩小，特别长度为1时效果也尚可。</p>
 <img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p6.png" width=65%>
 <br>
 <center>图6  Prompt长度在SuperGLUE的结果分布</center>
@@ -283,7 +283,7 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 <br>
 <center>图7  Prompt初始化方法在SuperGLUE的结果分布</center>
 
-<p>&amp;emsp;&amp;emsp;   ● Prompt预训练方法：LM Adapation效果稳定，随着模型参数上升稳步增长，另外两种方式极其不稳定；但神奇的是，当模型同样达到10亿量级后，模型效果均<strong>趋向良好</strong>。</p>
+<p>&emsp;&emsp;   ● Prompt预训练方法：LM Adapation效果稳定，随着模型参数上升稳步增长，另外两种方式极其不稳定；但神奇的是，当模型同样达到10亿量级后，模型效果均<strong>趋向良好</strong>。</p>
 <img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p8.png" width=65%>
 <br>
 <center>图8  预训练方法在SuperGLUE的结果分布</center>
@@ -298,18 +298,18 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 &emsp;&emsp;  以上实验可以看出，在Prompt tuning上模型**规模的力量**（the power of scale）。当模型参数达到一定量级后，无效的模型设计对结果影响不大；模型开始“返璞归真”，暴力美学尽显，这与对话模型PLATO异曲同工：PLATO-1和PLATO-2一顿操作设计猛如虎，但PLATO-XL只用最简单的Transformers结构，只在数据量和参数量大幅增加后即呈碾压之势。
 相关工作还有Prompt tuning的升级工作，包括模板融合等。此部分我们没有做过多的参数实验，只在相同模型（1亿内量级）下做过一些Prompt的修改，但影响整体不大。
 
-<h3 id="4-5-上下文学习（In-context-Learning）"><a href="#4-5-上下文学习（In-context-Learning）" class="headerlink" title="4.5 上下文学习（In-context Learning）"></a>4.5 上下文学习（In-context Learning）</h3><p>&amp;emsp;&amp;emsp;  上下文学习主要在GPT3发布后，开始引发业界关注并逐渐流行；它无需在大模型上进行梯度更新，无需任何形式参数的微调，只需少量下游任务的任务描述和输入输出示例（甚至完全零样本学习），即可在下游任务上取得不错的效果；当选取最大的1750亿参数的模型时，部分任务上甚至超过出SOTA，如在LAMBADA（开放式完形填空任务任务）上提升了18%；图10很好的说明了In-context Learning与传统微调的区别。</p>
+<h3 id="4-5-上下文学习（In-context-Learning）"><a href="#4-5-上下文学习（In-context-Learning）" class="headerlink" title="4.5 上下文学习（In-context Learning）"></a>4.5 上下文学习（In-context Learning）</h3><p>&emsp;&emsp;  上下文学习主要在GPT3发布后，开始引发业界关注并逐渐流行；它无需在大模型上进行梯度更新，无需任何形式参数的微调，只需少量下游任务的任务描述和输入输出示例（甚至完全零样本学习），即可在下游任务上取得不错的效果；当选取最大的1750亿参数的模型时，部分任务上甚至超过出SOTA，如在LAMBADA（开放式完形填空任务任务）上提升了18%；图10很好的说明了In-context Learning与传统微调的区别。</p>
 <img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p10.png" width=65%>
 <br>
 <center>图10  In-context learning和微调区别</center>
 
-<p>&amp;emsp;&amp;emsp;  1）基础In-context learning</p>
-<p>&amp;ensp; &amp;ensp; In-context learning主要由以下四个部分组成：Distribution of inputs、Label space、Format、Input-label mapping，图11清晰的阐述可该组成结构。<br><br><br><img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p11.png" width=65%><br><br></p>
+<p>&emsp;&emsp;  1）基础In-context learning</p>
+<p>&ensp; &ensp; In-context learning主要由以下四个部分组成：Distribution of inputs、Label space、Format、Input-label mapping，图11清晰的阐述可该组成结构。<br><br><br><img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p11.png" width=65%><br><br></p>
 <center>图11  In-context learning结构</center>
 
-<p>&amp;emsp;&amp;emsp;  显然In-context learning的优化就从以上四个方面着手设计和探索。</p>
-<p>&amp;emsp;&amp;emsp;   ● Distribution of inputs即为原始文本输入</p>
-<p>&amp;emsp;&amp;emsp;  对于输入样本的<strong>选择和顺序</strong>均会影响In-context learning的效果。前者同小样本学习的样本选择类似，需要选择有代表性、分布均匀的样本，拿分类问题举例，尽可能提供包含不同类别不同的分布；后者是指不同样本的顺序会影响效果，在参考文献2中有阐述，在SST-2（单句情感分类任务）判断任务中，不同排列顺序的输入会导致较大浮动范围的指标。 </p>
+<p>&emsp;&emsp;  显然In-context learning的优化就从以上四个方面着手设计和探索。</p>
+<p>&emsp;&emsp;   ● Distribution of inputs即为原始文本输入</p>
+<p>&emsp;&emsp;  对于输入样本的<strong>选择和顺序</strong>均会影响In-context learning的效果。前者同小样本学习的样本选择类似，需要选择有代表性、分布均匀的样本，拿分类问题举例，尽可能提供包含不同类别不同的分布；后者是指不同样本的顺序会影响效果，在参考文献2中有阐述，在SST-2（单句情感分类任务）判断任务中，不同排列顺序的输入会导致较大浮动范围的指标。 </p>
 <img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p12.png" width=65%>
 <br>
 <center>图12  SST-2不同样本顺序结果浮动</center>
@@ -317,29 +317,29 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 &emsp;&emsp;   ● Lable space即为标签的定义和分布；
 Label space相关的课题主要是研究label空间的重要性，但整体的结论对模型训练影响不大，提供正确label词即可。
 
-<p>&amp;emsp;&amp;emsp;  ● Format即Demonstration的格式<br>对于Format的研究，意图寻求最好的Format，比如面向复杂推理问题的CoT（逻辑链推到，下文会介绍）便是一种对于合适Format的探索；Format在In-context learning中很重要，格式是否相同、格式是否统一，均会对模型表现有加大的影响。</p>
-<p>&amp;emsp;&amp;emsp;  ● Input-label mapping可以理解为得到标签的计算方式</p>
-<p>&amp;emsp;&amp;emsp;  传统计算方式为计算下一个词的条件概率，也可计算整句PPL概率；</p>
-<p>&amp;emsp;&amp;emsp;   针对In-context Learning一种较好的方式是<strong>Channel函数</strong>，它主要面向不平衡标签数据，通过反向计算，即给定标签计算输入概率，选择最大概率来得到最后的标签。它主要防止当标签不平衡时，引起label预测不平衡。</p>
-<p>&amp;emsp;&amp;emsp;  在我们的实际工作基于百亿&#x2F;千亿模型的数据扩增中，In-context learning起到了主要作用；在人工精标少量分布均匀的种子数据后，通过设计In-context learning的示例，可以快速扩增训练数据，进而供下游任务使用。</p>
-<p>&amp;emsp;&amp;emsp;  2）In-context learning的校准（Calibration）</p>
-<p>&amp;emsp;&amp;emsp;  在上文提到，不同样本Demonstrations的顺序效果浮动超出可控范围；实际场景中，除了上文的影响，存在<strong>多类bias</strong>会影响语言模型本身的倾向，以下三种bias影响模型结果：</p>
-<p>&amp;emsp;&amp;emsp;  ● <strong>标签分布bias</strong>；当Demonstrations中标签不平衡时，语言模型倾向于预测<strong>占多数</strong>的标签；</p>
-<p>&amp;emsp;&amp;emsp;  ● <strong>词频bias</strong>；当存在两类标签A和B，但B为一个低频词时，此时模型大概率倾向于预测<strong>词频高</strong>的A标签；</p>
-<p>&amp;emsp;&amp;emsp;   ● <strong>就近bias</strong>；即模型会易受最新见到的标签影响，如样本标签顺序为PNNPP，预测<strong>就近的</strong>P的概率会较大。</p>
-<p>&amp;emsp;&amp;emsp;   以上客观存在的bias，需要在In-context learning中做校准（Calibration），主体方法是得到bias的概率分布后，如P(Pos)&#x3D;0.65，P(Neg)&#x3D;0.35，使用校准矩阵W校准，W为概率倒数形成的矩阵，其他bias的矫正思想也类似。</p>
+<p>&emsp;&emsp;  ● Format即Demonstration的格式<br>对于Format的研究，意图寻求最好的Format，比如面向复杂推理问题的CoT（逻辑链推到，下文会介绍）便是一种对于合适Format的探索；Format在In-context learning中很重要，格式是否相同、格式是否统一，均会对模型表现有加大的影响。</p>
+<p>&emsp;&emsp;  ● Input-label mapping可以理解为得到标签的计算方式</p>
+<p>&emsp;&emsp;  传统计算方式为计算下一个词的条件概率，也可计算整句PPL概率；</p>
+<p>&emsp;&emsp;   针对In-context Learning一种较好的方式是<strong>Channel函数</strong>，它主要面向不平衡标签数据，通过反向计算，即给定标签计算输入概率，选择最大概率来得到最后的标签。它主要防止当标签不平衡时，引起label预测不平衡。</p>
+<p>&emsp;&emsp;  在我们的实际工作基于百亿/千亿模型的数据扩增中，In-context learning起到了主要作用；在人工精标少量分布均匀的种子数据后，通过设计In-context learning的示例，可以快速扩增训练数据，进而供下游任务使用。</p>
+<p>&emsp;&emsp;  2）In-context learning的校准（Calibration）</p>
+<p>&emsp;&emsp;  在上文提到，不同样本Demonstrations的顺序效果浮动超出可控范围；实际场景中，除了上文的影响，存在<strong>多类bias</strong>会影响语言模型本身的倾向，以下三种bias影响模型结果：</p>
+<p>&emsp;&emsp;  ● <strong>标签分布bias</strong>；当Demonstrations中标签不平衡时，语言模型倾向于预测<strong>占多数</strong>的标签；</p>
+<p>&emsp;&emsp;  ● <strong>词频bias</strong>；当存在两类标签A和B，但B为一个低频词时，此时模型大概率倾向于预测<strong>词频高</strong>的A标签；</p>
+<p>&emsp;&emsp;   ● <strong>就近bias</strong>；即模型会易受最新见到的标签影响，如样本标签顺序为PNNPP，预测<strong>就近的</strong>P的概率会较大。</p>
+<p>&emsp;&emsp;   以上客观存在的bias，需要在In-context learning中做校准（Calibration），主体方法是得到bias的概率分布后，如P(Pos)=0.65，P(Neg)=0.35，使用校准矩阵W校准，W为概率倒数形成的矩阵，其他bias的矫正思想也类似。</p>
 <p><img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p13-1.png" width=65%><img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p13-2.png" width=35%><br><br></p>
 <center>图13  校准概率函数与校准矩阵</center>
 <br>
 &emsp;&emsp;  In-context learning从出现到兴起，其有效性的由来完全黑盒。也有工作开始尝试进行解释，此篇文献尝试从贝叶斯推理的角度进行解释：An Explanation of In-context Learning as Implicit Bayesian Inference ，有兴趣的同学可以深入研究。
 
-<h3 id="4-6-推理"><a href="#4-6-推理" class="headerlink" title="4.6 推理"></a>4.6 推理</h3><p>&amp;emsp;&amp;emsp;  在上一节中，我们提到了在Demonstration 构造中，有一类是面向<strong>困难的</strong>数理逻辑任务的CoT（Chain of Thought）Prompting，它主要面向较困难的知识推理、数理推理任务，因为对于此类任务，单纯提升模型收效甚微，需要研究通过其他手段来挖掘LLM在推理任务的能力。<br>CoT提供给模型一系列中间的自然语言推理步骤，类似于人类演算的过程，进而得到最终的输出，使得模型不仅要知其然，且要知其所以然；图14是CoT的输入形式。</p>
+<h3 id="4-6-推理"><a href="#4-6-推理" class="headerlink" title="4.6 推理"></a>4.6 推理</h3><p>&emsp;&emsp;  在上一节中，我们提到了在Demonstration 构造中，有一类是面向<strong>困难的</strong>数理逻辑任务的CoT（Chain of Thought）Prompting，它主要面向较困难的知识推理、数理推理任务，因为对于此类任务，单纯提升模型收效甚微，需要研究通过其他手段来挖掘LLM在推理任务的能力。<br>CoT提供给模型一系列中间的自然语言推理步骤，类似于人类演算的过程，进而得到最终的输出，使得模型不仅要知其然，且要知其所以然；图14是CoT的输入形式。</p>
 <img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p14.png" width=65%>
 <br>
 <center>图14  CoT构造形式</center>
 
-<p>&amp;emsp;&amp;emsp;  1）Emergent Abilities</p>
-<p>&amp;emsp;&amp;emsp;   对于更困难问题的有效解决，开始让LLM变得<strong>“智能化”</strong>；同时，在CoT的研究过程中，研究者们发现了一项神奇的能力 —— Emergent Abilities（涌现能力）。Emergent Abilities是超出scaling law的，当模型达到千亿时，模型效果突然“跃升”，在图15中可以明显看到。</p>
+<p>&emsp;&emsp;  1）Emergent Abilities</p>
+<p>&emsp;&emsp;   对于更困难问题的有效解决，开始让LLM变得<strong>“智能化”</strong>；同时，在CoT的研究过程中，研究者们发现了一项神奇的能力 —— Emergent Abilities（涌现能力）。Emergent Abilities是超出scaling law的，当模型达到千亿时，模型效果突然“跃升”，在图15中可以明显看到。</p>
 <img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p15.png" width=65%>
 <br>
 <center>图15  模型效果“跃升”</center>
@@ -351,44 +351,44 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <br>
 <center>图16  不同大模型效果评价</center>
 
-<p>&amp;emsp;&amp;emsp;  关于Emergent Abilities 的介绍和剖析，推荐参考文献3的blog。阅读后你会深刻理解Emergent Abilities 出现为何激动仁心，其对于<strong>复杂推理</strong>、<strong>知识推理</strong>和<strong>超强的集外泛化</strong>能力，均会为你开启“新”的世界。</p>
-<p>&amp;emsp;&amp;emsp;  此项能力的出现还需要进一步探索，目前证实存在这种强推理能力的，只有GPT-3.5系列包括text-davinci-002(InstructGPT) 和code-davinci-002 (Codex) 以及在其基础上的演进模型（比如ChatGPT）；另外结合指令学习的PALM模型系列也有此项能力。<br>Yao Fu合理推测千亿模型要存在Emergent Abilities 大致有三要素：</p>
-<p>&amp;emsp;&amp;emsp;   ● 指令学习：InstructGPT（GPT-3 text-davinci-002）和PaLM均有此任务设置；</p>
-<p>&amp;emsp;&amp;emsp;  ● 代码微调：Codex和PaLM均在代码上有过微调；</p>
-<p>&amp;emsp;&amp;emsp;   ● CoT微调：进行CoT数据微调后，LLM倾向于拥有Emergent Abilities。</p>
-<p>&amp;emsp;&amp;emsp;   2）Reasoning with prompting研究命题</p>
-<p>&amp;emsp;&amp;emsp;  回到CoT Prompt本身的讨论，我们可以从表3中得出业界对于此方向的研究命题，包括Prompt 工程设计、推理过程的优化、外源引擎（主要指代码引擎）以及知识增强（内外源知识）。</p>
+<p>&emsp;&emsp;  关于Emergent Abilities 的介绍和剖析，推荐参考文献3的blog。阅读后你会深刻理解Emergent Abilities 出现为何激动仁心，其对于<strong>复杂推理</strong>、<strong>知识推理</strong>和<strong>超强的集外泛化</strong>能力，均会为你开启“新”的世界。</p>
+<p>&emsp;&emsp;  此项能力的出现还需要进一步探索，目前证实存在这种强推理能力的，只有GPT-3.5系列包括text-davinci-002(InstructGPT) 和code-davinci-002 (Codex) 以及在其基础上的演进模型（比如ChatGPT）；另外结合指令学习的PALM模型系列也有此项能力。<br>Yao Fu合理推测千亿模型要存在Emergent Abilities 大致有三要素：</p>
+<p>&emsp;&emsp;   ● 指令学习：InstructGPT（GPT-3 text-davinci-002）和PaLM均有此任务设置；</p>
+<p>&emsp;&emsp;  ● 代码微调：Codex和PaLM均在代码上有过微调；</p>
+<p>&emsp;&emsp;   ● CoT微调：进行CoT数据微调后，LLM倾向于拥有Emergent Abilities。</p>
+<p>&emsp;&emsp;   2）Reasoning with prompting研究命题</p>
+<p>&emsp;&emsp;  回到CoT Prompt本身的讨论，我们可以从表3中得出业界对于此方向的研究命题，包括Prompt 工程设计、推理过程的优化、外源引擎（主要指代码引擎）以及知识增强（内外源知识）。</p>
 <img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p16-2.png" width=65%>
 <br>
 <center>表2  Reasoning with prompting的不同研究话题</center>
 
-<p>&amp;emsp;&amp;emsp;   对Reasoning with LLM 的研究感兴趣的同学具体可以参考文献5，表2也从此文中而来。</p>
-<p>&amp;emsp;&amp;emsp;  另外，其他对于LLM的使用，还包括对于其<strong>知识的存储机制、挖掘和利用</strong>的工作，研究者们将LLM作为一个知识库进行知识挖掘，或者探索LLM中知识的热更新，但总体这部分应用不够，且限制较多（受schema限制），此处不作详细阐述。</p>
-<p>&amp;emsp;&amp;emsp;  以上对于LLM使用方式的分类和总体脉络，参照Danqi Chen的COS 597G (Fall 2022): Understanding Large Language Models课程，路径见参考文献6；对LLM感兴趣的同学，强烈推荐此门课程的课件学习和相关paper阅读，当然遗憾的是没有看到课程相关video，如果有可以找到的同学欢迎分享。</p>
-<h1 id="5-LLM的机遇与挑战"><a href="#5-LLM的机遇与挑战" class="headerlink" title="5. LLM的机遇与挑战"></a>5. LLM的机遇与挑战</h1><p>&amp;emsp;&amp;emsp;  LLM的出现使得机遇与挑战并存，机遇在于技术革新势必会带来<strong>新赛道的机遇</strong>，挑战在于革新也会使越来越多old school方式被抛弃，跟不上节奏落伍的风险将会加大。</p>
-<p>&amp;emsp;&amp;emsp;  1）  从<strong>技术演进</strong>角度来说，LLM可能使NLP形成“大一统”之势。如果说BERT让大部分中间任务基本消亡，NLP传统技艺逐渐被替代，那么LLM则会让很多NLP子领域不再具备独立研究价值，它们均会被纳入LLM技术体系；这对于相关长期从事某些子领域的研究者和从业者是一件可怕的事，累积了一定时间的子领域专家经验&#x2F;技巧trick，一夜即被“暴力”的LLM击败，对相关业务和从业者挑战巨大；</p>
-<p>&amp;emsp;&amp;emsp;  但另一个角度来说，当NLP整体能力到达一定阶段时，“大一统”是必然结果，之前划分较多子领域是因为没有强能力模型而需要分而治之，积极利用LLM拓展自身业务的可能性是机遇所在。</p>
-<p>&amp;emsp;&amp;emsp;   2）从LLM应用角度来说，LLM-as-a-Service 会越来越普遍，OpenAI 提供的 LLMaaS 服务已经具备较高的速度，并开始逐步探索行之有效的盈利模式，这也是<strong>下游产品的机遇</strong>。截止2021年7月，全球有300多个app在使用GPT3技术，结合gpt3demo网站的数据，其收录了158个基于GPT-3的应用；LLM使得业界能力下限提升，行业门槛下降，业务优势会聚焦在垂直领域的<strong>数据积累资源</strong>。但LLMaaS的盈利模式并不成熟，尚待检验，合理的模式应该需要涉及用户分层，而非全量用户的铺展，这些均增添了较多不确定性，此为应用层面的挑战。</p>
-<p>&amp;emsp;&amp;emsp;  3）从推理成本来说，配合LLM的模型压缩、前向加速等手段均可以降低推理成本，虽然下游产品推理的服务成本尚高，但其实作为百亿模型，完成大量高智能任务具备初步可行性，此为机遇；但在降本增效的大环境下，真正将LLM投入生产的挑战性极大，对于LLM短期在生产环境下最实际的用途主要聚焦在线下，主要围绕数据扩增、减少标注成本和数据生产。</p>
-<p>&amp;emsp;&amp;emsp;  4） 从训练投入成本来说，作为最限制LLM发展的因素，它也在不断进步，除去本身模硬件升级、模型蒸馏、加速训练技术之外，LLM的稀疏化也会持续发展，SparseGPT应该是其中有代表性的工作之一，此为机遇；当然这样的进步相比高额的投入并不够，所以在第三节中提到的对于LLM的投入，是和相关组织的技术战略相关的。在LM基建层面，目标成为何Level的公司，会影响相关的投入，但LLM绝对是具备<strong>高战略价值的投入</strong>。</p>
-<p>&amp;emsp;&amp;emsp;  5） 从国内产研角度来说，这一点其实是比较让人忧虑的；因为LLM过于高昂的成本和苛刻的使用条件，这两年国内对于LLM的研究<strong>成果较少</strong>（累积参数的大模型有，但实际有影响的成果不多），与国外差距在增大。表1可以看到，GPT3后已经更新了5至6代，而国内甚至还没有真正意义上可以匹敌GPT3的基建模型，甚至60亿到130亿的 InstructGPT能力已经超过国内大部分的所谓大模型（当然OpenAI领先太多，其也超出Google的一般大模型，除了PaLM）。</p>
-<p>&amp;emsp;&amp;emsp;  当LLM逐渐成为垄断能力，当OpenAI、Google、DeepMind逐渐闭源时，基建模型又会成为“卡脖子”的能力，ChatGPT只是这一阶段的开始。<br>所以笔者认为对于LLM的态度，仅从个人来说，战略上务必重视它，积极应对挑战，不用过分悲观，寻求并抓住LLM带来的机遇；基于以上方法利用好可用的LLM，可控成本下优化自身业务，同时紧跟业界研究方向，“借好”LLM带来的新东风。</p>
-<p>&amp;emsp;&amp;emsp;  注：这部分关于LLM的影响和开放讨论网上信息繁多，感兴趣的同学可以阅读文献7和文献8，均有比较多的讨论，其中文献8是昨天看到的，这篇文章信息比较多，逻辑线稍微乱一些，但整体输出了很多有效观点，有兴趣详细了解LLM的同学也可以参考。</p>
+<p>&emsp;&emsp;   对Reasoning with LLM 的研究感兴趣的同学具体可以参考文献5，表2也从此文中而来。</p>
+<p>&emsp;&emsp;  另外，其他对于LLM的使用，还包括对于其<strong>知识的存储机制、挖掘和利用</strong>的工作，研究者们将LLM作为一个知识库进行知识挖掘，或者探索LLM中知识的热更新，但总体这部分应用不够，且限制较多（受schema限制），此处不作详细阐述。</p>
+<p>&emsp;&emsp;  以上对于LLM使用方式的分类和总体脉络，参照Danqi Chen的COS 597G (Fall 2022): Understanding Large Language Models课程，路径见参考文献6；对LLM感兴趣的同学，强烈推荐此门课程的课件学习和相关paper阅读，当然遗憾的是没有看到课程相关video，如果有可以找到的同学欢迎分享。</p>
+<h1 id="5-LLM的机遇与挑战"><a href="#5-LLM的机遇与挑战" class="headerlink" title="5. LLM的机遇与挑战"></a>5. LLM的机遇与挑战</h1><p>&emsp;&emsp;  LLM的出现使得机遇与挑战并存，机遇在于技术革新势必会带来<strong>新赛道的机遇</strong>，挑战在于革新也会使越来越多old school方式被抛弃，跟不上节奏落伍的风险将会加大。</p>
+<p>&emsp;&emsp;  1）  从<strong>技术演进</strong>角度来说，LLM可能使NLP形成“大一统”之势。如果说BERT让大部分中间任务基本消亡，NLP传统技艺逐渐被替代，那么LLM则会让很多NLP子领域不再具备独立研究价值，它们均会被纳入LLM技术体系；这对于相关长期从事某些子领域的研究者和从业者是一件可怕的事，累积了一定时间的子领域专家经验/技巧trick，一夜即被“暴力”的LLM击败，对相关业务和从业者挑战巨大；</p>
+<p>&emsp;&emsp;  但另一个角度来说，当NLP整体能力到达一定阶段时，“大一统”是必然结果，之前划分较多子领域是因为没有强能力模型而需要分而治之，积极利用LLM拓展自身业务的可能性是机遇所在。</p>
+<p>&emsp;&emsp;   2）从LLM应用角度来说，LLM-as-a-Service 会越来越普遍，OpenAI 提供的 LLMaaS 服务已经具备较高的速度，并开始逐步探索行之有效的盈利模式，这也是<strong>下游产品的机遇</strong>。截止2021年7月，全球有300多个app在使用GPT3技术，结合gpt3demo网站的数据，其收录了158个基于GPT-3的应用；LLM使得业界能力下限提升，行业门槛下降，业务优势会聚焦在垂直领域的<strong>数据积累资源</strong>。但LLMaaS的盈利模式并不成熟，尚待检验，合理的模式应该需要涉及用户分层，而非全量用户的铺展，这些均增添了较多不确定性，此为应用层面的挑战。</p>
+<p>&emsp;&emsp;  3）从推理成本来说，配合LLM的模型压缩、前向加速等手段均可以降低推理成本，虽然下游产品推理的服务成本尚高，但其实作为百亿模型，完成大量高智能任务具备初步可行性，此为机遇；但在降本增效的大环境下，真正将LLM投入生产的挑战性极大，对于LLM短期在生产环境下最实际的用途主要聚焦在线下，主要围绕数据扩增、减少标注成本和数据生产。</p>
+<p>&emsp;&emsp;  4） 从训练投入成本来说，作为最限制LLM发展的因素，它也在不断进步，除去本身模硬件升级、模型蒸馏、加速训练技术之外，LLM的稀疏化也会持续发展，SparseGPT应该是其中有代表性的工作之一，此为机遇；当然这样的进步相比高额的投入并不够，所以在第三节中提到的对于LLM的投入，是和相关组织的技术战略相关的。在LM基建层面，目标成为何Level的公司，会影响相关的投入，但LLM绝对是具备<strong>高战略价值的投入</strong>。</p>
+<p>&emsp;&emsp;  5） 从国内产研角度来说，这一点其实是比较让人忧虑的；因为LLM过于高昂的成本和苛刻的使用条件，这两年国内对于LLM的研究<strong>成果较少</strong>（累积参数的大模型有，但实际有影响的成果不多），与国外差距在增大。表1可以看到，GPT3后已经更新了5至6代，而国内甚至还没有真正意义上可以匹敌GPT3的基建模型，甚至60亿到130亿的 InstructGPT能力已经超过国内大部分的所谓大模型（当然OpenAI领先太多，其也超出Google的一般大模型，除了PaLM）。</p>
+<p>&emsp;&emsp;  当LLM逐渐成为垄断能力，当OpenAI、Google、DeepMind逐渐闭源时，基建模型又会成为“卡脖子”的能力，ChatGPT只是这一阶段的开始。<br>所以笔者认为对于LLM的态度，仅从个人来说，战略上务必重视它，积极应对挑战，不用过分悲观，寻求并抓住LLM带来的机遇；基于以上方法利用好可用的LLM，可控成本下优化自身业务，同时紧跟业界研究方向，“借好”LLM带来的新东风。</p>
+<p>&emsp;&emsp;  注：这部分关于LLM的影响和开放讨论网上信息繁多，感兴趣的同学可以阅读文献7和文献8，均有比较多的讨论，其中文献8是昨天看到的，这篇文章信息比较多，逻辑线稍微乱一些，但整体输出了很多有效观点，有兴趣详细了解LLM的同学也可以参考。</p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
 <li><a target="_blank" rel="noopener" href="https://yaofu.notion.site/How-does-GPT-Obtain-its-Ability-Tracing-Emergent-Abilities-of-Language-Models-to-their-Sources-b9a57ac0fcf74f30a1ab9e3e36fa1dc1">How does GPT Obtain its Ability? Tracing Emergent Abilities of Language Models to their Sources</a></li>
 <li><a target="_blank" rel="noopener" href="https://aclanthology.org/2022.acl-long.556.pdf">Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity</a></li>
-<li><a target="_blank" rel="noopener" href="https://yaofu.notion.site/A-Closer-Look-at-Large-Language-Models-Emergent-Abilities-493876b55df5479d80686f68a1abd72f">A Closer Look at Large Language Models Emergent Abilities</a></li>
-<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2005.14165.pdf">Language Models are Few-Shot Learners</a></li>
-<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.09597.pdf">Reasoning with Language Model Prompting</a></li>
+<li> <a target="_blank" rel="noopener" href="https://yaofu.notion.site/A-Closer-Look-at-Large-Language-Models-Emergent-Abilities-493876b55df5479d80686f68a1abd72f">A Closer Look at Large Language Models Emergent Abilities</a></li>
+<li> <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2005.14165.pdf">Language Models are Few-Shot Learners</a></li>
+<li> <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.09597.pdf">Reasoning with Language Model Prompting</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.cs.princeton.edu/courses/archive/fall22/cos597G/">COS 597G: Understanding Large Language Models</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/575391861/answer/2834072642">ChatGPT 印证了模型大一统的可行性，这在未来五年会对 NLP 从业者带来怎样的冲击？ - 知乎</a></li>
+<li> <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/575391861/answer/2834072642">ChatGPT 印证了模型大一统的可行性，这在未来五年会对 NLP 从业者带来怎样的冲击？ - 知乎</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/597586623?utm_campaign=shareopn&amp;utm_medium=social&amp;utm_oi=37478916423680&amp;utm_psn=1595705313004679168&amp;utm_source=wechat_session&amp;s_r=0">通向AGI之路：大型语言模型（LLM）技术精要 - 知乎</a></li>
-<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2301.00234.pdf">A Survey for In-context Learning</a></li>
+<li> <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2301.00234.pdf">A Survey for In-context Learning</a></li>
 <li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2104.08691.pdf">The Power of Scale for Parameter-Efficient Prompt Tuning</a></li>
 <li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2012.15723.pdf">Making Pre-trained Language Models Better Few-shot Learners</a></li>
-<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2001.07676v3.pdf">Exploiting Cloze Questions for Few Shot Text Classification and Natural Language Inference</a></li>
+<li> <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2001.07676v3.pdf">Exploiting Cloze Questions for Few Shot Text Classification and Natural Language Inference</a></li>
 </ol>
-<h1 id="附录1：LLM中英术语-x2F-概念对照表"><a href="#附录1：LLM中英术语-x2F-概念对照表" class="headerlink" title="附录1：LLM中英术语&#x2F;概念对照表"></a>附录1：LLM中英术语&#x2F;概念对照表</h1><table>
+<h1 id="附录1：LLM中英术语-概念对照表"><a href="#附录1：LLM中英术语-概念对照表" class="headerlink" title="附录1：LLM中英术语/概念对照表"></a>附录1：LLM中英术语/概念对照表</h1><table>
 <thead>
 <tr>
 <th align="left">英文</th>
@@ -413,12 +413,12 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 </tr>
 <tr>
 <td align="left">Demonstrations</td>
-<td align="left">&#x2F;</td>
+<td align="left">/</td>
 <td align="left">上下文学习中构造的输入输出对</td>
 </tr>
 <tr>
 <td align="left">Calibration</td>
-<td align="left">校准&#x2F;矫正</td>
+<td align="left">校准/矫正</td>
 <td align="left">针对模型LLM本身存在的bias做概率矫正</td>
 </tr>
 <tr>
@@ -503,7 +503,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <tr>
 <td align="left">Sparrow<br>（Chinchilla）</td>
 <td align="left">70B</td>
-<td align="left">&#x2F;</td>
+<td align="left">/</td>
 <td align="left">核心为从人类反馈中学习，创造更安全的对话助手。</td>
 <td align="left">将目标分解为详细的规则，并允许智能体引入外部知识来拓宽它可以正确讨论的主题。<br>在78%的时间内正确引用事实性问题的证据，并在对抗性条件下将规则违反率降低到8%。</td>
 <td align="left">Improving alignment of dialogue agents via targeted human judgements</td>
@@ -513,13 +513,13 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <td align="left">44M~ 280B</td>
 <td align="left">10.5TB</td>
 <td align="left">堆参数的大模型</td>
-<td align="left">11&#x2F;19任务好于GPT3<br><img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p20.png" width=65%></td>
+<td align="left">11/19任务好于GPT3<br><img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p20.png" width=65%></td>
 <td align="left">Scaling Language Models: Methods, Analysis &amp; Insights from Training Gopher</td>
 </tr>
 <tr>
 <td align="left">RETRO<br>(Retrieval Transformer)</td>
 <td align="left">172M~7.5B</td>
-<td align="left">&#x2F;</td>
+<td align="left">/</td>
 <td align="left">以 Gopher为基础改进语言模型架构，降低了训练资源成本，并检索增强。<br>在只使用4%的参数量的基础上，RETRO模型获得了与Gopher和 Jurassic-1 模型相当的性能，在大多数测试集上表现优异。</td>
 <td align="left"><img src="/2023/01/01/大型语言模型(LLM)的使用和思考/p21.png" width=65%></td>
 <td align="left">Improving language models by retrieving from trillions of tokens</td>
@@ -537,16 +537,16 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <td align="left">1.3B、6B、175B</td>
 <td align="left">微调数据1w+，Reward Model 4w+，PPO无标注数据4w+</td>
 <td align="left">GPT3.5 Finetune+RLHF指令微调<br></td>
-<td align="left">遵循人类指令，零&#x2F;少样本生成能力强</td>
+<td align="left">遵循人类指令，零/少样本生成能力强</td>
 <td align="left">Training language models to follow instructions with human feedback</td>
 </tr>
 <tr>
 <td align="left">ChatGPT</td>
-<td align="left">&#x2F;</td>
+<td align="left">/</td>
 <td align="left">推测和InstructGPT差不多</td>
 <td align="left">GPT3.5 （codex基础上）Finetune+RLHF+解决对齐问题</td>
-<td align="left">遵循人类指令，拒绝知识范围外问题，零&#x2F;少样本生成能力强；具有复杂推理能力</td>
-<td align="left">&#x2F;</td>
+<td align="left">遵循人类指令，拒绝知识范围外问题，零/少样本生成能力强；具有复杂推理能力</td>
+<td align="left">/</td>
 </tr>
 <tr>
 <td align="left"><br></td>
@@ -569,7 +569,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://ryanran92.github.io/2023/01/01/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/" data-id="clg4z8m9s0001tkpa7v20ck4b" data-title="大型语言模型(LLM)的使用和思考" class="article-share-link">Teilen</a>
+      <a data-url="https://ryanran92.github.io/2023/01/01/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/" data-id="clg619vr20002s4pa5t1m1nrq" data-title="大型语言模型(LLM)的使用和思考" class="article-share-link">Teilen</a>
       
       
       
