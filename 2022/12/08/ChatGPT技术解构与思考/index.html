@@ -66,7 +66,7 @@
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p48.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p49.png">
 <meta property="article:published_time" content="2022-12-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-13T07:02:56.580Z">
+<meta property="article:modified_time" content="2023-04-13T07:07:48.967Z">
 <meta property="article:author" content="Ryanran">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p1.png">
@@ -116,10 +116,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ryanran92.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ryanran92.github.io"></form>
       </div>
     </div>
   </div>
@@ -549,9 +549,9 @@
 <p>&emsp;&emsp;4）思想借鉴：</p>
 <p>&emsp;&emsp;a. 参考RLHF的方法，我们目前有初步尝试，如对多候选进行标注，利用得到的标注结果重新微调生成模型，或者增加排序阶段加入RL学习；</p>
 <p>&emsp;&emsp;b. 尝试一些高效调参的方法，<strong>微调</strong>176B的Bloom，但此条受限于资源尚需评估和确认。</p>
-<p>&emsp;&emsp;总的来说，将改写从最初的seq2seq，拓展到GPT+Instruction Tuning路径。</p>
-<p>&emsp;&emsp;实现时间： （1）&lt; (2) &lt;  (3)</p>
-<p>&emsp;&emsp;资源成本： （1）&gt; (3) &gt;  (2)</p>
+<p>&emsp;&emsp;<strong>实现时间</strong>：  2（直接使用API）&lt; 3（Self-Instruct数据扩增）&lt; 4（思想借鉴：指令学习+RLHF）&lt; 1（从头预训练)</p>
+<p>&emsp;&emsp;<strong>资源成本</strong>：  1（从头预训练) &gt; 2（直接使用API） &gt; 4（思想借鉴：指令学习+RLHF） &gt; 3（Self-Instruct数据扩增）</p>
+<p>&emsp;&emsp;其中资源成本按照<strong>长期成本</strong>估算，4需要指令数据构建的人工成本，3使用ChatGPT构建指令数据即可。</p>
 <p>&emsp;&emsp;5) 交互升级：</p>
 <p>&emsp;&emsp;将写作整体打造为ChatBot的形式，此核心思想见另一篇关于对话系统报告中相关性部分，涉及到交互层面的变革；但ChatGPT的出现和核心技术，让形式升级成为可能，而且预计随着深度学习和多智能体系统的发展，未来会有多种多样多功能的X-GPT/X-Bot出现。</p>
 <p>&emsp;&emsp;交互升级的核心是提供“<strong>个性化的服务</strong>”，用户可以得到根据自身需求定制的结果，而这些结果是用户通过交互和不同的指令修正反馈给模型，人人的需求都能被个性化地满足。</p>
@@ -676,7 +676,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/" data-id="clg6do17k00011gpaavtjecun" data-title="ChatGPT技术解构与思考" class="article-share-link">Teilen</a>
+      <a data-url="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/" data-id="clg6do17k00011gpaavtjecun" data-title="ChatGPT技术解构与思考" class="article-share-link">Share</a>
       
       
       
@@ -687,7 +687,7 @@
 <nav id="article-nav">
   
     <a href="/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
+      <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
           大型语言模型(LLM)的使用和思考
@@ -697,7 +697,7 @@
   
   
     <a href="/2022/11/08/Paper-info%E6%B1%87%E6%80%BB%E5%92%8C%E8%AE%B0%E5%BD%95-updating/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">Paper-info 汇总和记录-updating</div>
     </a>
   
@@ -721,7 +721,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li></ul>
     </div>
@@ -731,7 +731,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
