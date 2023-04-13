@@ -66,7 +66,7 @@
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p48.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p49.png">
 <meta property="article:published_time" content="2022-12-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-13T07:19:15.362Z">
+<meta property="article:modified_time" content="2023-04-13T07:24:10.664Z">
 <meta property="article:author" content="Ryanran">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p1.png">
@@ -209,8 +209,7 @@
 
 
 <hr>
-<h1 id="1-ChatGPT简介"><a href="#1-ChatGPT简介" class="headerlink" title="1.ChatGPT简介"></a>1.ChatGPT简介</h1><p>###1.1 ChatGPT是什么</p>
-<p>&emsp; &emsp;ChatGPT本质是一个<strong>对话模型</strong>，它可以回答日常问题、进行多轮闲聊，也可以承认错误回复、挑战不正确的前提，甚至会拒绝不适当的请求，在<strong>去除偏见和安全性</strong>上不同于以往的语言模型。ChatGPT从闲聊、回答日常问题，到文本改写、诗歌小说生成、视频脚本生成，以及编写和调试代码均展示了其令人惊叹的能力。</p>
+<h1 id="1-ChatGPT简介"><a href="#1-ChatGPT简介" class="headerlink" title="1.ChatGPT简介"></a>1.ChatGPT简介</h1><h3 id="1-1-ChatGPT是什么"><a href="#1-1-ChatGPT是什么" class="headerlink" title="1.1 ChatGPT是什么"></a>1.1 ChatGPT是什么</h3><p>&emsp; &emsp;ChatGPT本质是一个<strong>对话模型</strong>，它可以回答日常问题、进行多轮闲聊，也可以承认错误回复、挑战不正确的前提，甚至会拒绝不适当的请求，在<strong>去除偏见和安全性</strong>上不同于以往的语言模型。ChatGPT从闲聊、回答日常问题，到文本改写、诗歌小说生成、视频脚本生成，以及编写和调试代码均展示了其令人惊叹的能力。</p>
 <p>&emsp;&emsp;在上周公布博文和试用接口后，ChatGPT很快以令人惊叹的对话能力“引爆”网络，本文主要从技术角度，通过<strong>解构ChatGPT</strong>背后涉及的技术工作，来阐述其如此强大的原因；同时深入思考其对我们目前的<strong>实际工作和方法论的改变</strong>，包括可复用和可借鉴之处。</p>
 <h3 id="1-2-ChatGPT的技术背景"><a href="#1-2-ChatGPT的技术背景" class="headerlink" title="1.2 ChatGPT的技术背景"></a>1.2 ChatGPT的技术背景</h3><p>&emsp;&emsp;ChatGPT目前未释出论文文献，仅释出了介绍博文和试用demo，但从博文中提供的技术点和示意图，可以看出与年初公布的InstructGPT 核心思想一致，其关键能力来自三个方面：强大的<strong>基座大模型能力</strong>（InstructGPT），<strong>高质量的真实数据</strong>（干净且丰富），<strong>稳定的强化学习</strong>（PPO算法）。<br>以上是ChatGPT成功的三个要素，具体将在文中第2部分详细展开。</p>
 <h3 id="1-3-ChatGPT的主要特点"><a href="#1-3-ChatGPT的主要特点" class="headerlink" title="1.3 ChatGPT的主要特点"></a>1.3 ChatGPT的主要特点</h3><p>&emsp;&emsp;<strong>ChatGPT的优点令人惊叹：</strong></p>
@@ -291,7 +290,7 @@
 <p><strong>Step3：</strong></p>
 <p>&emsp;&emsp;使用PPO强化学习策略来微调第一阶段的模型。<strong>核心思想</strong>是随机抽取新的Prompt，用第二阶段的Reward Model给产生的回答打分，这个分数即回答的<strong>整体reward</strong>；进而将此reward回传，由此产生的策略梯度可以更新PPO模型参数；整个过程迭代数次直到模型收敛。</p>
 <p>&emsp;&emsp;强化学习算法可以简单理解为通过调整模型参数，使模型得到最大的<strong>奖励</strong>（reward），最大奖励意味着此时的回复最符合人工的选择取向。<br>而对于PPO，我们知道它是2017年OpenAI提出的一种新型的<strong>强化学习策略优化</strong>的算法即可。它提出了新的目标函数，可以在多个训练步骤实现小批量的更新，其实现简单、易于理解、性能稳定、能同时处理离散/连续动作空间问题、利于大规模训练。</p>
-<p>&emsp;&emsp;以上三个步骤即ChatGPT的训练过程，合称为文献中提到的** RLHF**(Reinforcement Learning from Human Feedback)技术。</p>
+<p>&emsp;&emsp;以上三个步骤即ChatGPT的训练过程，合称为文献中提到的<strong>RLHF</strong>(Reinforcement Learning from Human Feedback)技术。</p>
 <h3 id="2-2-ChatGPT为何成功？"><a href="#2-2-ChatGPT为何成功？" class="headerlink" title="2.2 ChatGPT为何成功？"></a>2.2 ChatGPT为何成功？</h3><p>&emsp;&emsp;为何三段式的训练方法就可以让ChatGPT如此强大？其实，以上的训练过程蕴含了上文我们提到的关键点，而这些关键点正是ChatGPT成功的原因：</p>
 <ul>
 <li>强大的<strong>指令学习</strong>能力（InstructGPT）；</li>
@@ -471,15 +470,15 @@
 <p><strong>（2023-02-15更新）</strong></p>
 <h4 id="2-2-6-从ChatGPT的成功看大型语言模型的构建思路"><a href="#2-2-6-从ChatGPT的成功看大型语言模型的构建思路" class="headerlink" title="2.2.6 从ChatGPT的成功看大型语言模型的构建思路"></a>2.2.6 从ChatGPT的成功看大型语言模型的构建思路</h4><p>&emsp;&emsp;最近笔者一直在思考，为何ChatGPT经过了代码微调、指令学习以及CoT微调之后，就会有强大的涌现能力（模型举一反三、领域外迁移、强泛化能力等），除了模型本身的千亿量级之外，我们是否能摸清其中的逻辑和基本思路，如果我们要构建自己的ChatGPT，需要<strong>遵从怎样的构建思路</strong>。</p>
 <p>&emsp;&emsp;今天阅读参考文献16时，Yao Fu给出了比较高维和系统化的总结：<strong>即大规模语言模型（LLM）的构建，分为四步，分别是「预训练」、「指令微调」、「对齐」、「专门化」。</strong>具体来说（以下为参考文中内容进行的汇总）：</p>
-<p>&emsp;&emsp;1）** 预训练：得到强基础模型**；<br><br>&emsp;&emsp;「预训练可以得到语言生成、世界知识、In-context Learning、代码理解/生成、复杂推理/思维链等能力」:</p>
+<p>&emsp;&emsp; 1）<strong>预训练：得到强基础模型</strong>；<br><br>&emsp;&emsp;「预训练可以得到语言生成、世界知识、In-context Learning、代码理解/生成、复杂推理/思维链等能力」:</p>
 <center><img src="/2022/12/08/ChatGPT技术解构与思考/p34.png" width=65%></center>
 
 <p>&emsp;&emsp;从Yao Fu文中上图可以看出，我们日常使用的开源的Bloom、OPT只属于第一层级，（好奇此处Code-davinci-002为何也属于此层级，因为它已经历过指令学习）；这一层级，是我们之前通常意义上提到的大模型；</p>
-<p>&emsp;&emsp;2）** 指令微调：释放模型能力<strong>；<br><br>&emsp;&emsp;「指令微调旨在加强预训练模型的</strong>已有能力<strong>，或者开发出预训练模型</strong>不具备的能力<strong>，指令微调的思路为让模型在各项维度上的</strong>能力全面扩张<strong>。」 文中有个非常有趣的观点，即将不同指令视作线代中的</strong>一组基<strong>，指令微调学到了将这些基进行组合的能力，从而极大的扩张了它的集外泛化能力。这个观点</strong>部分解释**了指令微调带来的质变，首次看到这样的解释，具有启发意味。</p>
+<p>&emsp;&emsp;2）<strong>指令微调：释放模型能力</strong>；<br><br>&emsp;&emsp;「指令微调旨在加强预训练模型的<strong>已有能力</strong>，或者开发出预训练模型<strong>不具备的能力</strong>，指令微调的思路为让模型在各项维度上的<strong>能力全面扩张</strong>。」 文中有个非常有趣的观点，即将不同指令视作线代中的<strong>一组基</strong>，指令微调学到了将这些基进行组合的能力，从而极大的扩张了它的集外泛化能力。这个观点<strong>部分解释</strong>了指令微调带来的质变，首次看到这样的解释，具有启发意味。</p>
 <center><img src="/2022/12/08/ChatGPT技术解构与思考/p35.png" width=65%></center>
 
 <p>&emsp;&emsp;此部分我们平时涉及开始变少，其中text-davinci-002/003仅有过调用；此层级也倾向属于模型基建层，self-instruct是一项值得注意的工作：<a target="_blank" rel="noopener" href="https://github.com/yizhongw/self-instruct">https://github.com/yizhongw/self-instruct</a> ，这部分的核心是<strong>需要构造高质量的指令数据</strong>：种类足够多，每个类别下例子足够多，而<strong>中文指令数据现在稀缺</strong>。</p>
-<p>&emsp;&emsp;3）** 对齐：与人类价值观匹配**<br></p>
+<p>&emsp;&emsp;3）<strong>对齐：与人类价值观匹配</strong><br></p>
 <p>&emsp;&emsp;文中的观点是：“对齐旨在塑造模型的「<strong>价值观</strong>」，使其符合人类的期望，进而塑造模型的「<strong>人格</strong>」。”</p>
 <center><img src="/2022/12/08/ChatGPT技术解构与思考/p36.png" width=65%></center>
 
@@ -578,7 +577,7 @@
 
 <p>&emsp;&emsp;从1月底开始ChatGPT持续翻火，ChatGPT本身的能力持续被世人所认知：<strong>一方面</strong>，伴随微软和谷歌等巨头在搜索市场的激烈竞争将其推向风口，前者迅速将ChatGPT融入Bing搜索，后者推出了暂时不尽如人意的Bard；<strong>另一方面</strong>，在国内伴随营销号的宣传下其迅速呈出圈之势，各大公司突然涌向此风口，开始要做自己的ChatGPT，抑或宣称已存在自己的ChatGPT，这样的营销/宣传行为无可厚非，至少让国内也开始意识到自身在大模型上的差距，同时进行反思以及向世界看齐。</p>
 <p>&emsp;&emsp;在笔者看来，复制ChatGPT对于国内很多头部企业来说<strong>并非最大的难事</strong>，虽然有较多挑战，但最终可能会成功；但我们真正缺的是看待前沿技术的<strong>视野、前瞻性、战略眼光和发展的魄力</strong>，技术需要在做出判断后，有一定的冒险精神去做正确的事情，过于保守的逐利虽然稳妥，但没有持续的创新即意味着在原有事物中持续的“卷”和内耗。在GPT3出现后的2年半内，我们一直都有开始跟进的契机，而绝非随着ChatGPT的出现后才突然觉醒；但为时不晚，至少我们已经启程。</p>
-<p>2）** 直接使用**层面：此层面为复用API中效果极佳的部分，根据最新产品同学的调研结果中，可以看出设定较佳的Prompt前提下，可以快速实现高满意度的写作的多层级需求，这也是很让人激动的部分。</p>
+<p>2）<strong>直接使用</strong>层面：此层面为复用API中效果极佳的部分，根据最新产品同学的调研结果中，可以看出设定较佳的Prompt前提下，可以快速实现高满意度的写作的多层级需求，这也是很让人激动的部分。</p>
 <p>&emsp;&emsp;直接使用的<strong>优势</strong>是可以快速实现多粒度多层级上文·功能需求，尤其是很多需求难以定义清晰、数据难以获得的情况下，复用并包装这样的功能一本万利；</p>
 <p>&emsp;&emsp;缺点也很明显，最主要是以上提到的安全问题；另一方面，直接调用成本是较高，根据GPT3.5(Davinci)的成本推测:</p>
 <img src="/2022/12/08/ChatGPT技术解构与思考/p44.png" width=65%>
