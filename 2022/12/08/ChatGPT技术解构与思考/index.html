@@ -6,12 +6,12 @@
   
   <title>ChatGPT技术解构与思考 | Ryanran&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="更新日志 2023-03-15 - 结合文献28~31，增加2.2.5中 GPT4最新进展和升级，关于GPT4更详细内容可以移步：关于GPT-4的十问十答  2023-03-14 - 增加2.2.5 中，结合文献23，增加涌现能力存在于各个学科，以及观测会影响其体现的观点 - 增加2.2.5 中，关于 加大模型规模 和 研究人类反馈 两条路径对比和说明 - 结合文献25甲子光年的报告，增加3.1">
+  <meta name="description" content="更新日志 2023-04-12-增加2.2.5 中，文章34关于产生涌现能力的另一种猜想：子任务的「渐进」构成整体任务的「涌现」   -增加3.1中，关于ChatGPT plugin生态（使用工具的智能）和HuggingGPT调用多专家模型内容   -修正3.3章节中，实现时间和资源成本因增加「直接预训练」后的序号错误问题 2023-03-15 - 结合文献28~31，增加2.2.5中 GPT4最">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ChatGPT技术解构与思考">
 <meta property="og:url" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/index.html">
 <meta property="og:site_name" content="Ryanran&#39;s Blog">
-<meta property="og:description" content="更新日志 2023-03-15 - 结合文献28~31，增加2.2.5中 GPT4最新进展和升级，关于GPT4更详细内容可以移步：关于GPT-4的十问十答  2023-03-14 - 增加2.2.5 中，结合文献23，增加涌现能力存在于各个学科，以及观测会影响其体现的观点 - 增加2.2.5 中，关于 加大模型规模 和 研究人类反馈 两条路径对比和说明 - 结合文献25甲子光年的报告，增加3.1">
+<meta property="og:description" content="更新日志 2023-04-12-增加2.2.5 中，文章34关于产生涌现能力的另一种猜想：子任务的「渐进」构成整体任务的「涌现」   -增加3.1中，关于ChatGPT plugin生态（使用工具的智能）和HuggingGPT调用多专家模型内容   -修正3.3章节中，实现时间和资源成本因增加「直接预训练」后的序号错误问题 2023-03-15 - 结合文献28~31，增加2.2.5中 GPT4最">
 <meta property="og:locale">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p1.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p2.png">
@@ -52,6 +52,8 @@
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p37.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p38.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p39.png">
+<meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p_new1_0413.png">
+<meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p_new2_0413.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p40.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p41.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p42.png">
@@ -60,10 +62,11 @@
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p45.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p46.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p47.png">
+<meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p_new3_0413.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p48.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p49.png">
 <meta property="article:published_time" content="2022-12-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-07T07:26:58.777Z">
+<meta property="article:modified_time" content="2023-04-13T07:02:56.580Z">
 <meta property="article:author" content="Ryanran">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p1.png">
@@ -146,6 +149,9 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="更新日志"><a href="#更新日志" class="headerlink" title="更新日志"></a>更新日志</h1><hr>
+<p>2023-04-12<br>-增加2.2.5 中，文章34关于产生涌现能力的另一种猜想：子任务的<strong>「渐进」</strong>构成整体任务的<strong>「涌现」</strong>  </p>
+<p>-增加3.1中，关于ChatGPT plugin生态（<strong>使用工具的智能</strong>）和HuggingGPT调用多专家模型内容  </p>
+<p>-修正3.3章节中，<strong>实现时间</strong>和<strong>资源成本</strong>因增加「直接预训练」后的序号错误问题</p>
 <p>2023-03-15<br><br> - 结合文献28~31，增加2.2.5中 <strong>GPT4最新进展</strong>和升级，关于GPT4更详细内容可以移步：<a href="https://ryanran92.github.io/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/">关于GPT-4的十问十答</a> </p>
 <p>2023-03-14<br><br> - 增加2.2.5 中，结合文献23，增加涌现能力<strong>存在于各个学科</strong>，以及<strong>观测会影响其体现</strong>的观点<br><br> - 增加2.2.5 中，关于 <strong>加大模型规模</strong> 和 <strong>研究人类反馈</strong> 两条路径对比和说明<br><br> - 结合文献25甲子光年的报告，增加3.1 <strong>场景应用</strong>图、3.4<strong>信息革命</strong>图、3.5国内<strong>大模型现状</strong>图<br><br> - 增加3.4中<strong>Kosmos-1</strong>图<br><br> - 结合ChatGPT API后涌现的应用，增加3.1 <strong>应用案例</strong>图</p>
 <p>2023-03-04<br><br> - 增加2.2.5 中，GPT3.5前发展进程的图表简述；增加ChatGPT「<strong>自身能力的认知</strong>」的进化观点，参考邱老师讲座<br><br> - 更新3.1 第4点中，「自身升级」中New Bing的升级<br><br> - 增加3.2 第4点「<strong>安全和监管</strong>」内容，融合部分面向安全线分享的调研内容<br><br> - 新增3.4 「未来」内容<br><br> - 更新 ChatGPT API和成本相关内容<br><br> - 其他：部分缩进格式修正</p>
@@ -410,6 +416,7 @@
 <img src="/2022/12/08/ChatGPT技术解构与思考/p32.png" width=65%>
 
 <p>&emsp;&emsp;所以，ChatGPT及相关LLM的涌现能力的出现原因和特性，需要<strong>更精细的观测和研究</strong>。</p>
+<p>&emsp;&emsp;在最近的文章34中，张俊林提出的另外一个猜想是，涌现能力一般出现在复杂任务（逻辑推演、数学运算等），此类任务由多个子任务（多步骤）构成，<strong>子任务一般是“循序渐进”的，符合scaling law</strong>，而当子任务汇集成最终的整体任务，<strong>完成整体目标时，凸显出涌现能力</strong>，文中以国际象棋中的“合法移动”（子任务）和最终的“将死”（整体目标）举例；另外，也提出了用Grokking现象来解释涌现能力，即不同规模模型学到好的表征，需要数据量会越来越少，但此条为作者尝试解读思想，感觉合理性尚需论证，感兴趣的同学可以阅读文章34。</p>
 <p><strong>（2023-03-04更新）</strong></p>
 <p>&emsp;&emsp;另外一种很有启发性的观点来自于参考文献17及邱锡鹏教授的讲座中，其通过模型<strong>对自身能力的认知</strong>来阐述ChatGPT相比GPT3模型的能力发展。具体可抽象为下图：</p>
 <img src="/2022/12/08/ChatGPT技术解构与思考/p33.png" width=65%>
@@ -456,8 +463,13 @@
 <p>&emsp;&emsp;ChatGPT API的发布极大提升了各类实际应用的发布速度，未来一到两年，会有源源不断、具有想象力的工具和应用出现。此处借用明日分享的一页ppt，具体也可参考文献26等。</p>
 <center><img src="/2022/12/08/ChatGPT技术解构与思考/p39.png" width=65%></center>
 
+<p>&emsp;&emsp;5）ChatGPT<strong>生态系统</strong>：3月23日，OpenAI推出ChatGPT plugins系统，并率先推出web browser和code interpreter两个插件；插件系统提供了如下范式：<strong>当用户在交互过程提出某些问题和需求时，ChatGPT会主动识别意图，进而选择调用更专业、更细化的第三方API</strong>，此举构建了以ChatGPT作为“大脑”和核心的<strong>AI交互生态系统</strong>，为ChatGPT提供了“耳朵”、“眼睛”等<strong>使用工具的智能</strong>，让专家模型做更专业的事。首批开放的插件如下图，包括了科学计算的Wolfram、语言教学的Speaker、trip plan的Expedia等11种插件。</p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p_new1_0413.png" width=65%>
 
+<p>&emsp;&emsp;另一方面，以ChatGPT为核心的多专家模型调用也应运而生，其中有代表性的是HuggingGPT，其用ChatGPT解析意图（<strong>Task planning</strong>）、选择模型（<strong>Model Selection</strong>），在专家模型执行任务后（<strong>Task Execution</strong>），根据返回结果利用ChatGPT生成响应（<strong>Response Generation</strong>）。</p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p_new2_0413.png" width=65%>
 
+<p>&emsp;&emsp;以上四个步骤被设计为<strong>超长的Prompt</strong>，暂时来说成本较高，但它利用了Huggingface中的专家模型，极大的扩展了ChatGPT的使用模态、场景和生态。具体Prompt的设计可以参考文献32。</p>
 <h3 id="3-2-观点"><a href="#3-2-观点" class="headerlink" title="3.2 观点"></a>3.2 观点</h3><p>&emsp;&emsp;参考上文所述，以及参阅近2年OpenAI GPT语言模型相关的文章，RLHF的方法效果显著，ChatGPT成功的核心也在于基于<strong>LLM</strong>（Large language model）的<strong>RLHF</strong>（Reinforcement Learning from Human Feedback），可以说，RLHF是一个很有希望且有趣的方向；强化学习在即将发布的GPT-4中大概率扮演这关键角色。</p>
 <p>&emsp;&emsp;结合对于ChatGPT的看法，我们从算法数据、行业创新、核心风险做出了阐述：</p>
 <p>&emsp;&emsp;1）首先对于<strong>ChatGPT的规模</strong>，目前没有更多信息支撑，所以无法明确如此智能的ChatGPT是在何规模下达成的。<br>最早的175B的GPT-3代号是Davinci，其他大小的模型有不同的代号。然而自此之后的代号几乎是一片迷雾，不仅没有任何论文，官方的介绍性博客也没有。OpenAI称text-davinci-002/003是GPT-3.5，而它们均为InstrucGPT类型的模型，ChatGPT是基于其中一个微调模型得到，固由此推测<strong>ChatGPT是千亿模型</strong>。（<strong>20230211</strong>：根据最新的接口参数，ChatGPT模型名为text-chat-davinci-002，是在text-davinci-002上结合RLHF训练而来，所以ChatGPT确定是千亿模型）</p>
@@ -551,7 +563,9 @@
 
 <p>&emsp;&emsp;3) ChatGPT在带来范式改变，让很多NLP子任务“消失”的同时，也会带来新的研究问题：一条路线是如何精准对大模型提出需求，对ChatGPT进行“催眠”的<strong>Prompt Enginering</strong>，网络上有很多Prompt调教指南：<a target="_blank" rel="noopener" href="https://github.com/PlexPt/awesome-chatgpt-prompts-zh%EF%BC%9B">https://github.com/PlexPt/awesome-chatgpt-prompts-zh；</a> 或Prompt的学习和自动生成；AI生成<strong>内容的检测</strong>延续之前的方向持续发展，虽然已有包括GPT-zero、WaterMark等方法已提出，但目前效果一般；另外就是<strong>Machine Unlearning</strong> ，目标是使得大模型可以有效地保护用户隐私数据，遗忘需要它遗忘的知识；</p>
 <p>&emsp;&emsp;4) <strong>超越人类？</strong>此条观点主要来自于文献20，符尧认为ChatGPT类模型在<strong>并行感知</strong>：极短时间内多篇信息输入；<strong>记忆遗传</strong>：模型演化记忆；<strong>加速时间</strong>：模型进化速度可能超出人类；以及<strong>无限生命</strong>：模型权重不会丢失等层级可能会超越人类。</p>
-<p>&emsp;&emsp;这一点虽然具有某些理想主义的色彩：“数字永生”，但ChatGPT除了强大的意图理解和生成能力之外，其<strong>进化速度和持续学习</strong>等能力，确实与之前的模型有本质区别；若其进化速度果真超出scaling law，所谓的AGI可能会越来越近；当然笔者认为，归根结底ChatGPT依旧是一个概率模型，没有逻辑处理模块、没有真实记忆模块，能否实现AGI尚需时间检验。</p>
+<p>&emsp;&emsp;这一点虽然具有某些理想主义的色彩：“数字永生”，但ChatGPT除了强大的意图理解和生成能力之外，其<strong>进化速度和持续学习</strong>等能力，确实与之前的模型有本质区别；若其进化速度果真超出scaling law，所谓的AGI可能会越来越近；当然笔者认为，归根结底ChatGPT依旧是一个概率模型，没有逻辑处理模块、没有真实记忆模块，真正的AGI需要从<strong>视觉、直觉、时间、空间</strong>上进行感知建模。</p>
+<img src="/2022/12/08/ChatGPT技术解构与思考/p_new3_0413.png" width=65%>
+
 <h3 id="3-5-写在最后"><a href="#3-5-写在最后" class="headerlink" title="3.5 写在最后"></a>3.5 写在最后</h3><p>&emsp;&emsp;做中国自己的ChatGPT是国内讨论火热的话题之一，各大厂已经纷纷押注。如文献18提到，ChatGPT = 50% 数据 + 30% 场景 + 10% 算力 + 10% 团队，国内的优势是<strong>工程化人才的成本、数量和应用规模巨大</strong>，得到国内的ChatGPT难度尚可，但笔者认为，“罗马非一日建成”，单纯复现得到ChatGPT非关键，<strong>核心</strong>是对于战略性的技术、对于卡脖子的基础设施，我们需要具有<strong>发展的眼光，持续关注、持续投入、长远发展</strong>，才能真正具有核心竞争力。</p>
 <p>&emsp;&emsp;大模型从算力、数据到模型建立，非一朝一夕之功，需要<strong>集中力量办大事</strong>，企业的责任是一方面，也需要国家的整体战略，从下图可以看出中国的大模型（除了图中的OpenAI相关）基础并不差，战略更加重视之后会有更长足的发展（图来源：HTI，甲子光年智库梳理，2023年）。</p>
 <img src="/2022/12/08/ChatGPT技术解构与思考/p48.png" width=65%>
@@ -596,6 +610,9 @@
 <li>GPT-4震撼发布-机器之心 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/kA7FBZsT6SIvwIkRwFS-xw">https://mp.weixin.qq.com/s/kA7FBZsT6SIvwIkRwFS-xw</a></li>
 <li>GPT-4 is OpenAI’s most advanced system, producing safer and more useful responses <a target="_blank" rel="noopener" href="https://openai.com/product/gpt-4">https://openai.com/product/gpt-4</a></li>
 <li>GPT-4 Technical Report <a target="_blank" rel="noopener" href="https://cdn.openai.com/papers/gpt-4.pdf">https://cdn.openai.com/papers/gpt-4.pdf</a></li>
+<li>HuggingGPT: Solving AI Tasks with ChatGPT and its Friends in Hugging Face <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2303.17580.pdf">https://arxiv.org/pdf/2303.17580.pdf</a></li>
+<li>ChatGPT plugins <a target="_blank" rel="noopener" href="https://openai.com/blog/chatgpt-plugins">https://openai.com/blog/chatgpt-plugins</a></li>
+<li>ChatGPT 类大语言模型为什么会带来“神奇”的涌现能力?<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/RSrS9eHMy38MaFLnhC4-rw">https://mp.weixin.qq.com/s/RSrS9eHMy38MaFLnhC4-rw</a> </li>
 </ol>
 <hr>
 <h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><ol>
