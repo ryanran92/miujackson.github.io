@@ -240,13 +240,16 @@
 <p>&emsp; &emsp;主要对平时所读大模型、NLG相关paper、观点和信息进行汇总，实时更新。</p>
 <h1 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h1><hr>
 <ul>
-<li><p><strong>HuggingGPT:</strong> Solving AI Tasks with ChatGPT in Hugging Face <a target="_blank" rel="noopener" href="http://t.km/qaodgc" title="https://arxiv.org/pdf/2303.17580.pdf">http://t.km/qaodgc</a> 核心用ChatGPT解析意图（任务规划）、模型选择、在专家模型执行任务后（任务执行），根据返回结果利用ChatGPT生成响应（响应生成），设计为一超长的Prompt，所以缺点是暂时来说成本很高，优点是利用了很多专家模型。 Time: 2023-04-12</p>
-<br></li>
-<li><p><strong>Sparks of AGI一作演讲</strong> <a target="_blank" rel="noopener" href="https://hub.baai.ac.cn/view/25373%EF%BC%8C">https://hub.baai.ac.cn/view/25373，</a> 整体和论文内容一致，对比各项任务中GPT-4的智能，核心观点很有趣：即如何定义GPT-4是否有智能，按照不同维度可不同定义：智力包括推理、计划、解决问题、抽象思维、比较复杂的观点以及快速学习和从经验中学习等能力，GPT-4无法计划、缺乏记忆无法实时学习，其他能力可被定义为AGI。 Time: 2023-04-12</p>
-<br></li>
-<li><p><strong>AutoGPT</strong> <a target="_blank" rel="noopener" href="https://github.com/torantulino/auto-gpt">https://github.com/torantulino/auto-gpt</a> 基于GPT-4/3.5 的实验性开源应用程序，相当于给GPT大脑一个内存和身体，设定任务后让其自己解决问题，同时可互联网访问、长期和短期内存管理、文件存储和生成摘要等，在其基础上构造垂类X-GPT，想象空间较大，但未看出整体设置的必要性；类似新应用可参照<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/621132445">https://zhuanlan.zhihu.com/p/621132445</a> Time: 2023-04-12</p>
-</li>
+<li><strong>HuggingGPT:</strong> Solving AI Tasks with ChatGPT in Hugging Face <a target="_blank" rel="noopener" href="http://t.km/qaodgc" title="https://arxiv.org/pdf/2303.17580.pdf">http://t.km/qaodgc</a> 核心用ChatGPT解析意图（任务规划）、模型选择、在专家模型执行任务后（任务执行），根据返回结果利用ChatGPT生成响应（响应生成），设计为一超长的Prompt（见下图1），所以缺点是暂时来说成本很高，优点是利用了很多专家模型。 Time: 2023-04-12</li>
 </ul>
+ <img src="/2022/11/08/Paper-info汇总和记录-updating/p0412_01.png" width=65%>
+
+ <img src="/2022/11/08/Paper-info汇总和记录-updating/p0412_02.png" width=65%>
+<br>
++ **Sparks of AGI一作演讲** https://hub.baai.ac.cn/view/25373， 整体和论文内容一致，对比各项任务中GPT-4的智能，核心观点很有趣：即如何定义GPT-4是否有智能，按照不同维度可不同定义：智力包括推理、计划、解决问题、抽象思维、比较复杂的观点以及快速学习和从经验中学习等能力，GPT-4无法计划、缺乏记忆无法实时学习，其他能力可被定义为AGI。 Time: 2023-04-12
+<br>
++ **AutoGPT** https://github.com/torantulino/auto-gpt 基于GPT-4/3.5 的实验性开源应用程序，相当于给GPT大脑一个内存和身体，设定任务后让其自己解决问题，同时可互联网访问、长期和短期内存管理、文件存储和生成摘要等，在其基础上构造垂类X-GPT，想象空间较大，但未看出整体设置的必要性；类似新应用可参照https://zhuanlan.zhihu.com/p/621132445 Time: 2023-04-12
+
 <ol>
 <li><p><strong>针对多步推理进行小型语言模型的专门化</strong>  <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2301.12726.pdf">https://arxiv.org/pdf/2301.12726.pdf</a>  <a target="_blank" rel="noopener" href="https://hub.baai.ac.cn/view/25238">https://hub.baai.ac.cn/view/25238</a> 之前介绍中提到的第四步模型专业化，以专门针对目标任务专门化模型能力，即将大模型能力集中在特定的目标任务上，使用较小模型多步推理来靠近大模型的涌现能力。另外文中提出了包括数据格式、起始模型等选择方法。 Time: 2023-04-06</p>
 </li>
