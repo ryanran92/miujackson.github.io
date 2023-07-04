@@ -71,7 +71,7 @@
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p48.png">
 <meta property="og:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p49.png">
 <meta property="article:published_time" content="2022-12-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-04T05:02:02.227Z">
+<meta property="article:modified_time" content="2023-07-04T05:03:51.362Z">
 <meta property="article:author" content="Ryanran">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/p1.png">
@@ -121,10 +121,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ryanran92.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ryanran92.github.io"></form>
       </div>
     </div>
   </div>
@@ -548,7 +548,7 @@
 <p>&emsp;&emsp;如上所述，<strong>Autonomous Agent=LLM+记忆+规划技能+工具使用</strong>，下图中的每个step均开启或包含了新的研究和应用方向，可以说其目前是最贴近AGI的一种早期设计和形态，是一套综合的系统。</p>
 <img src="/2022/12/08/ChatGPT技术解构与思考/p_5_0703.png" width=65%>
 
-<p>&emsp;&emsp;虽然目前有<strong>上下文长度限制</strong>、<strong>规划和任务分解鲁棒性较差</strong>、<strong>输出可靠性</strong>等问题，但Autonomous Agent具有极大的想象空间，笔者推测未来一段时间在此方面不同领域场景，会有很多成果输出，如文献39提出AD-AutoGPT ，以自主方式对阿尔茨海默症的复杂健康叙述进行数据收集、处理和分析；甚至外界有推断<strong>GPT-5</strong>可能会基于GPT-4+强人工反馈进行<strong>智能体循环</strong>，即Critique is all you need，从而让其进行自我修复，提升任务效果。另外值得一提的是，目前业界在这一块处于起步、相对平等竞争的状态（当然OpenAI的GPT-4还是领先一个身位）。<br>&emsp;&emsp;其他对于Autonomous Agent感兴趣的同学，可以阅读文献37，Liang的blog篇篇经典，值得细读。</p>
+<p>&emsp;&emsp;虽然目前有<strong>上下文长度限制</strong>、<strong>规划和任务分解鲁棒性较差</strong>、<strong>输出可靠性</strong>等问题，但Autonomous Agent具有极大的想象空间，笔者推测未来一段时间在此方面不同领域场景，会有很多成果输出，如文献39提出AD-AutoGPT ，以自主方式对阿尔茨海默症的复杂健康叙述进行数据收集、处理和分析；甚至外界有推断<strong>GPT-5</strong>可能会基于GPT-4+强人工反馈进行<strong>智能体循环</strong>，即Critique is all you need，从而让其进行自我修复，提升任务效果。另外值得一提的是，目前业界在这一块处于起步、相对平等竞争的状态（当然OpenAI的GPT-4还是领先一个身位），会是一个不错的竞争赛道。<br>&emsp;&emsp;其他对于Autonomous Agent感兴趣的同学，可以阅读文献37，Liang的blog篇篇经典，值得细读。</p>
 <h3 id="3-2-观点"><a href="#3-2-观点" class="headerlink" title="3.2 观点"></a>3.2 观点</h3><p>&emsp;&emsp;参考上文所述，以及参阅近2年OpenAI GPT语言模型相关的文章，RLHF的方法效果显著，ChatGPT成功的核心也在于基于<strong>LLM</strong>（Large language model）的<strong>RLHF</strong>（Reinforcement Learning from Human Feedback），可以说，RLHF是一个很有希望且有趣的方向；强化学习在即将发布的GPT-4中大概率扮演这关键角色。</p>
 <p>&emsp;&emsp;结合对于ChatGPT的看法，我们从算法数据、行业创新、核心风险做出了阐述：</p>
 <p>&emsp;&emsp;1）首先对于<strong>ChatGPT的规模</strong>，目前没有更多信息支撑，所以无法明确如此智能的ChatGPT是在何规模下达成的。<br>最早的175B的GPT-3代号是Davinci，其他大小的模型有不同的代号。然而自此之后的代号几乎是一片迷雾，不仅没有任何论文，官方的介绍性博客也没有。OpenAI称text-davinci-002/003是GPT-3.5，而它们均为InstrucGPT类型的模型，ChatGPT是基于其中一个微调模型得到，固由此推测<strong>ChatGPT是千亿模型</strong>。（<strong>20230211</strong>：根据最新的接口参数，ChatGPT模型名为text-chat-davinci-002，是在text-davinci-002上结合RLHF训练而来，所以ChatGPT确定是千亿模型）</p>
@@ -761,7 +761,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/" data-id="clg6do17k00011gpaavtjecun" data-title="ChatGPT技术解构与思考" class="article-share-link">Share</a>
+      <a data-url="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/" data-id="clg6do17k00011gpaavtjecun" data-title="ChatGPT技术解构与思考" class="article-share-link">Teilen</a>
       
       
       
@@ -772,7 +772,7 @@
 <nav id="article-nav">
   
     <a href="/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Neuer</strong>
       <div class="article-nav-title">
         
           大型语言模型(LLM)的使用和思考
@@ -782,7 +782,7 @@
   
   
     <a href="/2022/11/08/Paper-info%E6%B1%87%E6%80%BB%E5%92%8C%E8%AE%B0%E5%BD%95-updating/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">Paper-info 汇总和记录-updating</div>
     </a>
   
@@ -806,7 +806,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li></ul>
     </div>
@@ -816,7 +816,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
