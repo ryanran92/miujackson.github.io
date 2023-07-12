@@ -6,12 +6,12 @@
   
   <title>关于GPT-4的十问十答 | Ryanran&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="前言 &amp;emsp; &amp;emsp;GPT-4作为GPT系列的最新模型，其整体实现逻辑、技术结构与ChatGPT类似，可以将其看作是拥有更长上文、能更好理解复杂指令、回答更可靠、更风格化、更有创意的图文版升级ChatGPT，故本文未按照从头开始叙述的逻辑，在之前《ChatGPT技术解构与思考》整体脉络之上，结合OpenAI的Technical Report，选取GPT-4的关键点作阐述，整理出GPT4">
+  <meta name="description" content="更新日志2023-07-11  更新Q3问题中，关于GPT-4模型架构、训练基础设施、并行策略、多模态适应方式等信息的更新，具体内容参考链接：https:&#x2F;&#x2F;www.semianalysis.com&#x2F;p&#x2F;gpt-4-architecture-infrastructure）  更新Q9问题中，第三点AI agent系统以GPT-4为基础模型的逻辑。    前言 &amp;emsp; &amp;emsp;GPT-4作">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于GPT-4的十问十答">
 <meta property="og:url" content="https://ryanran92.github.io/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/index.html">
 <meta property="og:site_name" content="Ryanran&#39;s Blog">
-<meta property="og:description" content="前言 &amp;emsp; &amp;emsp;GPT-4作为GPT系列的最新模型，其整体实现逻辑、技术结构与ChatGPT类似，可以将其看作是拥有更长上文、能更好理解复杂指令、回答更可靠、更风格化、更有创意的图文版升级ChatGPT，故本文未按照从头开始叙述的逻辑，在之前《ChatGPT技术解构与思考》整体脉络之上，结合OpenAI的Technical Report，选取GPT-4的关键点作阐述，整理出GPT4">
+<meta property="og:description" content="更新日志2023-07-11  更新Q3问题中，关于GPT-4模型架构、训练基础设施、并行策略、多模态适应方式等信息的更新，具体内容参考链接：https:&#x2F;&#x2F;www.semianalysis.com&#x2F;p&#x2F;gpt-4-architecture-infrastructure）  更新Q9问题中，第三点AI agent系统以GPT-4为基础模型的逻辑。    前言 &amp;emsp; &amp;emsp;GPT-4作">
 <meta property="og:locale">
 <meta property="og:image" content="https://ryanran92.github.io/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p1.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p2.png">
@@ -37,8 +37,9 @@
 <meta property="og:image" content="https://ryanran92.github.io/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p22.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p23.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p24.png">
+<meta property="og:image" content="https://ryanran92.github.io/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p25.png">
 <meta property="article:published_time" content="2023-03-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-07T06:55:34.501Z">
+<meta property="article:modified_time" content="2023-07-12T07:33:43.667Z">
 <meta property="article:author" content="Ryanran">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ryanran92.github.io/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/p1.png">
@@ -120,7 +121,15 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+        <h1 id="更新日志"><a href="#更新日志" class="headerlink" title="更新日志"></a>更新日志</h1><p>2023-07-11</p>
+<ul>
+<li><p>更新Q3问题中，关于GPT-4<strong>模型架构</strong>、训练基础设施、并行策略、多模态适应方式等信息的更新，具体内容参考<strong>链接</strong>：<a target="_blank" rel="noopener" href="https://www.semianalysis.com/p/gpt-4-architecture-infrastructure%EF%BC%89">https://www.semianalysis.com/p/gpt-4-architecture-infrastructure）</a></p>
+</li>
+<li><p>更新Q9问题中，第三点AI agent系统以GPT-4为<strong>基础模型</strong>的逻辑。</p>
+</li>
+</ul>
+<hr>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
 <p>&emsp; &emsp;GPT-4作为GPT系列的最新模型，其整体<strong>实现逻辑</strong>、<strong>技术结构</strong>与ChatGPT类似，可以将其看作是拥有<strong>更长上文</strong>、能<strong>更好理解复杂指令</strong>、回答<strong>更可靠</strong>、更<strong>风格化</strong>、更<strong>有创意</strong>的图文版升级ChatGPT，故本文未按照从头开始叙述的逻辑，在之前《<a href="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/">ChatGPT技术解构与思考</a>》整体脉络之上，结合OpenAI的Technical Report，选取GPT-4的<strong>关键点</strong>作阐述，整理出GPT4核心的十个问题进行剖析。</p>
 <p>&emsp;&emsp; 本文首发在腾讯云开发者公众号 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/faCMgTd7eV5kC08XqOCW-Q">https://mp.weixin.qq.com/s/faCMgTd7eV5kC08XqOCW-Q</a> 、知乎号 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/614499449">https://zhuanlan.zhihu.com/p/614499449</a> 与腾讯科技 <a target="_blank" rel="noopener" href="https://new.qq.com/rain/a/20230316A08C1Y00">https://new.qq.com/rain/a/20230316A08C1Y00</a> 中，本Blog此文进行实时更新。</p>
 <span id="more"></span>
@@ -191,7 +200,7 @@
 
 <h2 id="Q3：训练：GPT-4相较于之前的GPT系列模型，在训练方式、模型架构上有哪些创新和优化？"><a href="#Q3：训练：GPT-4相较于之前的GPT系列模型，在训练方式、模型架构上有哪些创新和优化？" class="headerlink" title="Q3：训练：GPT-4相较于之前的GPT系列模型，在训练方式、模型架构上有哪些创新和优化？"></a>Q3：训练：GPT-4相较于之前的GPT系列模型，在训练方式、模型架构上有哪些创新和优化？</h2><hr>
 <p>&emsp; &emsp;整体很黑盒，但可以做一些合理的推测；</p>
-<p>&emsp; &emsp;首先，<strong>模型参数量</strong>估计约为<strong>10万到100万亿</strong>量级（为作者<strong>个人预估</strong>，也从另一个角度看出OpenAI定制超算的强大），主要根据OpenAI 2020提出的大模型缩放规律：计算预算增加 10 倍，数据集大小应增加约 1.83 倍，模型大小应增加 5.48 倍。按照下图估计，最右处的灰点极有可能为ChatGPT（或其他GPT3.5类千亿模型），图中可以看出GPT-4计算量约为GPT3.5的1000多倍，则模型容量约为548倍左右，1750亿x548≈100万亿；</p>
+<p>&emsp; &emsp;首先，<strong>模型参数量</strong>估计约为<strong>10万到100万亿</strong>量级（为作者<strong>个人预估</strong>，也从另一个角度看出OpenAI定制超算的强大），主要根据OpenAI 2020提出的大模型缩放规律：计算预算增加 10 倍，数据集大小应增加约 1.83 倍，模型大小应增加 5.48 倍。按照下图估计，最右处的灰点极有可能为ChatGPT（或其他GPT3.5类千亿模型），图中可以看出GPT-4计算量约为GPT3.5的1000多倍，则模型容量约为548倍左右，1750亿x548≈100万亿；（根据国外网友信息的梳理和推测，GPT-4为<strong>1.8万亿</strong>参数量级的MoE模型，具体GPT-4模型架构、训练基础设施、并行策略、多模态适应方式等相关可以参考<strong>链接9</strong>）</p>
 <img src="/2023/03/16/关于GPT-4的十问十答/p15.png" width=65%>
 
 <p>&emsp; &emsp;其次，GPT-4模型<strong>训练架构</strong>加入了图像模态的输入，应与最近微软发布的 KOSMOS-1类似，即在预训练阶段输入任意顺序的文本和图像，图像经过 Vision Encoder 向量化，文本经过普通transformer向量化，两者组成多模句向量，训练目标仍为next-word generation。</p>
@@ -244,7 +253,7 @@
 
 <p>&emsp; &emsp; 5）<strong>能力预测</strong>是很重要的方向；即用小模型来预测广泛大模型的能力，极大减少试错成本，提升训练效率；</p>
 <p>&emsp; &emsp; 6） <strong>开源评测框架</strong>对于LLM的评测具有重大意义，可以快速发现改进方向。</p>
-<h2 id="Q9：其他：GPT-4论文（technical-report）中，还有哪些值得关注的点？"><a href="#Q9：其他：GPT-4论文（technical-report）中，还有哪些值得关注的点？" class="headerlink" title="Q9：其他：GPT-4论文（technical report）中，还有哪些值得关注的点？"></a>Q9：其他：GPT-4论文（technical report）中，还有哪些值得关注的点？</h2><hr>
+<h2 id="Q9：其他：GPT-4论文（technical-report）和近期发展中，还有哪些值得关注的点？"><a href="#Q9：其他：GPT-4论文（technical-report）和近期发展中，还有哪些值得关注的点？" class="headerlink" title="Q9：其他：GPT-4论文（technical report）和近期发展中，还有哪些值得关注的点？"></a>Q9：其他：GPT-4论文（technical report）和近期发展中，还有哪些值得关注的点？</h2><hr>
 <p>&emsp; &emsp; 有一些点比较有趣且可以引发我们的联想，这里提出两点：</p>
 <p>&emsp; &emsp; 1）GPT-4出现了“<strong>寻求权力</strong>”的倾向，并警告这一特征的风险</p>
 <p>&emsp; &emsp; 文中提到，Novel capabilities often emerge in more powerful models.Some that are particularly concerning are the ability to create and act on long-term plans,to accrue power and resources (“powerseeking”), and to exhibit behavior that is increasingly “agentic”. 即GPT-4开始拥有一些新的能力，包括创建长期计划并采取行动的能力，积累权力和资源（“寻求权力”），以及表现出越来越“代理”的行为，例如，完成可能没有具体规定的、在训练中没有出现的目标；专注于实现具体的、可量化的目标；以及进行长期规划。而此类行为具有突发性。</p>
@@ -252,6 +261,11 @@
 <p>&emsp; &emsp; 2）赋予了GPT-4<strong>自我编码、复制和执行的能力</strong>，甚至启动资金</p>
 <p>&emsp; &emsp;在测试GPT-4的过程中，OpenAI引入的外部专家团队ARC(Alignment Research Center)作为“红方”。</p>
 <p>&emsp; &emsp; ARC会给GPT-4这样一个操作：允许GPT-4执行代码，进行链式推理，并可以用少量的钱和一个带有语言模型API的账户，用是否能够赚更多的钱来增加其的稳健性，GPT-4已经可以开始自己赚钱了。</p>
+<p>&emsp; &emsp;3）为何近期以AutoGPT为代表的AI agent系统均以GPT-4为主体？</p>
+<p>&emsp; &emsp;自治代理系统的核心是通过<strong>任务分解</strong>、<strong>自我反省（self-reflection）</strong>、结合<strong>长短期存储</strong>和<strong>工具使用</strong>，通过不断地自我迭代，最终完成不同的任务设定，具体来说，需要LLM结合<strong>外界感知/query</strong>，结合<strong>检索Memory</strong>的存储历史进行<strong>自我思考（Thought)<strong>和</strong>持续计划(Plan)<strong>，得到下一步</strong>动作（Action）</strong>，当无法满足任务时，以上处理逻辑进行迭代，直到完成设定的目标：</p>
+<img src="/2023/03/16/关于GPT-4的十问十答/p25.png" width=65%>
+
+<p>&emsp; &emsp;以上任务对核心LLM（大脑）基础模型的<strong>智能要求极高</strong>，包括<strong>理解复杂的prompt</strong>、严格的<strong>输入输出格式要求</strong>、多维度<strong>信息融合和反馈</strong>能力；固现有较强的Agent，若需要强大的自动代理能力，均需以GPT-4为基础模型。</p>
 <h2 id="Q10：AGI：GPT-4是通往AGI的唯一道路吗？"><a href="#Q10：AGI：GPT-4是通往AGI的唯一道路吗？" class="headerlink" title="Q10：AGI：GPT-4是通往AGI的唯一道路吗？"></a>Q10：AGI：GPT-4是通往AGI的唯一道路吗？</h2><hr>
 <p>&emsp; &emsp; 总的来说，ChatGPT/GPT-4这样的模型，是现在距离AGI最近的一条路，但因为其本质为一个<strong>概率预测模型</strong>，没有真正的<strong>逻辑处理</strong>模块，也没有<strong>记忆存储</strong>模块，属于一个不太稳定的系统；另外，它使用外界工具的能力也<strong>尚显初级</strong>，一个真正的AGI一定会像人一样，可以快速学会工具的使用。</p>
 <p>&emsp; &emsp; 但GPT大模型的不断进化，让人类看到了触碰到AGI的希望之光。</p>
