@@ -6,22 +6,28 @@
   
   <title>大型语言模型(LLM)的使用和思考 | Ryanran&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="1.  导论&amp;emsp;  &amp;emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Models，下文均简称LLM)的威力，尤其是千亿模型已经远超BERT时代的认知，甚至看到了AGI（Artificial General Intelligence，通用人工智能）的可能性。但随之而来的机遇和挑战并存。除了遥遥领先的OpenAI，业界大部分公司或多或少被">
+  <meta name="description" content="更新日志 2023-07-18  增加4.4中，参考文献13- Parameter-efficient Prompt Tuning（局部微调）的统一视角 增加4.4中，关于P-tuning、P-tuning v2、LoRA、AdaLoRA&#x2F;QLoRA的内容   1.  导论&amp;emsp;  &amp;emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Mod">
 <meta property="og:type" content="article">
 <meta property="og:title" content="大型语言模型(LLM)的使用和思考">
 <meta property="og:url" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/index.html">
 <meta property="og:site_name" content="Ryanran&#39;s Blog">
-<meta property="og:description" content="1.  导论&amp;emsp;  &amp;emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Models，下文均简称LLM)的威力，尤其是千亿模型已经远超BERT时代的认知，甚至看到了AGI（Artificial General Intelligence，通用人工智能）的可能性。但随之而来的机遇和挑战并存。除了遥遥领先的OpenAI，业界大部分公司或多或少被">
+<meta property="og:description" content="更新日志 2023-07-18  增加4.4中，参考文献13- Parameter-efficient Prompt Tuning（局部微调）的统一视角 增加4.4中，关于P-tuning、P-tuning v2、LoRA、AdaLoRA&#x2F;QLoRA的内容   1.  导论&amp;emsp;  &amp;emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Mod">
 <meta property="og:locale">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p1.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p2.png">
+<meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p1_0718.png">
+<meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p2_0718.png">
+<meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p3_0718.png">
+<meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p4_0718.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p3.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p4.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p5.png">
+<meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p5_0718.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p6.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p7.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p8.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p9.png">
+<meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p6_0718.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p10.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p11.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p12.png">
@@ -37,7 +43,7 @@
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p20.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p21.png">
 <meta property="article:published_time" content="2023-01-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-07T07:27:34.042Z">
+<meta property="article:modified_time" content="2023-07-18T12:11:10.480Z">
 <meta property="article:author" content="Ryanran">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p1.png">
@@ -87,10 +93,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ryanran92.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ryanran92.github.io"></form>
       </div>
     </div>
   </div>
@@ -119,7 +125,14 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="1-导论"><a href="#1-导论" class="headerlink" title="1.  导论"></a>1.  导论</h1><p>&emsp;  &emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Models，下文均简称LLM)的威力，尤其是千亿模型已经远超BERT时代的认知，甚至看到了AGI（Artificial General Intelligence，通用人工智能）的可能性。但随之而来的机遇和挑战并存。除了遥遥领先的OpenAI，业界大部分公司或多或少被拉到了追赶ChatGPT的同一起跑线上。 </p>
+        <h1 id="更新日志"><a href="#更新日志" class="headerlink" title="更新日志"></a>更新日志</h1><hr>
+<p>2023-07-18</p>
+<ul>
+<li>增加4.4中，参考文献13- Parameter-efficient Prompt Tuning（局部微调）的统一视角</li>
+<li>增加4.4中，关于P-tuning、P-tuning v2、LoRA、AdaLoRA/QLoRA的内容</li>
+</ul>
+<hr>
+<h1 id="1-导论"><a href="#1-导论" class="headerlink" title="1.  导论"></a>1.  导论</h1><p>&emsp;  &emsp;  ChatGPT的出现和“爆火”，让大家见识了大型语言模型(Large Language Models，下文均简称LLM)的威力，尤其是千亿模型已经远超BERT时代的认知，甚至看到了AGI（Artificial General Intelligence，通用人工智能）的可能性。但随之而来的机遇和挑战并存。除了遥遥领先的OpenAI，业界大部分公司或多或少被拉到了追赶ChatGPT的同一起跑线上。 </p>
 <p>&emsp;&emsp;  本文延续上篇文章（<a href="https://ryanran92.github.io/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/">ChatGPT技术解构与思考</a>）末尾对于ChatGPT如何使用的话题，基于最近阅读的一些材料和学习，结合从组内做过的实验中得到的认知，拓展到更广范围的LLM，集中阐述如何使用、适配和挖掘LLM的能力，并给出相关思考供大家讨论。</p>
 <span id="more"></span>
 
@@ -252,12 +265,27 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 <p>&emsp;&emsp;  我们利用Prompt-based方法主要聚焦在分类问题上，分类问题情境一般较简单，使用PET标注量只需原先的1/10（500 vs 5000）。</p>
 <h3 id="4-4-参数有效的Prompt调整-Parameter-efficient-Prompt-Tuning"><a href="#4-4-参数有效的Prompt调整-Parameter-efficient-Prompt-Tuning" class="headerlink" title="4.4 参数有效的Prompt调整(Parameter-efficient Prompt Tuning)"></a>4.4 参数有效的Prompt调整(Parameter-efficient Prompt Tuning)</h3><p>&emsp;&emsp;  所谓Parameter-efficient（参数有效），即无需针对每个任务微调一个<strong>全参数</strong>的模型，只需调整LLM的部分参数，下游任务即可达到较好效果，该方法极大降低训练/存储成本。</p>
 <p>&emsp;&emsp;   Parameter-efficient Tuning核心的关键是如何选择有效微调的参数？选择哪部分参数微调？这部分参数占比多少？</p>
+<p>&emsp;&emsp; 基于Transformer架构，Parameter-efficient Prompt Tuning在其多头注意力结构的不同位置上增加权重参数，进而演变成不同类别的方法，下图从统一视角总结了此类方法。</p>
+<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p1_0718.png" width=65%>
+
+<p>&emsp;&emsp; 从图中可以看出，Adapter方式是在self-attention与layer norm层中间增两层低秩矩阵以及全链接层，属于“纵向串联”方式，参数调整聚焦于Adapter层；</p>
+<p>&emsp;&emsp; Prefix-tuning/P-tuning v2方式是在每一层增加可训练参数，而Prompt tuning和P-tuning v1只在输入embedding层增加训练参数（soft prompt），其他部分参数均freeze（固定）；</p>
+<p>&emsp;&emsp; LoRA方式是在原模型权重增加一个旁路，通过低秩分解（先降维后升维）降低训练开销，属于“横向并联”方式，参数调整聚焦于$W_{down}$和$W_{up}$；</p>
+<p>&emsp;&emsp; 以下表格和结构图更清楚的表明了各PEFT的区别（其中de对于下表中Adapter的变种，使用频率较少，暂时可不做参考）：</p>
+<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p2_0718.png" width=65%>
+<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p3_0718.png" width=65%>
+
+
+
+<p>&emsp;&emsp; 局部参数微调，此类方法亦可称作Parameter-Efficient Fine-Tuning（PEFT），它使大型语言模型高效适应各种下游应用，而无需微调模型的所有参数即可达到高可用性的效果，适合快速迭代的的垂类适配领域，PEFT库集成了以上的大部分方法，以下针对代表方法具体展开。</p>
+<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p4_0718.png" width=65%>
+
 <p>&emsp;&emsp;  1）Adapter Finetune</p>
 <p>&emsp;&emsp;  此方法在Transformers中添加 Adapter Layers，微调过程中只调整此部分参数。Adapter为图3中，在FFN和Norm layer层之间添加的”Adapter”部分，其构成是两层FFN，只需微调3.6% Adapter的参数，在下游任务效果接近全量微调。</p>
 <img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p3.png" width=65%>
 <center>图3 Adapter结构示意图</center>
 
-<p>&emsp;&emsp;   2） Prefix-tuning</p>
+<p>&emsp;&emsp;   2） Prefix-tuning与P-tuning v2</p>
 <p>&emsp;&emsp;  Prefix-tuning是第一部分Prompt-based微调的发展和延伸，核心思想是选取与子任务强相关的Prompt参数连续化微调，同时<strong>固定其他部分参数</strong>；该方法优点是无需人工设计模板，可以参数化自动学习模板统一优化；缺点也很明显，相比文字模板解释性较低。</p>
 <img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p4.png" width=65%>
 
@@ -272,7 +300,11 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 <br>
 &emsp;&emsp;  我们利用Prefix-Tuning，主要在小样本的结构化生成任务中有过尝试，但生成效果一般，没有得到论文中的结果，且相比微调的稳定性稍差；可能是因为迁移到中文的影响，抑或没有选取到合适的参数；但其选取部分hidden-state的微调思想很有借鉴意义，也说明在相对垂直的一些任务上，无需很大参数量，局部微调就可达成目标，LLM的参数在这些任务上是**过分冗余**的。
 
-<p>&emsp;&emsp;   3)  Prompt tuning </p>
+<p>&emsp;&emsp; P-tuning V2与Prefix-Tuning方法相同，在每一层增加可训练参数，主要区别是将其移植到NLU任务，并进行了多任务学习和预训练，但本质和Prefix-Tuning区别不大。</p>
+<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p5_0718.png" width=65%>
+
+
+<p>&emsp;&emsp;   3)  Prompt tuning 与 P-tuning</p>
 <p>&emsp;&emsp;  Prompt tuning 可以看做Prefix-tuning的特殊形式，Google提出的Prompt tuning是做了全面系统的多实验参数的精调，来梳理清晰Prompt tuning的影响因素。此处的结论很有意思：</p>
 <p>&emsp;&emsp;  ● Prompt长度：当模型参数&lt;10亿时，整体倾向是：随着长度变长，模型效果持续上升，在长度为20时即达到峰值；但当模型规模超过10亿时，长度影响差距缩小，特别长度为1时效果也尚可。</p>
 <img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p6.png" width=65%>
@@ -298,8 +330,13 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 <center>图9  训练步数在SuperGLUE的结果分布</center>
 <br>
 &emsp;&emsp;  以上实验可以看出，在Prompt tuning上模型**规模的力量**（the power of scale）。当模型参数达到一定量级后，无效的模型设计对结果影响不大；模型开始“返璞归真”，暴力美学尽显，这与对话模型PLATO异曲同工：PLATO-1和PLATO-2一顿操作设计猛如虎，但PLATO-XL只用最简单的Transformers结构，只在数据量和参数量大幅增加后即呈碾压之势。
-相关工作还有Prompt tuning的升级工作，包括模板融合等。此部分我们没有做过多的参数实验，只在相同模型（1亿内量级）下做过一些Prompt的修改，但影响整体不大。
+&emsp;&emsp; 相关工作还有Prompt tuning的升级工作，包括模板融合等。此部分我们没有做过多的参数实验，只在相同模型（1亿内量级）下做过一些Prompt的修改，但影响整体不大。
 
+<p>&emsp;&emsp;   4)  LoRA 与 AdaLoRA<br>&emsp;&emsp; 如上介绍，LoRA的核心是通过低秩分解，模拟权重参数的改变量，其原理图非常简单：</p>
+<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p6_0718.png" width=65%>
+
+
+<p>&emsp;&emsp;  橙色A、B矩阵即对应以上的$W_{down}$和$W_{up}$矩阵，通常微调参数为左侧蓝色$W$部分，即原始隐层状态 $h = W_0x$$，LoRA中隐层状态为$$h = W_0x+BAx$，增加低秩的橙色旁路为可训练参数，$r &lt;&lt; d$；<br>&emsp;&emsp; 此改变量可对应不同领域、任务、场景，可插拔可快速替换，同时效果相比全量微调损失在可接受范围之内，LoRA在文生图和大型语言模型上得到广泛应用。<br>&emsp;&emsp; 基于LoRA有很多变体和改进，包括AdaLoRA，其通过SVD-based的奇异值分解来代替普通的低秩分解；另外通过重要性感知，筛选出重要性高的奇异值，本质达到继续降秩、加速训练的作用。<br>&emsp;&emsp; QLoRA是LoRA基础上，使用一种低精度的存储数据类型（NF4）来压缩预训练的语言模型，使模型兼具LoRA压缩特性同时，推理效果几乎没有受到影响，QLoRA是Quantize（量化）+LoRA技术。</p>
 <h3 id="4-5-上下文学习（In-context-Learning）"><a href="#4-5-上下文学习（In-context-Learning）" class="headerlink" title="4.5 上下文学习（In-context Learning）"></a>4.5 上下文学习（In-context Learning）</h3><p>&emsp;&emsp;  上下文学习主要在GPT3发布后，开始引发业界关注并逐渐流行；它无需在大模型上进行梯度更新，无需任何形式参数的微调，只需少量下游任务的任务描述和输入输出示例（甚至完全零样本学习），即可在下游任务上取得不错的效果；当选取最大的1750亿参数的模型时，部分任务上甚至超过出SOTA，如在LAMBADA（开放式完形填空任务任务）上提升了18%；图10很好的说明了In-context Learning与传统微调的区别。</p>
 <img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p10.png" width=65%>
 <br>
@@ -389,6 +426,9 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2104.08691.pdf">The Power of Scale for Parameter-Efficient Prompt Tuning</a></li>
 <li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2012.15723.pdf">Making Pre-trained Language Models Better Few-shot Learners</a></li>
 <li> <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2001.07676v3.pdf">Exploiting Cloze Questions for Few Shot Text Classification and Natural Language Inference</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2110.04366.pdf">Towards a Unified View of Parameter-Efficient Transfer Learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2106.09685.pdf">LoRA: Low-Rank Adaptation of Large Language Models</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2110.07602.pdf">P-Tuning v2: Prompt Tuning Can Be Comparable to Fine-tuning Universally Across Scales and Tasks</a></li>
 </ol>
 <h1 id="附录1：LLM中英术语-概念对照表"><a href="#附录1：LLM中英术语-概念对照表" class="headerlink" title="附录1：LLM中英术语/概念对照表"></a>附录1：LLM中英术语/概念对照表</h1><table>
 <thead>
@@ -571,7 +611,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/" data-id="clg6do17p00041gpa188o08us" data-title="大型语言模型(LLM)的使用和思考" class="article-share-link">Teilen</a>
+      <a data-url="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/" data-id="clg6do17p00041gpa188o08us" data-title="大型语言模型(LLM)的使用和思考" class="article-share-link">Share</a>
       
       
       
@@ -582,7 +622,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <nav id="article-nav">
   
     <a href="/2023/03/16/%E5%85%B3%E4%BA%8EGPT-4%E7%9A%84%E5%8D%81%E9%97%AE%E5%8D%81%E7%AD%94/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
+      <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
           关于GPT-4的十问十答
@@ -592,7 +632,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
   
   
     <a href="/2022/12/08/ChatGPT%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%84%E4%B8%8E%E6%80%9D%E8%80%83/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">ChatGPT技术解构与思考</div>
     </a>
   
@@ -616,7 +656,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li></ul>
     </div>
@@ -626,7 +666,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
