@@ -43,7 +43,7 @@
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p20.png">
 <meta property="og:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p21.png">
 <meta property="article:published_time" content="2023-01-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-19T03:30:18.748Z">
+<meta property="article:modified_time" content="2023-07-19T03:33:30.109Z">
 <meta property="article:author" content="Ryanran">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ryanran92.github.io/2023/01/11/%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B(LLM)%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%80%9D%E8%80%83/p1.png">
@@ -333,7 +333,7 @@ LM-BFF聚焦于如何得到更好的Prompt，其探索了自动Prompt的选择�
 &emsp;&emsp; 相关工作还有Prompt tuning的升级工作，包括模板融合等。此部分我们没有做过多的参数实验，只在相同模型（1亿内量级）下做过一些Prompt的修改，但影响整体不大。
 
 <p>&emsp;&emsp;   4)  LoRA 与 AdaLoRA<br>&emsp;&emsp; 如上介绍，LoRA的核心是通过低秩分解，模拟权重参数的改变量，其原理图非常简单：</p>
-<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p6_0718.png" width=65%>
+<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p6_0718.png" width=45%>
 
 
 <p>&emsp;&emsp;  橙色A、B矩阵即对应以上的$W_{down}$和$W_{up}$矩阵，通常微调参数为左侧蓝色$W$部分，即原始隐层状态 $h = W_0x$$，LoRA中隐层状态为$$h = W_0x+BAx$，增加低秩的橙色旁路为可训练参数，$r &lt;&lt; d$；<br>&emsp;&emsp; 此改变量可对应不同领域、任务、场景，可插拔可快速替换，同时效果相比全量微调损失在可接受范围之内，LoRA在文生图和大型语言模型上得到广泛应用。<br>&emsp;&emsp; 基于LoRA有很多变体和改进，包括AdaLoRA，其通过SVD-based的奇异值分解来代替普通的低秩分解；另外通过重要性感知，筛选出重要性高的奇异值，本质达到继续降秩、加速训练的作用。<br>&emsp;&emsp; QLoRA是LoRA基础上，使用一种低精度的存储数据类型（NF4）来压缩预训练的语言模型，使模型兼具LoRA压缩特性同时，推理效果几乎没有受到影响，QLoRA是Quantize（量化）+LoRA技术。</p>
@@ -373,7 +373,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 &emsp;&emsp;  In-context learning从出现到兴起，其有效性的由来完全黑盒。也有工作开始尝试进行解释，此篇文献尝试从贝叶斯推理的角度进行解释：An Explanation of In-context Learning as Implicit Bayesian Inference ，有兴趣的同学可以深入研究。
 
 <h3 id="4-6-推理"><a href="#4-6-推理" class="headerlink" title="4.6 推理"></a>4.6 推理</h3><p>&emsp;&emsp;  在上一节中，我们提到了在Demonstration 构造中，有一类是面向<strong>困难的</strong>数理逻辑任务的CoT（Chain of Thought）Prompting，它主要面向较困难的知识推理、数理推理任务，因为对于此类任务，单纯提升模型收效甚微，需要研究通过其他手段来挖掘LLM在推理任务的能力。<br>CoT提供给模型一系列中间的自然语言推理步骤，类似于人类演算的过程，进而得到最终的输出，使得模型不仅要知其然，且要知其所以然；图14是CoT的输入形式。</p>
-<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p14.png" width=65%>
+<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p14.png" width=100%>
 <br>
 <center>图14  CoT构造形式</center>
 
@@ -397,7 +397,7 @@ Label space相关的课题主要是研究label空间的重要性，但整体的�
 <p>&emsp;&emsp;   ● CoT微调：进行CoT数据微调后，LLM倾向于拥有Emergent Abilities。</p>
 <p>&emsp;&emsp;   2）Reasoning with prompting研究命题</p>
 <p>&emsp;&emsp;  回到CoT Prompt本身的讨论，我们可以从表3中得出业界对于此方向的研究命题，包括Prompt 工程设计、推理过程的优化、外源引擎（主要指代码引擎）以及知识增强（内外源知识）。</p>
-<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p16-2.png" width=65%>
+<img src="/2023/01/11/大型语言模型(LLM)的使用和思考/p16-2.png" width=100%>
 <br>
 <center>表2  Reasoning with prompting的不同研究话题</center>
 
